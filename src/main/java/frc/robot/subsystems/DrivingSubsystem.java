@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import org.team217.*;
 import org.team217.pid.*;
 import frc.robot.*;
 
@@ -61,7 +62,7 @@ public class DrivingSubsystem extends Subsystem {
         double turn = 0.0;
 
         if (isDriveStraight) {
-            double correction = 0.5 * driveStraightPID.getOutput(RobotMap.pigeonDrive.getAngle(), targetAngle);
+            double correction = 0.5 * Range.inRange(driveStraightPID.getOutput(RobotMap.pigeonDrive.getAngle(), targetAngle), -1.0, 1.0);
             turn = correction * Math.abs(speed);
             speed *= (1 - Math.abs(correction));
         }
