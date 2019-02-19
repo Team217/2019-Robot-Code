@@ -11,17 +11,16 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.*;
 
 public class teleopArmWristCommandGroup extends CommandGroup {
-  /**
-   * Add your docs here.
-   */
-  public teleopArmWristCommandGroup() {
-    requires(Robot.kLiftingMechanism);
+    /**
+     * Add your docs here.
+     */
+    public teleopArmWristCommandGroup() {
+        requires(Robot.kLiftingMechanism);
 
-    addParallel(new teleopArmAndWrist()); //keep wrist parallel to floor
-    
-    addParallel(new teleopMoveWrist());
-    addParallel(new teleopArm());
-  }
+        addParallel(new teleopArmAndWrist()); // keep wrist parallel to floor
 
-  }
+        addParallel(new teleopMoveWrist());
+        addParallel(new teleopArm());
+    }
 
+}
