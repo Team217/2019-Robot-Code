@@ -12,16 +12,11 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import org.team217.ctre.PigeonIMU;
-import org.team217.ctre.WPI_TalonSRX;
-import org.team217.pid.PID;
+import org.team217.ctre.*;
+import org.team217.pid.*;
+import org.team217.rev.*;
 
-import org.team217.rev.CANSparkMax;
-
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.*;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into

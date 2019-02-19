@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import org.team217.pid.PID;
+import org.team217.pid.*;
 import frc.robot.*;
 
 import edu.wpi.first.wpilibj.command.Subsystem;

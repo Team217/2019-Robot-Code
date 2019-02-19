@@ -7,16 +7,13 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.PigeonIMU;
+import org.team217.ctre.*;
+import org.team217.pid.*;
+import org.team217.rev.*;
 
-import org.team217.ctre.WPI_TalonSRX;
-import org.team217.pid.PID;
-import org.team217.rev.CANSparkMax;
-
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.RobotMap;
+import frc.robot.*;
 
 public class LiftingMechanism extends Subsystem {
   // Put methods for controlling this subsystem

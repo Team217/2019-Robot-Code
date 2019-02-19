@@ -7,17 +7,14 @@
 
 package frc.robot.commands;
 
-import org.team217.Range;
-import org.team217.ctre.WPI_TalonSRX;
-import org.team217.pid.PID;
-import org.team217.rev.CANSparkMax;
+import org.team217.*;
+import org.team217.ctre.*;
+import org.team217.pid.*;
+import org.team217.rev.*;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
-import frc.robot.RobotMap;
+import frc.robot.*;
 
 public class teleopArmAndWrist extends Command {
   WPI_TalonSRX wrist1 = RobotMap.wrist;
