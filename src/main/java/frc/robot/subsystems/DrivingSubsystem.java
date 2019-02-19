@@ -62,7 +62,7 @@ public class DrivingSubsystem extends Subsystem {
 
         if (isDriveStraight) {
             double correction = 0.5 * driveStraightPID.getOutput(RobotMap.pigeonDrive.getAngle(), targetAngle);
-            turn = correction * speed;
+            turn = correction * Math.abs(speed);
             speed *= (1 - Math.abs(correction));
         }
         
