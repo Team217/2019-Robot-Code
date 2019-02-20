@@ -8,7 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.*;
+import frc.robot.Robot;
 
 public class TeleopCommands extends CommandGroup {
   /**

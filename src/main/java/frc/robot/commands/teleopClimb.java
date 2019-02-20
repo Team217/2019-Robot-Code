@@ -8,50 +8,52 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.*;
+import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 public class teleopClimb extends Command {
-    public teleopClimb() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+  public teleopClimb() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+  }
+
+  // Called just before this Command runs the first time
+  @Override
+  protected void initialize() {
+  }
+
+  // Called repeatedly when this Command is scheduled to run
+  @Override
+  protected void execute() {
+    if(Robot.m_oi.circleDriver.get()){
+      Robot.kClimbingSubsystem.fullClimbMode();
+    }
+    else if(Robot.m_oi.triangleDriver.get()){
+      Robot.kClimbingSubsystem.driveMode();
     }
 
-    // Called just before this Command runs the first time
-    @Override
-    protected void initialize() {
-    }
+  }
+  //full climb speed positive
+  //half front climb speed negative
+  //kdriveBase speed positive
+  //while in parallel with full climb speed negative?
 
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-        if (Robot.m_oi.circleDriver.get()) {
-            Robot.kClimbingSubsystem.fullClimbMode();
-        } else if (Robot.m_oi.triangleDriver.get()) {
-            Robot.kClimbingSubsystem.driveMode();
-        }
+  // Make this return true when this Command no longer needs to run execute()
+  @Override
+  protected boolean isFinished() {
+    return false;
+  }
 
-    }
-    // full climb speed positive
-    // half front climb speed negative
-    // kdriveBase speed positive
-    // while in parallel with full climb speed negative?
+  // Called once after isFinished returns true
+  @Override
+  protected void end() {
+  }
 
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    protected boolean isFinished() {
-        return false;
-    }
-
-    // Called once after isFinished returns true
-    @Override
-    protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
-    }
-
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
+  @Override
+  protected void interrupted() {
+  }
+  
 }
 */

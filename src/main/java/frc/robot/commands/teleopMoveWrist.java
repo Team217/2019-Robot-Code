@@ -7,73 +7,71 @@
 
 package frc.robot.commands;
 
-import org.team217.*;
+import org.team217.Range;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.*;
+import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 public class teleopMoveWrist extends Command {
 
-    boolean isRunning = true;
+  boolean isRunning = true;
+  public teleopMoveWrist() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+  }
+  
+  double upSpeed = 0;
+  double downSpeed = 0;
+  // Called just before this Command runs the first time
+  @Override
+  protected void initialize() {
+  }
 
-    public teleopMoveWrist() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+  // Called repeatedly when this Command is scheduled to run
+  @Override
+  protected void execute() {
+    if (Robot.m_oi.rightTriggerOper.get() || Robot.m_oi.leftTriggerOper.get()) {
+      isRunning = true;
+    }
+    else if (Robot.m_oi.touchPadOper.get()) {
+      isRunning = false;
     }
 
-    double upSpeed = 0;
-    double downSpeed = 0;
-
-    // Called just before this Command runs the first time
-    @Override
-    protected void initialize() {
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-        if (Robot.m_oi.rightTriggerOper.get() || Robot.m_oi.leftTriggerOper.get()) {
-            isRunning = true;
+    if (isRunning) {
+      //moving wrist independently
+      upSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05);
+      downSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(4), 0.05);
+      if (Robot.m_oi.leftTriggerOper.get()) { //moving up
+        Robot.kLiftingMechanism.wrist(upSpeed);
         }
-        else if (Robot.m_oi.touchPadOper.get()) {
-            isRunning = false;
+       else if (Robot.m_oi.rightTriggerOper.get()) { //moving down
+        Robot.kLiftingMechanism.wrist(-downSpeed);
         }
+       else {
+        Robot.kLiftingMechanism.wrist(0);
+      }
 
-        if (isRunning) {
-            // moving wrist independently
-            upSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05);
-            downSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(4), 0.05);
-
-            if (Robot.m_oi.leftTriggerOper.get()) { // moving up
-                Robot.kLiftingMechanism.wrist(upSpeed);
-            }
-            else if (Robot.m_oi.rightTriggerOper.get()) { // moving down
-                Robot.kLiftingMechanism.wrist(-downSpeed);
-            }
-            else {
-                Robot.kLiftingMechanism.wrist(0);
-            }
-
-            if (Robot.m_oi.psButtonOper.get()) {
-                RobotMap.intakeGyro.reset();
-            }
-        }
+      if(Robot.m_oi.psButtonOper.get()) {
+        RobotMap.intakeGyro.reset();
+      }
     }
+  }
 
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    protected boolean isFinished() {
-        return false;
-    }
+  // Make this return true when this Command no longer needs to run execute()
+  @Override
+  protected boolean isFinished() {
+    return false;
+  }
 
-    // Called once after isFinished returns true
-    @Override
-    protected void end() {
-    }
+  // Called once after isFinished returns true
+  @Override
+  protected void end() {
+  }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
-    }
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
+  @Override
+  protected void interrupted() {
+  }
 }
