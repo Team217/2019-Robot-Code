@@ -9,34 +9,34 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.RobotMap;
+import frc.robot.*;
 
 public class IntakeSubsystem extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
 
-  WPI_VictorSPX intakeOne1 = RobotMap.intakeOne; //VictorSPX 
-  WPI_VictorSPX intakeTwo1 = RobotMap.intakeTwo; // VictorSPX 
-  DoubleSolenoid topHatchSolenoid1 = RobotMap.topHatchSolenoid;
+    WPI_VictorSPX intakeOne1 = RobotMap.intakeOne; //VictorSPX 
+    WPI_VictorSPX intakeTwo1 = RobotMap.intakeTwo; // VictorSPX 
+    DoubleSolenoid topHatchSolenoid1 = RobotMap.topHatchSolenoid;
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
+    @Override
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new MySpecialCommand());
+    }
 
-  public void intake(double speed){
-    intakeOne1.set(speed);
-    intakeTwo1.set(speed);
-  }
+    public void intake(double speed) {
+        intakeOne1.set(speed);
+        intakeTwo1.set(speed);
+    }
 
-  public void extend(){
-    topHatchSolenoid1.set(DoubleSolenoid.Value.kForward);
-  }
+    public void extend() {
+        topHatchSolenoid1.set(DoubleSolenoid.Value.kForward);
+    }
 
-  public void retract(){
-    topHatchSolenoid1.set(DoubleSolenoid.Value.kReverse);
-  }
+    public void retract() {
+        topHatchSolenoid1.set(DoubleSolenoid.Value.kReverse);
+    }
 }

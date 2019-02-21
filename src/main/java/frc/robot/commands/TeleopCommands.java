@@ -8,42 +8,41 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.Robot;
+import frc.robot.*;
 
 public class TeleopCommands extends CommandGroup {
-  /**
-   * Add your docs here.
-   */
-  public TeleopCommands() {
-    requires(Robot.kDrivingSubsystem);
-    requires(Robot.kIntakeSubsystem);
-    requires(Robot.kLiftingMechanism);
+    /**
+     * Add your docs here.
+     */
+    public TeleopCommands() {
+        requires(Robot.kDrivingSubsystem);
+        requires(Robot.kIntakeSubsystem);
+        requires(Robot.kLiftingMechanism);
 
-    addParallel(new teleopDrive());
-   //addParallel(new teleopMoveWrist());
-    addParallel(new teleopIntake()); 
-    addParallel(new teleopHatchPickup());
-  //addParallel(new teleopArm());
-//  addParallel(new teleopArmAndWrist()); 
-    addParallel(new teleopArmWristCommandGroup());
-    addParallel(new teleopElevator());
-    
-    
-    // Add Commands here:
-    // e.g. addSequential(new Command1());
-    // addSequential(new Command2());
-    // these will run in order.
+        addParallel(new teleopDrive());
+        //addParallel(new teleopMoveWrist());
+        addParallel(new teleopIntake());
+        addParallel(new teleopHatchPickup());
+        //addParallel(new teleopArm());
+        //  addParallel(new teleopArmAndWrist()); 
+        addParallel(new teleopArmWristCommandGroup());
+        addParallel(new teleopElevator());
 
-    // To run multiple commands at the same time,
-    // use addParallel()
-    // e.g. addParallel(new Command1());
-    // addSequential(new Command2());
-    // Command1 and Command2 will run in parallel.
+        // Add Commands here:
+        // e.g. addSequential(new Command1());
+        // addSequential(new Command2());
+        // these will run in order.
 
-    // A command group will require all of the subsystems that each member
-    // would require.
-    // e.g. if Command1 requires chassis, and Command2 requires arm,
-    // a CommandGroup containing them would require both the chassis and the
-    // arm.
-  }
+        // To run multiple commands at the same time,
+        // use addParallel()
+        // e.g. addParallel(new Command1());
+        // addSequential(new Command2());
+        // Command1 and Command2 will run in parallel.
+
+        // A command group will require all of the subsystems that each member
+        // would require.
+        // e.g. if Command1 requires chassis, and Command2 requires arm,
+        // a CommandGroup containing them would require both the chassis and the
+        // arm.
+    }
 }

@@ -8,54 +8,54 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
+import frc.robot.*;
 
 public class teleopIntake extends Command {
-  public teleopIntake() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-  }
-
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-  }
-
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    double speed = 0;
-
-    if(Robot.m_oi.xOper.get()) {
-      speed = 0.5;
-    }
-    else if(Robot.m_oi.oper.getPOV() == 180) {
-      speed = -0.35;
-    }
-    else if(Robot.m_oi.rightBumperOper.get()) {
-      speed = -0.5;
-    }
-    else if(Robot.m_oi.oper.getPOV() == 0) {
-      speed = -1.0;
+    public teleopIntake() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
     }
 
-    Robot.kIntakeSubsystem.intake(speed);
-  }
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+    }
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
+        double speed = 0;
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
+        if (Robot.m_oi.xOper.get()) {
+            speed = 0.5;
+        }
+        else if (Robot.m_oi.oper.getPOV() == 180) {
+            speed = -0.35;
+        }
+        else if (Robot.m_oi.rightBumperOper.get()) {
+            speed = -0.5;
+        }
+        else if (Robot.m_oi.oper.getPOV() == 0) {
+            speed = -1.0;
+        }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+        Robot.kIntakeSubsystem.intake(speed);
+    }
+
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+        return false;
+    }
+
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
+    }
+
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
+    }
 }
