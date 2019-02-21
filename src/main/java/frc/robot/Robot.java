@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import org.team217.*;
+
 import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.*;
@@ -193,11 +195,40 @@ public class Robot extends TimedRobot {
         return area2;
     }
 
+    public void testInit() {
+        RobotMap.rightElevator.resetEncoder();
+        RobotMap.intakeGyro.reset();
+        RobotMap.rightArm.resetEncoder();
+    }
+
     /**
      * This function is called periodically during test mode.
      */
     @Override
     public void testPeriodic() {
+        //Elevator
+        double elevatorSpeed = Range.deadband(Robot.m_oi.oper.getY(), 0.05);
+
+        kLiftingMechanism.elevator(elevatorSpeed);
+
+        //Arm
+        double armSpeed = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.05);
+        RobotMap.rightArm.set(armSpeed);
+        RobotMap.leftArm.set(-armSpeed);
+
+        //Wrist
+        double upSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05);
+        double downSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(4), 0.05);
+
+        if (Robot.m_oi.leftTriggerOper.get()) { //moving up
+            Robot.kLiftingMechanism.wrist(upSpeed);
+        }
+        else if (Robot.m_oi.rightTriggerOper.get()) { //moving down
+            Robot.kLiftingMechanism.wrist(-downSpeed);
+        }
+        else {
+            Robot.kLiftingMechanism.wrist(0);
+        }
     }
 
     public void smartDashboard() {
