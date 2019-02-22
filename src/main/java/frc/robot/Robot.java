@@ -195,6 +195,7 @@ public class Robot extends TimedRobot {
         return area2;
     }
 
+    @Override
     public void testInit() {
         RobotMap.rightElevator.resetEncoder();
         RobotMap.intakeGyro.reset();
