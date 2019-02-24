@@ -8,7 +8,6 @@
 package frc.robot.subsystems;
 
 import org.team217.ctre.*;
-import org.team217.pid.*;
 import org.team217.rev.*;
 
 import edu.wpi.first.wpilibj.*;
@@ -33,12 +32,8 @@ public class LiftingMechanism extends Subsystem {
     //	DigitalInput armFrontLimit1 = RobotMap.armFrontLimit;
     //	DigitalInput armBackLimit1 = RobotMap.armBackLimit;
 
-    PID elevatorPID1 = RobotMap.elevatorPID;
-    PID elevatorMaintainPID1 = RobotMap.elevatorMaintainPID;
-
-    double elevatorMult = 1;
-    double armMult = 1;
-    double wristMult = .35;
+    public double lastElevatorPos = 0;
+    public double lastArmPos = 0;
 
     public boolean intakePID_OnTarget = false;
     public boolean elevatorPID_OnTarget = false;
@@ -70,18 +65,17 @@ public class LiftingMechanism extends Subsystem {
     }
     */
     public void elevator(double speed) {
+        
         //elevatorMaintainPID1.setPID(0.0001417, 0.00000117, 0); //not even close to the right PID here
-        		
+
+        double elevatorMult = 0.65;
+        
         if (rightElevator1.getEncoder() <= -11500 && speed <= 0) { //encoder values are wrong, check the logic
         	elevatorMult = .35;
         }
         else if(rightElevator1.getEncoder() >= -5500 && speed >= 0.0) { //this one too
         	elevatorMult = .25;
         }
-        else {
-            elevatorMult = .65;
-        }
-        
 
         if (!RobotMap.elevatorBottomLimit.get()) {
             rightElevator1.resetEncoder();
@@ -93,7 +87,6 @@ public class LiftingMechanism extends Subsystem {
         if ((!RobotMap.elevatorTopLimit.get() || rightElevator1.getEncoder() >= 16180) && speed < 0) {
             speed = 0;
         }
-       // elevatorMult = 1;
         //elevatorLimitCheck(speed);
         rightElevator1.set(speed * elevatorMult);
         leftElevator1.set((speed * elevatorMult));
@@ -143,10 +136,11 @@ public class LiftingMechanism extends Subsystem {
         	armMult = 1.0;
         }
         */
-        armMult = .50;
+        double armMult = .50;
         speed = armLimitCheck(speed);
         leftArm1.set(-(speed * armMult));
         rightArm1.set(speed * armMult);
+
         System.out.println("Arm " + rightArm1.getPosition());
         System.out.println("Wrist Gyro " + intakeGyro1.getAngle());
     }
@@ -162,8 +156,8 @@ public class LiftingMechanism extends Subsystem {
     }
 
     public void wrist(double speed) {
+        double wristMult = .35;
         speed = wristLimitCheck(speed);
-        wristMult = .35;
         wrist1.set(speed * wristMult);
     }
 
