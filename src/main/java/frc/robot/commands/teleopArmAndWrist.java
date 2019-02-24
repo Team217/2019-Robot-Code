@@ -20,10 +20,12 @@ public class teleopArmAndWrist extends Command {
     DigitalInput wristFrontLimit1 = RobotMap.wristFrontLimit;
     DigitalInput wristBackLimit1 = RobotMap.wristBackLimit;
     AnalogGyro intakeGyro1 = RobotMap.intakeGyro;
+
     boolean isRunning = false;
-    PID wristPID = new PID(0.05, 0.005, 0, 100);
+
+    PID wristGyroPID = RobotMap.wristGyroPID;
     Preset presetState = Preset.Manual, lastPreset = Preset.Manual;
-    APID armAPID = new APID(new PID(0.01, 0, 0, 100), 0.5);
+    APID armAPID = RobotMap.armAPID;
 
     enum Preset {
         Manual,
@@ -43,7 +45,7 @@ public class teleopArmAndWrist extends Command {
     @Override
     protected void initialize() {
         intakeGyro1.initGyro();
-        wristPID.setMinMax(-0.25, 0.25);
+        armAPID.initialize();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -83,26 +85,27 @@ public class teleopArmAndWrist extends Command {
 
             switch (presetState) {
             case Low:
-                target = (isBack) ? -178 : -25;
+                target = (isBack) ? -174 : -41;
                 break;
             case Mid:
-                target = (isBack) ? -128 : -71;
+                target = (isBack) ? -136 : -83;
                 break;
             case High:
-                target = (isBack) ? -128 : -71;
+                target = (isBack) ? -125 : -86;
                 break;
             case RocketAdj:
                 switch (lastPreset) {
                 case Low:
-                    target = (isBack) ? -178 : -25;
+                    target = (isBack) ? -174 : -41;
                     break;
                 case Mid:
-                    target = (isBack) ? -128 : -71;
+                    target = (isBack) ? -136 : -83;
                     break;
                 case High:
-                    target = (isBack) ? -128 : -71;
+                    target = (isBack) ? -125 : -86;
                     break;
                 default:
+                    presetState = Preset.Manual;
                     break;
                 }
             default:
@@ -121,11 +124,10 @@ public class teleopArmAndWrist extends Command {
 
             double speed = 0;
 
-            if (rightArm1.getPosition() > -96) { // get potentiometer values
-                speed = Range.inRange(-wristPID.getOutput(armAngle, 0), -1.0, 1.0);
+            if (rightArm1.getPosition() > -96) {
+                speed = Range.inRange(-wristGyroPID.getOutput(armAngle, 0), -1.0, 1.0);
             }
-
-            if (rightArm1.getPosition() < -96 && rightArm1.get() > -112) {
+            else if (rightArm1.getPosition() <= -96 && rightArm1.get() >= -112) {
                 if (armAngle < 80) {
                     speed = -.7073;
                 }
@@ -133,9 +135,8 @@ public class teleopArmAndWrist extends Command {
                     speed = .7073;
                 }
             }
-
-            if (rightArm1.getPosition() < -112) { // get potentiometer values
-                speed = Range.inRange(-wristPID.getOutput(armAngle, 178), -0.5, 0.5);
+            else {
+                speed = Range.inRange(-wristGyroPID.getOutput(armAngle, 178), -0.5, 0.5);
             }
 
             Robot.kLiftingMechanism.wrist(speed);
