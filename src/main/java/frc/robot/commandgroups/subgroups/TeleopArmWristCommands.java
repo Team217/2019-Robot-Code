@@ -12,17 +12,16 @@ import frc.robot.*;
 import frc.robot.commands.*;
 
 public class TeleopArmWristCommands extends CommandGroup {
-  /**
-   * Add your docs here.
-   */
-  public TeleopArmWristCommands() {
-    requires(Robot.kLiftingMechanism);
+    /**
+     * Add your docs here.
+     */
+    public TeleopArmWristCommands() {
+        requires(Robot.kLiftingMechanism);
 
-    addParallel(new TeleopArmAndWrist()); //keep wrist parallel to floor
-    
-    addParallel(new TeleopMoveWrist());
-    addParallel(new TeleopArm());
-  }
+        addParallel(new TeleopArmAndWrist()); //keep wrist parallel to floor
 
-  }
+        addParallel(new TeleopMoveWrist());
+        addParallel(new TeleopArm());
+    }
 
+}
