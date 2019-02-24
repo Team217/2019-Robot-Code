@@ -8,11 +8,15 @@
 package frc.robot.commands;
 
 import org.team217.*;
+import org.team217.pid.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
 public class teleopElevator extends Command {
+    boolean isLastPosition = false;
+    PID elevatorHoldPID = RobotMap.elevatorHoldPID;
+
     public teleopElevator() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -28,6 +32,16 @@ public class teleopElevator extends Command {
     @Override
     protected void execute() {
         double leftAnalog = Range.deadband(Robot.m_oi.oper.getY(), 0.08);
+        /*
+        isLastPosition = leftAnalog != 0;
+
+        if (isLastPosition) {
+            Robot.kLiftingMechanism.lastElevatorPos = RobotMap.rightElevator.getEncoder();
+        }
+        else {
+            leftAnalog = elevatorHoldPID.getOutput(RobotMap.rightElevator.getEncoder(), Robot.kLiftingMechanism.lastElevatorPos);
+        }
+        */
         Robot.kLiftingMechanism.elevator(leftAnalog);
     }
 
