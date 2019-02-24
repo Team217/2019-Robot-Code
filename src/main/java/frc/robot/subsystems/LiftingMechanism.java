@@ -71,17 +71,17 @@ public class LiftingMechanism extends Subsystem {
     */
     public void elevator(double speed) {
         //elevatorMaintainPID1.setPID(0.0001417, 0.00000117, 0); //not even close to the right PID here
-        /*		
-        if (rightElevator1.getPosition() <= -34000 && speed <= 0) { //encoder values are wrong, check the logic
+        		
+        if (rightElevator1.getEncoder() <= -11500 && speed <= 0) { //encoder values are wrong, check the logic
         	elevatorMult = .35;
         }
-        else if(rightElevator1.getPosition() >= -5000 && speed >= 0.0) { //this one too
+        else if(rightElevator1.getEncoder() >= -5500 && speed >= 0.0) { //this one too
         	elevatorMult = .25;
         }
         else {
-        	elevatorMult = 1.0;
+            elevatorMult = .65;
         }
-        */
+        
 
         if (!RobotMap.elevatorBottomLimit.get()) {
             rightElevator1.resetEncoder();
@@ -93,10 +93,10 @@ public class LiftingMechanism extends Subsystem {
         if ((!RobotMap.elevatorTopLimit.get() || rightElevator1.getEncoder() >= 16180) && speed < 0) {
             speed = 0;
         }
-        elevatorMult = 1;
-        //		elevatorLimitCheck(speed);
+       // elevatorMult = 1;
+        //elevatorLimitCheck(speed);
         rightElevator1.set(speed * elevatorMult);
-        //leftElevator1.set((speed * elevatorMult));
+        leftElevator1.set((speed * elevatorMult));
     }
 
     public double armLimitCheck(double speed) {
@@ -105,9 +105,9 @@ public class LiftingMechanism extends Subsystem {
             leftArm1.resetEncoder();
             rightArm1.resetEncoder();
         }
-        else if (rightArm1.getPosition() <= -207 && speed <= 0.0) { // get a limit switch //Practice -188 Comp -207
-            speed = 0;
-        }
+      //  else if (rightArm1.getPosition() <= -207 && speed <= 0.0) { // get a limit switch //Practice -188 Comp -207
+       //     speed = 0;
+       // }
         return speed;
     }
 
@@ -143,7 +143,7 @@ public class LiftingMechanism extends Subsystem {
         	armMult = 1.0;
         }
         */
-        armMult = 1;
+        armMult = .50;
         speed = armLimitCheck(speed);
         leftArm1.set(-(speed * armMult));
         rightArm1.set(speed * armMult);
@@ -152,10 +152,10 @@ public class LiftingMechanism extends Subsystem {
     }
 
     public double wristLimitCheck(double speed) {
-        if (!wristBackLimit1.get() && speed <= 0.0) { //get some limit switches
+        if (!wristBackLimit1.get() && speed <= 0.0) { 
             speed = 0;
         }
-        else if (!wristFrontLimit1.get() && speed >= 0.0) { // get a limit switch
+        else if (!wristFrontLimit1.get() && speed >= 0.0) { 
             speed = -0;
         }
         return speed;
@@ -163,7 +163,7 @@ public class LiftingMechanism extends Subsystem {
 
     public void wrist(double speed) {
         speed = wristLimitCheck(speed);
-        wristMult = .5;
+        wristMult = .35;
         wrist1.set(speed * wristMult);
     }
 

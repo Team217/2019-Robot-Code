@@ -40,7 +40,7 @@ public class teleopDrive extends Command {
             double visSpeed;
 
             if (Range.isWithinRange(x, -0.5, 0.5)) {
-                visSpeed = 0.0;
+                visSpeed = 0.0; 
             }
             else {
                 visSpeed = turnPID1.getOutput(0, x);

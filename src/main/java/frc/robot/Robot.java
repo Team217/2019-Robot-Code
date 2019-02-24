@@ -258,6 +258,5 @@ public class Robot extends TimedRobot {
 
         //SmartDashboard.putBoolean("Elevator Bottom Limit", RobotMap.elevatorBottomLimit.get());
         //SmartDashboard.putBoolean("Elevator Top Limit", RobotMap.elevatorTopLimit.get());
-
     }
 }

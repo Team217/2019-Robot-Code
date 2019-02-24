@@ -26,18 +26,23 @@ public class teleopIntake extends Command {
     protected void execute() {
         double speed = 0;
 
+        if(!RobotMap.ballLimit.get()){
+            speed = .45;
+        }
+        
         if (Robot.m_oi.xOper.get()) {
-            speed = 0.5;
+            speed = 0.75;
         }
         else if (Robot.m_oi.oper.getPOV() == 180) {
             speed = -0.35;
         }
-        else if (Robot.m_oi.rightBumperOper.get()) {
-            speed = -0.5;
-        }
+       // else if (Robot.m_oi.rightBumperOper.get()) {
+        //    speed = -0.5;
+       // }
         else if (Robot.m_oi.oper.getPOV() == 0) {
             speed = -1.0;
         }
+    
 
         Robot.kIntakeSubsystem.intake(speed);
     }

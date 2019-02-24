@@ -49,8 +49,8 @@ public class RobotMap {
     public static final int rightElevator_ID = 0; //TalonSRX 0
     public static final int wrist_ID = 8; //TalonSRX 8 
 
-    public static final int elevatorBottomLimit_ID = 7; //DigitalInput Limit Switch //needs _ID
-    public static final int elevatorTopLimit_ID = 9; //DigitalInput Limit Switch //needs _ID
+    public static final int elevatorBottomLimit_ID = 7; //DigitalInput Limit Switch
+    public static final int elevatorTopLimit_ID = 9; //DigitalInput Limit Switch
     public static final int wristFrontLimit_ID = 5; //DigitalInput Limit Switch
     public static final int wristBackLimit_ID = 6; //DigitalInput Limit Switch
     public static final int ballLimit_ID = 8; //DigitalInput Limit Switch 

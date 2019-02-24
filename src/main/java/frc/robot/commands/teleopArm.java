@@ -37,7 +37,7 @@ public class teleopArm extends Command {
 
         if (isRunning) {
             //moving arm w/wrist independence
-            double rightAnalog = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.05);
+            double rightAnalog = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
             Robot.kLiftingMechanism.arm(rightAnalog);
         }
     }

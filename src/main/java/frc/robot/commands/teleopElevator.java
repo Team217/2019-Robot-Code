@@ -27,7 +27,7 @@ public class teleopElevator extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double leftAnalog = Range.deadband(Robot.m_oi.oper.getY(), 0.05);
+        double leftAnalog = Range.deadband(Robot.m_oi.oper.getY(), 0.08);
         Robot.kLiftingMechanism.elevator(leftAnalog);
     }
 
