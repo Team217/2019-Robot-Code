@@ -13,12 +13,12 @@ import frc.robot.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class autonTurn extends Command {
+public class AutonTurn extends Command {
     PID turnPID = new PID(100);
     APID turnAPID;
     double target = 0.0;
 
-    public autonTurn(double target, double kP, double kI, double kD, double accelTime, double timeout) {
+    public AutonTurn(double target, double kP, double kI, double kD, double accelTime, double timeout) {
         requires(Robot.kDrivingSubsystem);
         setTimeout(timeout);
 
@@ -27,7 +27,7 @@ public class autonTurn extends Command {
         turnAPID = new APID(turnPID, accelTime);
     }
 
-    public autonTurn(double target, double kP, double kI, double kD, double timeout) {
+    public AutonTurn(double target, double kP, double kI, double kD, double timeout) {
         this(target, kP, kI, kD, 0.0, timeout);
     }
 

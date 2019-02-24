@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
-public class teleopArmAndWrist extends Command {
+public class TeleopArmAndWrist extends Command {
     CANSparkMax rightArm1 = RobotMap.rightArm;
     DigitalInput wristFrontLimit1 = RobotMap.wristFrontLimit;
     DigitalInput wristBackLimit1 = RobotMap.wristBackLimit;
@@ -35,7 +35,7 @@ public class teleopArmAndWrist extends Command {
         RocketAdj
     }
 
-    public teleopArmAndWrist() {
+    public TeleopArmAndWrist() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }

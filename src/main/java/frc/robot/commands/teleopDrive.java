@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class teleopDrive extends Command {
+public class TeleopDrive extends Command {
     PID turnPID1 = new PID(100);
 
-    public teleopDrive() {
+    public TeleopDrive() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }

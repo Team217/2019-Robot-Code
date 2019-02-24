@@ -12,14 +12,14 @@ import frc.robot.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class autonDrive extends Command {
+public class AutonDrive extends Command {
     PID drivePID = new PID(100);
     APID driveAPID;
     boolean isDriveStraight = false;
     boolean forward = true;
     double target = 0.0;
 
-    public autonDrive(double target, double kP, double kI, double kD, double accelTime, boolean isDriveStraight, double timeout) {
+    public AutonDrive(double target, double kP, double kI, double kD, double accelTime, boolean isDriveStraight, double timeout) {
         requires(Robot.kDrivingSubsystem);
         setTimeout(timeout);
 
@@ -29,23 +29,23 @@ public class autonDrive extends Command {
         driveAPID = new APID(drivePID, accelTime);
     }
 
-    public autonDrive(double target, double kP, double kI, double kD, boolean isDriveStraight, double timeout) {
+    public AutonDrive(double target, double kP, double kI, double kD, boolean isDriveStraight, double timeout) {
         this(target, kP, kI, kD, 0.0, isDriveStraight, timeout);
     }
 
-    public autonDrive(double target, double kP, double kI, double kD, double timeout) {
+    public AutonDrive(double target, double kP, double kI, double kD, double timeout) {
         this(target, kP, kI, kD, 0.0, false, timeout);
     }
 
-    public autonDrive(double target, double kP, double kI, double kD, double accelTime, boolean isDriveStraight) {
+    public AutonDrive(double target, double kP, double kI, double kD, double accelTime, boolean isDriveStraight) {
         this(target, kP, kI, kD, accelTime, isDriveStraight, 0.0);
     }
 
-    public autonDrive(double target, double kP, double kI, double kD, boolean isDriveStraight) {
+    public AutonDrive(double target, double kP, double kI, double kD, boolean isDriveStraight) {
         this(target, kP, kI, kD, 0.0, isDriveStraight, 0.0);
     }
 
-    public autonDrive(double target, double kP, double kI, double kD) {
+    public AutonDrive(double target, double kP, double kI, double kD) {
         this(target, kP, kI, kD, 0.0, false, 0.0);
     }
 

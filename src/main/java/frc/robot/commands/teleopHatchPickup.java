@@ -10,11 +10,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
-public class teleopHatchPickup extends Command {
-    public teleopHatchPickup() {
+public class TeleopHatchPickup extends Command {
+    public TeleopHatchPickup() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        super("teleopHatchPickup");
     }
 
     // Called just before this Command runs the first time

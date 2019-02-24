@@ -12,11 +12,11 @@ import org.team217.*;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
-public class teleopMoveWrist extends Command {
+public class TeleopMoveWrist extends Command {
 
     boolean isRunning = true;
 
-    public teleopMoveWrist() {
+    public TeleopMoveWrist() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }

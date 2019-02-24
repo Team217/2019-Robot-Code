@@ -10,8 +10,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
-public class teleopClimb extends Command {
-    public teleopClimb() {
+public class TeleopClimb extends Command {
+    public TeleopClimb() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }

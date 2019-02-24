@@ -5,22 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commandgroups.subgroups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.*;
+import frc.robot.commands.*;
 
-public class teleopArmWristCommandGroup extends CommandGroup {
+public class TeleopArmWristCommands extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public teleopArmWristCommandGroup() {
+  public TeleopArmWristCommands() {
     requires(Robot.kLiftingMechanism);
 
-    addParallel(new teleopArmAndWrist()); //keep wrist parallel to floor
+    addParallel(new TeleopArmAndWrist()); //keep wrist parallel to floor
     
-    addParallel(new teleopMoveWrist());
-    addParallel(new teleopArm());
+    addParallel(new TeleopMoveWrist());
+    addParallel(new TeleopArm());
   }
 
   }

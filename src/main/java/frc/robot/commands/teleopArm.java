@@ -13,12 +13,12 @@ import org.team217.pid.*;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
-public class teleopArm extends Command {
+public class TeleopArm extends Command {
     boolean isRunning = true;
     boolean isLastPosition = false;
     PID armHoldPID = RobotMap.armHoldPID;
 
-    public teleopArm() {
+    public TeleopArm() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }

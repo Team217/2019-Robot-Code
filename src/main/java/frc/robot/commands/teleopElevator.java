@@ -13,14 +13,13 @@ import org.team217.pid.*;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
-public class teleopElevator extends Command {
+public class TeleopElevator extends Command {
     boolean isLastPosition = false;
     PID elevatorHoldPID = RobotMap.elevatorHoldPID;
 
-    public teleopElevator() {
+    public TeleopElevator() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        super("teleopElevator");
     }
 
     // Called just before this Command runs the first time

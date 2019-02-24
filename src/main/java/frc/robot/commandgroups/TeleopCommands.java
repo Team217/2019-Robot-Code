@@ -10,6 +10,7 @@ package frc.robot.commandgroups;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.*;
 import frc.robot.commands.*;
+import frc.robot.commandgroups.subgroups.*;
 
 public class TeleopCommands extends CommandGroup {
     /**
@@ -20,14 +21,14 @@ public class TeleopCommands extends CommandGroup {
         requires(Robot.kIntakeSubsystem);
         requires(Robot.kLiftingMechanism);
 
-        addParallel(new teleopDrive());
-        //addParallel(new teleopMoveWrist());
-        addParallel(new teleopIntake());
-        addParallel(new teleopHatchPickup());
-        //addParallel(new teleopArm());
-        //  addParallel(new teleopArmAndWrist()); 
-        addParallel(new teleopArmWristCommandGroup());
-        addParallel(new teleopElevator());
+        addParallel(new TeleopDrive());
+        //addParallel(new TeleopMoveWrist());
+        addParallel(new TeleopIntake());
+        addParallel(new TeleopHatchPickup());
+        //addParallel(new TeleopArm());
+        //  addParallel(new TeleopArmAndWrist()); 
+        addParallel(new TeleopArmWristCommands());
+        addParallel(new TeleopElevator());
 
         // Add Commands here:
         // e.g. addSequential(new Command1());
