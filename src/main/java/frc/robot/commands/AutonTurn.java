@@ -21,10 +21,9 @@ public class AutonTurn extends Command {
     public AutonTurn(double target, double kP, double kI, double kD, double accelTime, double timeout) {
         requires(Robot.kDrivingSubsystem);
         setTimeout(timeout);
-
-        turnPID.setPID(kP, kI, kD);
+        
         this.target = target;
-        turnAPID = new APID(turnPID, accelTime);
+        turnAPID = new APID(turnPID.setPID(kP, kI, kD), accelTime);
     }
 
     public AutonTurn(double target, double kP, double kI, double kD, double timeout) {

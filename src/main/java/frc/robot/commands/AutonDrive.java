@@ -22,11 +22,10 @@ public class AutonDrive extends Command {
     public AutonDrive(double target, double kP, double kI, double kD, double accelTime, boolean isDriveStraight, double timeout) {
         requires(Robot.kDrivingSubsystem);
         setTimeout(timeout);
-
-        drivePID.setPID(kP, kI, kD);
+        
         this.isDriveStraight = isDriveStraight;
         this.target = target;
-        driveAPID = new APID(drivePID, accelTime);
+        driveAPID = new APID(drivePID.setPID(kP, kI, kD), accelTime);
     }
 
     public AutonDrive(double target, double kP, double kI, double kD, boolean isDriveStraight, double timeout) {
