@@ -80,7 +80,7 @@ public class DrivingSubsystem extends Subsystem {
     }
 
     public void autonTurn(double turn) {
-        teleopDrive(0.0, turn, false);
+        teleopDrive(0.0, turn);
     }
 
     public void visionDrive(double speed) {
