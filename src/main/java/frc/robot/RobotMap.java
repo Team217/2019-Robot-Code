@@ -127,10 +127,10 @@ public class RobotMap {
     */
 
     //PID
-    public static final PID elevatorHoldPID = new PID(0.00002, 0.000001, 0, 100).setMinMax(-0.2, 0.2);
-    public static final PID armHoldPID = new PID(0.0001, 0.000001, 0, 100).setMinMax(-0.2, 0.2);
+    public static final PID elevatorHoldPID = new PID(0.0003, 0.000005, 0, 100).setMinMax(-0.1, 0.1);
+    public static final PID armHoldPID = new PID(0.05, 0.0002, 0, 100).setMinMax(-0.1, 0.1);
     public static final PID wristGyroPID = new PID(0.05, 0.005, 0, 100).setMinMax(-0.25, 0.25);
-    public static final APID armAPID = new APID(armHoldPID, 0.5);
+    public static final APID armAPID = new APID(new PID(0.05, 0, 0, 100).setMinMax(-0.2, 0.2), 100.0);
 
     //Joysticks
     public static final int driverPort = 0;

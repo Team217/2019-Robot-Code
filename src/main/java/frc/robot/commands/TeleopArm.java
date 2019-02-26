@@ -8,15 +8,12 @@
 package frc.robot.commands;
 
 import org.team217.*;
-import org.team217.pid.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
 public class TeleopArm extends Command {
     boolean isRunning = true;
-    boolean isLastPosition = false;
-    PID armHoldPID = RobotMap.armHoldPID;
 
     public TeleopArm() {
         // Use requires() here to declare subsystem dependencies
@@ -41,16 +38,7 @@ public class TeleopArm extends Command {
         if (isRunning) {
             //moving arm w/wrist independence
             double rightAnalog = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
-            /*
-            isLastPosition = rightAnalog != 0;
-
-            if (isLastPosition) {
-                Robot.kLiftingMechanism.lastArmPos = RobotMap.rightArm.getPosition();
-            }
-            else {
-                rightAnalog = armHoldPID.getOutput(RobotMap.rightArm.getPosition(), Robot.kLiftingMechanism.lastArmPos);
-            }
-            */
+            
             Robot.kLiftingMechanism.arm(rightAnalog);
         }
     }

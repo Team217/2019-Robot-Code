@@ -45,7 +45,6 @@ public class TeleopArmAndWrist extends Command {
     @Override
     protected void initialize() {
         intakeGyro1.initGyro();
-        armAPID.initialize();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -64,20 +63,20 @@ public class TeleopArmAndWrist extends Command {
             double armAngle = intakeGyro1.getAngle(); // Might be pitch or yaw, depending on how electical electricities
 
             double leftAnalog = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
-            /*
+            
             if (leftAnalog != 0) {
                 presetState = Preset.Manual;
             }
             else if (Robot.m_oi.driver.getPOV() == 0) {
                 presetState = Preset.Low;
             }
-            else if (Robot.m_oi.driver.getPOV() == 90) {
+            else if (Robot.m_oi.driver.getPOV() == 270) {
                 presetState = Preset.Mid;
             }
             else if (Robot.m_oi.driver.getPOV() == 180) {
                 presetState = Preset.High;
             }
-            else if (Robot.m_oi.driver.getPOV() == 270) {
+            else if (Robot.m_oi.driver.getPOV() == 90) {
                 presetState = Preset.RocketAdj;
             }
 
@@ -111,14 +110,17 @@ public class TeleopArmAndWrist extends Command {
             default:
                 break;
             }
-
+            
             if (!presetState.equals(Preset.Manual)) {
+                if (lastPreset.equals(Preset.Manual)) {
+                    armAPID.initialize();
+                }
                 if (!presetState.equals(Preset.RocketAdj)) {
                     lastPreset = presetState;
                 }
-                leftAnalog = armAPID.getOutput(RobotMap.rightElevator.getEncoder(), target);
+                leftAnalog = Range.inRange(armAPID.getOutput(rightArm1.getPosition(), target), -.5, .5);
             }
-            */
+            
             Robot.kLiftingMechanism.arm(leftAnalog);
             System.out.println("Arm Gyro " + armAngle);
 

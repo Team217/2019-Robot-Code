@@ -76,6 +76,14 @@ public class LiftingMechanism extends Subsystem {
         else if(rightElevator1.getEncoder() >= -5500 && speed >= 0.0) { //this one too
         	elevatorMult = .25;
         }
+        
+        if (speed != 0) {
+            Robot.kLiftingMechanism.lastElevatorPos = RobotMap.rightElevator.getEncoder();
+        }
+        else {
+            speed = RobotMap.elevatorHoldPID.getOutput(RobotMap.rightElevator.getEncoder(), Robot.kLiftingMechanism.lastElevatorPos);
+            elevatorMult = 1;
+        }
 
         if (!RobotMap.elevatorBottomLimit.get()) {
             rightElevator1.resetEncoder();
@@ -95,12 +103,10 @@ public class LiftingMechanism extends Subsystem {
     public double armLimitCheck(double speed) {
         if (rightArm1.getPosition() >= 0 && speed >= 0.0) { //get some limit switches, make sure logic is right
             speed = 0;
-            leftArm1.resetEncoder();
-            rightArm1.resetEncoder();
         }
-      //  else if (rightArm1.getPosition() <= -207 && speed <= 0.0) { // get a limit switch //Practice -188 Comp -207
-       //     speed = 0;
-       // }
+        else if (rightArm1.getPosition() <= -125 && speed <= 0.0) { // get a limit switch //Practice -188 Comp -207
+            speed = 0;
+        }
         return speed;
     }
 
@@ -136,7 +142,17 @@ public class LiftingMechanism extends Subsystem {
         	armMult = 1.0;
         }
         */
+
         double armMult = .50;
+
+        if (speed != 0) {
+            lastArmPos = RobotMap.rightArm.getPosition();
+        }
+        else {
+            speed = RobotMap.armHoldPID.getOutput(RobotMap.rightArm.getPosition(), Robot.kLiftingMechanism.lastArmPos);
+            armMult = 1;
+        }
+
         speed = armLimitCheck(speed);
         leftArm1.set(-(speed * armMult));
         rightArm1.set(speed * armMult);
@@ -150,7 +166,7 @@ public class LiftingMechanism extends Subsystem {
             speed = 0;
         }
         else if (!wristFrontLimit1.get() && speed >= 0.0) { 
-            speed = -0;
+            speed = 0;
         }
         return speed;
     }
