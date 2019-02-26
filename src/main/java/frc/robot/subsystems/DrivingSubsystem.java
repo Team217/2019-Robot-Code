@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import org.team217.pid.*;
+import org.team217.*;
 import frc.robot.*;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -21,6 +22,7 @@ public class DrivingSubsystem extends Subsystem {
     }
 
     PID driveStraightPID = new PID(0.01, 0, 0);
+    PID visionPID = RobotMap.visionPID;
     public double targetAngle = 0.0;
     boolean useAntiTipAngle = false;
 
@@ -43,6 +45,10 @@ public class DrivingSubsystem extends Subsystem {
         return new MotorSpeed(leftSpeed, rightSpeed);
     }
 
+    public void teleopDrive(double speed, double turn) {
+        teleopDrive(speed, turn, false);
+    }
+
     public void teleopDrive(double speed, double turn, boolean antiTipOn) {
         double leftSpeed = speed + turn;
         double rightSpeed = -speed + turn;
@@ -55,6 +61,10 @@ public class DrivingSubsystem extends Subsystem {
 
         RobotMap.leftMaster.set(leftSpeed);
         RobotMap.rightMaster.set(rightSpeed);
+    }
+
+    public void autonDrive(double speed) {
+        autonDrive(speed, false);
     }
 
     public void autonDrive(double speed, boolean isDriveStraight) {
@@ -71,6 +81,33 @@ public class DrivingSubsystem extends Subsystem {
 
     public void autonTurn(double turn) {
         teleopDrive(0.0, turn, false);
+    }
+
+    public void visionDrive(double speed) {
+        visionDrive(speed, false);
+    }
+
+    public void visionDrive(double speed, boolean antiTipOn) {
+        double turn = visionTurn();
+        teleopDrive(speed, turn, antiTipOn);
+    }
+
+    public double visionTurn() {
+        double turn = 0;
+        double x = Robot.getX1Vis();
+        double kP = Range.inRange(.03 / Math.sqrt(Robot.getArea1Vis()) - .01, 0.015, 0.025);
+
+        visionPID.setP(kP);
+
+        if(!Range.isWithinRange(x, -0.5, 0.5)) {
+            turn = visionPID.getOutput(0, x);
+        }
+
+        return turn;
+    }
+
+    public void resetVisionPID() {
+        visionPID.resetErrors();
     }
 }
 
