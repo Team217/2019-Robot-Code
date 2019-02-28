@@ -15,7 +15,9 @@ import org.team217.pid.*;
 
 public class TeleopElevator extends Command {
     boolean isAuto = false;
+    boolean canAuto = false;
     APID elevAPID = RobotMap.elevAPID;
+    double target = 0;
 
     public TeleopElevator() {
         // Use requires() here to declare subsystem dependencies
@@ -30,24 +32,36 @@ public class TeleopElevator extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double armSpeed = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
-        if (armSpeed != 0) {
-            isAuto = false;
+        if (Robot.m_oi.rightTriggerOper.get() || Robot.m_oi.leftTriggerOper.get()) {
+            canAuto = false;
         }
-        else if (Robot.m_oi.oper.getPOV() == 0) {
-            isAuto = true;
+        else if (Robot.m_oi.touchPadOper.get()) {
+            canAuto = true;
         }
-        else if (Robot.m_oi.oper.getPOV() != -1) {
-            isAuto = false;
-        }
-        System.out.println(Robot.m_oi.oper.getPOV());
 
         double leftAnalog = Range.deadband(Robot.m_oi.oper.getY(), 0.08);
-        if (isAuto) {
-            leftAnalog = elevAPID.getOutput(RobotMap.rightElevator.getEncoder(), -15300);
-        }
-        else {
-            elevAPID.initialize();
+
+        if (canAuto) {
+            double armSpeed = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
+    
+            if (armSpeed != 0 || leftAnalog != 0) {
+                isAuto = false;
+            }
+            else if (Robot.m_oi.oper.getPOV() == 0) {
+                elevAPID.initialize();
+                isAuto = true;
+                target = -15300;
+            }
+            else if (Robot.m_oi.oper.getPOV() != -1) {
+                elevAPID.initialize();
+                isAuto = true;
+                target = 0;
+            }
+            System.out.println(Robot.m_oi.oper.getPOV());
+    
+            if (isAuto) {
+                leftAnalog = elevAPID.getOutput(RobotMap.rightElevator.getEncoder(), target);
+            }
         }
         
         Robot.kLiftingMechanism.elevator(leftAnalog);

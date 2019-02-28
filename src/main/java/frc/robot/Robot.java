@@ -87,8 +87,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        Robot.kLiftingMechanism.lastArmPos = RobotMap.rightArm.getPosition();
-        Robot.kLiftingMechanism.lastElevatorPos = RobotMap.rightElevator.getEncoder();
+        kLiftingMechanism.lastArmPos = RobotMap.rightArm.getPosition();
+        kLiftingMechanism.lastElevatorPos = RobotMap.rightElevator.getEncoder();
         Scheduler.getInstance().run();
     }
 

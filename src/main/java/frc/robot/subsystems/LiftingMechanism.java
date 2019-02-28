@@ -35,9 +35,6 @@ public class LiftingMechanism extends Subsystem {
     public double lastElevatorPos = 0;
     public double lastArmPos = 0;
 
-    public boolean intakePID_OnTarget = false;
-    public boolean elevatorPID_OnTarget = false;
-
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -153,7 +150,7 @@ public class LiftingMechanism extends Subsystem {
             armMult = 1;
         }
 
-         speed = armLimitCheck(speed);
+        speed = armLimitCheck(speed);
         leftArm1.set(-(speed * armMult));
         rightArm1.set(speed * armMult);
 
