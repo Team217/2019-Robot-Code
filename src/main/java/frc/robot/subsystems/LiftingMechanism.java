@@ -153,7 +153,7 @@ public class LiftingMechanism extends Subsystem {
             armMult = 1;
         }
 
-        speed = armLimitCheck(speed);
+         speed = armLimitCheck(speed);
         leftArm1.set(-(speed * armMult));
         rightArm1.set(speed * armMult);
 

@@ -11,8 +11,11 @@ import org.team217.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
+import org.team217.pid.*;
 
 public class TeleopElevator extends Command {
+    boolean isAuto = false;
+    APID elevAPID = RobotMap.elevAPID;
 
     public TeleopElevator() {
         // Use requires() here to declare subsystem dependencies
@@ -27,7 +30,25 @@ public class TeleopElevator extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        double armSpeed = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
+        if (armSpeed != 0) {
+            isAuto = false;
+        }
+        else if (Robot.m_oi.oper.getPOV() == 0) {
+            isAuto = true;
+        }
+        else if (Robot.m_oi.oper.getPOV() != -1) {
+            isAuto = false;
+        }
+        System.out.println(Robot.m_oi.oper.getPOV());
+
         double leftAnalog = Range.deadband(Robot.m_oi.oper.getY(), 0.08);
+        if (isAuto) {
+            leftAnalog = elevAPID.getOutput(RobotMap.rightElevator.getEncoder(), -15300);
+        }
+        else {
+            elevAPID.initialize();
+        }
         
         Robot.kLiftingMechanism.elevator(leftAnalog);
     }
@@ -41,11 +62,13 @@ public class TeleopElevator extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.kLiftingMechanism.elevator(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        Robot.kLiftingMechanism.elevator(0);
     }
 }

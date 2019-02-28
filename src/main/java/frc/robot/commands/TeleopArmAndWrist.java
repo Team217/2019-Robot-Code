@@ -55,28 +55,30 @@ public class TeleopArmAndWrist extends Command {
         }
         else if (Robot.m_oi.touchPadOper.get()) {
             isRunning = true;
+            presetState = Preset.Manual;
+            lastPreset = Preset.Manual;
         }
 
         if (isRunning) {
-            boolean isBack = rightArm1.getPosition() < -112;
+            boolean isBack = rightArm1.getPosition() < -80;
 
             double armAngle = intakeGyro1.getAngle(); // Might be pitch or yaw, depending on how electical electricities
 
             double leftAnalog = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
-            
+           
             if (leftAnalog != 0) {
                 presetState = Preset.Manual;
             }
-            else if (Robot.m_oi.driver.getPOV() == 0) {
+            else if (Robot.m_oi.oper.getPOV() == 180) {
                 presetState = Preset.Low;
             }
-            else if (Robot.m_oi.driver.getPOV() == 270) {
+            else if (Robot.m_oi.oper.getPOV() == 270) {
                 presetState = Preset.Mid;
             }
-            else if (Robot.m_oi.driver.getPOV() == 180) {
+            else if (Robot.m_oi.oper.getPOV() == 0) {
                 presetState = Preset.High;
             }
-            else if (Robot.m_oi.driver.getPOV() == 90) {
+            else if (Robot.m_oi.oper.getPOV() == 90) {
                 presetState = Preset.RocketAdj;
             }
 
@@ -84,24 +86,24 @@ public class TeleopArmAndWrist extends Command {
 
             switch (presetState) {
             case Low:
-                target = (isBack) ? -174 : -41;
+                target = (isBack) ? -120 : -34;
                 break;
             case Mid:
-                target = (isBack) ? -136 : -83;
+                target = (isBack) ? -95 : -59;
                 break;
             case High:
-                target = (isBack) ? -125 : -86;
+                target = (isBack) ? -93 : -61;
                 break;
             case RocketAdj:
                 switch (lastPreset) {
                 case Low:
-                    target = (isBack) ? -174 : -41;
+                    target = (isBack) ? -120 : -34;
                     break;
                 case Mid:
-                    target = (isBack) ? -136 : -83;
+                    target = (isBack) ? -95 : -59;
                     break;
                 case High:
-                    target = (isBack) ? -125 : -86;
+                    target = (isBack) ? -93 : -61;
                     break;
                 default:
                     presetState = Preset.Manual;
@@ -112,13 +114,16 @@ public class TeleopArmAndWrist extends Command {
             }
             
             if (!presetState.equals(Preset.Manual)) {
-                if (lastPreset.equals(Preset.Manual)) {
+                if (!lastPreset.equals(presetState)) {
                     armAPID.initialize();
                 }
+                else {
+                    leftAnalog = Range.inRange(armAPID.getOutput(rightArm1.getPosition(), target), -.45, .45);
+                }
+
                 if (!presetState.equals(Preset.RocketAdj)) {
                     lastPreset = presetState;
                 }
-                leftAnalog = Range.inRange(armAPID.getOutput(rightArm1.getPosition(), target), -.5, .5);
             }
             
             Robot.kLiftingMechanism.arm(leftAnalog);
@@ -126,10 +131,10 @@ public class TeleopArmAndWrist extends Command {
 
             double speed = 0;
 
-            if (rightArm1.getPosition() > -96) {
+            if (rightArm1.getPosition() > -70) {
                 speed = Range.inRange(-wristGyroPID.getOutput(armAngle, 0), -1.0, 1.0);
             }
-            else if (rightArm1.getPosition() <= -96 && rightArm1.get() >= -112) {
+            else if (rightArm1.getPosition() <= -70 && rightArm1.getPosition() >= -85) {
                 if (armAngle < 80) {
                     speed = -.7073;
                 }

@@ -40,7 +40,7 @@ public class RobotMap {
     public static final int rightDrive_ID2 = 2; //SparkMAX 2
     public static final int rightDrive_ID3 = 1; //SparkMAX 1
 
-    public static final int pigeonDrive_ID = 0; //PigeonIMU (not right _ID)
+    public static final int pigeonDrive_ID = 0; //PigeonIMU
 
     //Lift Mechanism _IDs
     public static final int leftArm_ID = 11; //SparkMAX 11 
@@ -58,7 +58,7 @@ public class RobotMap {
 
     //Intake _IDs
     public static final int intake_ID1 = 10; //VictorSPX 10 
-    public static final int intake_ID2 = 5; //VictorSPX 5 !!
+    public static final int intake_ID2 = 5; //VictorSPX 5 
 
     public static final int topHatchSolenoid_ID1 = 1; //Double Solenoid
     public static final int topHatchSolenoid_ID2 = 2; //Double Solenoid
@@ -130,8 +130,9 @@ public class RobotMap {
     public static final PID elevatorHoldPID = new PID(0.0003, 0.000005, 0, 100).setMinMax(-0.1, 0.1);
     public static final PID armHoldPID = new PID(0.05, 0.0002, 0, 100).setMinMax(-0.1, 0.1);
     public static final PID wristGyroPID = new PID(0.05, 0.005, 0, 100).setMinMax(-0.25, 0.25);
-    public static final APID armAPID = new APID(new PID(0.05, 0, 0, 100).setMinMax(-0.2, 0.2), 100.0);
     public static final PID visionPID = new PID(0, 0.002, 0, 100).setMinMax(-0.2, 0.2);
+    public static final APID armAPID = new APID(new PID(0.05, 0, 0, 100).setMinMax(-0.2, 0.2), 1.5);
+    public static final APID elevAPID = new APID(new PID(0.0003, 0.000005, 0, 100).setMinMax(-0.2, 0.2), 1.0);
 
     //Joysticks
     public static final int driverPort = 0;

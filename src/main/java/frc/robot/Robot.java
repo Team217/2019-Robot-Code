@@ -87,6 +87,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
+        Robot.kLiftingMechanism.lastArmPos = RobotMap.rightArm.getPosition();
+        Robot.kLiftingMechanism.lastElevatorPos = RobotMap.rightElevator.getEncoder();
         Scheduler.getInstance().run();
     }
 
@@ -180,19 +182,19 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
     }
 
-    public static double getX1Vis() {
+    public static double getX1Vis() { //front
         return x1;
     }
 
-    public static double getArea1Vis() {
+    public static double getArea1Vis() { //front
         return area1;
     }
 
-    public static double getX2Vis() {
+    public static double getX2Vis() { //back
         return x2;
     }
 
-    public static double getArea2Vis() {
+    public static double getArea2Vis() { //back
         return area2;
     }
 
