@@ -29,11 +29,8 @@ public class TeleopCommands extends CommandGroup {
         requires(Robot.kLiftingMechanism);
 
         addParallel(new TeleopDrive());
-        //addParallel(new TeleopMoveWrist());
         addParallel(new TeleopIntake());
         addParallel(new TeleopHatchPickup());
-        //addParallel(new TeleopArm());
-        //  addParallel(new TeleopArmAndWrist()); 
         addParallel(new TeleopArmWristCommands());
         addParallel(new TeleopElevator());
         addParallel(new TeleopClimb());
