@@ -45,11 +45,11 @@ public class DrivingSubsystem extends Subsystem {
         return new MotorSpeed(leftSpeed, rightSpeed);
     }
 
-    public void teleopDrive(double speed, double turn) {
-        teleopDrive(speed, turn, false);
+    public void drive(double speed, double turn) {
+        drive(speed, turn, false);
     }
 
-    public void teleopDrive(double speed, double turn, boolean antiTipOn) {
+    public void drive(double speed, double turn, boolean antiTipOn) {
         double leftSpeed = speed + turn;
         double rightSpeed = -speed + turn;
 
@@ -63,11 +63,11 @@ public class DrivingSubsystem extends Subsystem {
         RobotMap.rightMaster.set(rightSpeed);
     }
 
-    public void autonDrive(double speed) {
-        autonDrive(speed, false);
+    public void drive(double speed) {
+        drive(speed, false);
     }
 
-    public void autonDrive(double speed, boolean isDriveStraight) {
+    public void drive(double speed, boolean isDriveStraight) {
         double turn = 0.0;
 
         if (isDriveStraight) {
@@ -76,11 +76,11 @@ public class DrivingSubsystem extends Subsystem {
             speed *= (1 - Math.abs(correction));
         }
 
-        teleopDrive(speed, turn, false);
+        drive(speed, turn, false);
     }
 
     public void autonTurn(double turn) {
-        teleopDrive(0.0, turn);
+        drive(0.0, turn);
     }
 
     public void visionDrive(double speed) {
@@ -89,7 +89,7 @@ public class DrivingSubsystem extends Subsystem {
 
     public void visionDrive(double speed, boolean antiTipOn) {
         double turn = visionTurn();
-        teleopDrive(speed, turn, antiTipOn);
+        drive(speed, turn, antiTipOn);
     }
 
     public double visionTurn() {

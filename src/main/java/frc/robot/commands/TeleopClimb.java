@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-/*
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -24,18 +24,13 @@ public class TeleopClimb extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (Robot.m_oi.circleDriver.get()) {
-            Robot.kClimbingSubsystem.fullClimbMode();
+        if (Robot.m_oi.xDriver.get()) {
+            Robot.kClimbingSubsystem.setDrivePTO();
         }
-        else if (Robot.m_oi.triangleDriver.get()) {
-            Robot.kClimbingSubsystem.driveMode();
+        else if (Robot.m_oi.circleDriver.get()) {
+            Robot.kClimbingSubsystem.setClimbPTO();
         }
-
     }
-    //full climb speed positive
-    //half front climb speed negative
-    //kdriveBase speed positive
-    //while in parallel with full climb speed negative?
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
@@ -55,4 +50,3 @@ public class TeleopClimb extends Command {
     }
 
 }
-*/

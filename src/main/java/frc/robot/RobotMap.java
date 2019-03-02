@@ -66,18 +66,8 @@ public class RobotMap {
     public static final int intakeGyro_ID = 0; //AnalogGyro
 
     //Climber _IDs
-    /*
-    public static final int leftRearClimb_ID = 9; //SparkMAX 9
-    public static final int rightRearClimb_ID = 6; //SparkMAX 6
-    
-    public static final int leftPTOSolenoid_ID1 = 0; //Double Solenoid //needs _ID
-    public static final int leftPTOSolenoid_ID2 = 3; //Double Solenoid //needs _ID
-    
-    //public static final int rightPTOSolenoid_ID1 = 0; //Double Solenoid //needs _ID
-    //public static final int rightPTOSolenoid_ID2 = 0; //Double Solenoid //needs _ID
-    
-    public static final int climbRoller_ID = 7; //TalonSRX 7
-    */
+    public static final int climbPTOSolenoid_ID1 = 0; //Double Solenoid
+    public static final int climbPTOSolenoid_ID2 = 3; //Double Solenoid
 
     //Driving Controllers/Gyro
     public static CANSparkMax leftMaster = new CANSparkMax(RobotMap.leftDrive_ID1, MotorType.kBrushless);
@@ -115,16 +105,8 @@ public class RobotMap {
     public static DoubleSolenoid topHatchSolenoid = new DoubleSolenoid(RobotMap.topHatchSolenoid_ID1,
             RobotMap.topHatchSolenoid_ID2);
 
-    //Climber Controllers
-    /*
-    public static CANSparkMax leftRearClimb = new CANSparkMax(RobotMap.leftRearClimb_ID, MotorType.kBrushless);
-    public static CANSparkMax rightRearClimb = new CANSparkMax(RobotMap.rightRearClimb_ID, MotorType.kBrushless);
-    
-    public static WPI_TalonSRX climbRoller = new WPI_TalonSRX(RobotMap.climbRoller_ID);
-    
-    public static DoubleSolenoid leftPTOSolenoid = new DoubleSolenoid(RobotMap.leftPTOSolenoid_ID1, RobotMap.leftPTOSolenoid_ID2);
-    public static DoubleSolenoid rightPTOSolenoid = new DoubleSolenoid(RobotMap.rightPTOSolenoid_ID1, RobotMap.rightPTOSolenoid_ID2);
-    */
+    //Climber PTOs
+    public static DoubleSolenoid climbPTOSolenoid = new DoubleSolenoid(RobotMap.climbPTOSolenoid_ID1, RobotMap.climbPTOSolenoid_ID2);
 
     //PID
     public static final PID elevatorHoldPID = new PID(0.0003, 0.000005, 0, 100).setMinMax(-0.1, 0.1);

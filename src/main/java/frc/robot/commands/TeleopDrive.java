@@ -25,21 +25,27 @@ public class TeleopDrive extends Command {
     protected void execute() {
         double speed = Range.deadband(Robot.m_oi.driver.getY(), 0.08);
 
-        if (Robot.m_oi.leftTriggerDriver.get()) {
-            antiTipOn = false;
-        }
-        else if (Robot.m_oi.rightTriggerDriver.get()) {
-            antiTipOn = true;
-        }
-
-        if (Robot.m_oi.rightBumperDriver.get()) {
-            Robot.kDrivingSubsystem.visionDrive(speed, antiTipOn);
+        if (Robot.kClimbingSubsystem.isClimbing()) {
+            speed *= -1.0;
+            Robot.kDrivingSubsystem.drive(speed);
         }
         else {
-            Robot.kDrivingSubsystem.resetVisionPID();
-            
-            double turn = Range.deadband(Robot.m_oi.driver.getZ(), 0.08);
-            Robot.kDrivingSubsystem.teleopDrive(speed, turn, antiTipOn);
+            if (Robot.m_oi.leftTriggerDriver.get()) {
+                antiTipOn = false;
+            }
+            else if (Robot.m_oi.rightTriggerDriver.get()) {
+                antiTipOn = true;
+            }
+    
+            if (Robot.m_oi.rightBumperDriver.get()) {
+                Robot.kDrivingSubsystem.visionDrive(speed, antiTipOn);
+            }
+            else {
+                Robot.kDrivingSubsystem.resetVisionPID();
+                
+                double turn = Range.deadband(Robot.m_oi.driver.getZ(), 0.08);
+                Robot.kDrivingSubsystem.drive(speed, turn, antiTipOn);
+            }
         }
     }
 

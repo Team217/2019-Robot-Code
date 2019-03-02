@@ -62,7 +62,7 @@ public class AutonDrive extends Command {
     @Override
     protected void execute() {
         double speed = driveAPID.getOutput(RobotMap.rightMaster.getPosition(), target);
-        Robot.kDrivingSubsystem.autonDrive(speed, isDriveStraight);
+        Robot.kDrivingSubsystem.drive(speed, isDriveStraight);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -74,13 +74,13 @@ public class AutonDrive extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kDrivingSubsystem.autonDrive(0);
+        Robot.kDrivingSubsystem.drive(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kDrivingSubsystem.autonDrive(0);
+        Robot.kDrivingSubsystem.drive(0);
     }
 }

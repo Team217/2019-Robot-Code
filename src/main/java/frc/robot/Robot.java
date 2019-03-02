@@ -28,7 +28,7 @@ public class Robot extends TimedRobot {
     public static final DrivingSubsystem kDrivingSubsystem = new DrivingSubsystem();
     public static final IntakeSubsystem kIntakeSubsystem = new IntakeSubsystem();
     public static final LiftingMechanism kLiftingMechanism = new LiftingMechanism();
-    //public static final ClimbingSubsystem kClimbingSubsystem = new ClimbingSubsystem();
+    public static final ClimbingSubsystem kClimbingSubsystem = new ClimbingSubsystem();
     public static OI m_oi;
 
     Command teleopCommand;
@@ -62,6 +62,7 @@ public class Robot extends TimedRobot {
         RobotMap.pigeonDrive.reset();
         RobotMap.intakeGyro.reset();
 
+        kClimbingSubsystem.setDrivePTO();
     }
 
     /**
@@ -117,6 +118,8 @@ public class Robot extends TimedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.start();
         }
+
+        kClimbingSubsystem.setDrivePTO();
     }
 
     /**
@@ -144,6 +147,7 @@ public class Robot extends TimedRobot {
             teleopCommand.start();
         }
 
+        kClimbingSubsystem.setDrivePTO();
     }
 
     /**

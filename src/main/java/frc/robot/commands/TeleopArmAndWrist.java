@@ -22,6 +22,8 @@ public class TeleopArmAndWrist extends Command {
     AnalogGyro intakeGyro1 = RobotMap.intakeGyro;
 
     boolean isRunning = false;
+    boolean isBack = false;
+    boolean setBack = true;
 
     PID wristGyroPID = RobotMap.wristGyroPID;
     Preset presetState = Preset.Manual, lastPreset = Preset.Manual;
@@ -60,11 +62,18 @@ public class TeleopArmAndWrist extends Command {
         }
 
         if (isRunning) {
-            boolean isBack = rightArm1.getPosition() < -80;
-
             double armAngle = intakeGyro1.getAngle(); // Might be pitch or yaw, depending on how electical electricities
 
             double leftAnalog = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
+
+            if (Robot.m_oi.oper.getPOV() != -1 && setBack) {
+                isBack = rightArm1.getPosition() < -80;
+                isBack = Robot.m_oi.xOper.get() ? !isBack : isBack;
+                setBack = !Robot.m_oi.xOper.get();
+            }
+            else {
+                setBack = Robot.m_oi.oper.getPOV() == -1;
+            }
            
             if (leftAnalog != 0) {
                 presetState = Preset.Manual;
