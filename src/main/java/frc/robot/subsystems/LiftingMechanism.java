@@ -13,6 +13,8 @@ import org.team217.rev.*;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.*;
+import org.team217.*;
+import org.team217.pid.*;
 
 /**
  * Manages the robot's arm, elevator, and wrist.
@@ -39,6 +41,19 @@ public class LiftingMechanism extends Subsystem {
 
     public double lastElevatorPos = 0;
     public double lastArmPos = 0;
+
+    boolean isBack = false, setBack = true;
+
+    /** Variable that contains information on the current arm preset state. */
+    public static enum Preset {
+        Manual,
+        Low,
+        Mid,
+        High,
+        RocketAdj
+    }
+    Preset lastPreset = Preset.Manual;
+    APID armAPID = RobotMap.armAPID;
 
     @Override
     public void initDefaultCommand() {
@@ -196,6 +211,53 @@ public class LiftingMechanism extends Subsystem {
         double wristMult = .35;
         speed = wristLimitCheck(speed);
         wrist1.set(speed * wristMult);
+    }
+
+    public void armPreset(Preset presetState, boolean isBack, double speed) {
+        double armTarget = 0;
+        switch (presetState) {
+        case Low:
+            armTarget = (isBack) ? -120 : -34;
+            break;
+        case Mid:
+            armTarget = (isBack) ? -95 : -59;
+            break;
+        case High:
+            armTarget = (isBack) ? -93 : -61;
+            break;
+        case RocketAdj:
+            switch (lastPreset) {
+            case Low:
+                armTarget = (isBack) ? -120 : -34;
+                break;
+            case Mid:
+                armTarget = (isBack) ? -95 : -59;
+                break;
+            case High:
+                armTarget = (isBack) ? -93 : -61;
+                break;
+            default:
+                presetState = Preset.Manual;
+                break;
+            }
+        default:
+            break;
+        }
+        
+        if (!presetState.equals(Preset.Manual)) {
+            if (!lastPreset.equals(presetState)) {
+                armAPID.initialize();
+            }
+            else {
+                speed = Range.inRange(armAPID.getOutput(rightArm1.getPosition(), armTarget), -.45, .45);
+            }
+
+            if (!presetState.equals(Preset.RocketAdj)) {
+                lastPreset = presetState;
+            }
+        }
+
+        Robot.kLiftingMechanism.arm(speed);
     }
 
 }
