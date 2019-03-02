@@ -7,25 +7,33 @@
 
 package frc.robot.commands;
 
-import org.team217.*;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
+import frc.robot.subsystems.LiftingMechanism.Preset;
+import org.team217.rev.*;
 
 /**
- * Runs the arm in teleop control mode.
+ * Runs the wrist in teleop control mode using {@code PID} to reach a preset.
  * 
- * @author ThunderChickens
+ * @author ThunderChickens 217
  */
-public class TeleopArm extends Command {
-    boolean isPreset = false;
+public class TeleopWristPreset extends Command {
+    CANSparkMax rightArm1 = RobotMap.rightArm;
 
+    boolean isPreset = false;
+    boolean isAuto = false;
+    boolean isBack = false;
+    boolean setBack = true;
+
+    Preset presetState = Preset.Manual;
+    
+    
     /**
-     * Runs the arm in teleop control mode.
+     * Runs the wrist in teleop control mode using {@code PID} to reach a preset.
      * 
-     * @author ThunderChickens
+     * @author ThunderChickens 217
      */
-    public TeleopArm() {
+    public TeleopWristPreset() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -45,9 +53,33 @@ public class TeleopArm extends Command {
             isPreset = false;
         }
 
-        if (!isPreset) {
-            double speed = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
-            Robot.kLiftingMechanism.arm(speed);
+        if (isPreset) {
+            if (setBack) {
+                isBack = rightArm1.getPosition() < -80;
+                isBack = Robot.m_oi.xOper.get() ? !isBack : isBack;
+                setBack = !Robot.m_oi.xOper.get();
+            }
+            else {
+                setBack = Robot.m_oi.oper.getPOV() == -1;
+            }
+
+            if (Robot.m_oi.oper.getPOV() == 180) {
+                presetState = Preset.Low;
+            }
+            else if (Robot.m_oi.oper.getPOV() == 270) {
+                presetState = Preset.Mid;
+            }
+            else if (Robot.m_oi.oper.getPOV() == 0) {
+                presetState = Preset.High;
+            }
+            else if (Robot.m_oi.oper.getPOV() == 90) {
+                presetState = Preset.RocketAdj;
+            }
+            else {
+                presetState = Preset.Manual;
+            }
+
+            Robot.kLiftingMechanism.wristPreset(presetState, isBack);
         }
     }
 

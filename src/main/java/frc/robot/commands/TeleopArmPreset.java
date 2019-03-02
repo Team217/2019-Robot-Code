@@ -7,69 +7,52 @@
 
 package frc.robot.commands;
 
-import org.team217.*;
-import org.team217.pid.*;
-import org.team217.rev.*;
-
-import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 import frc.robot.subsystems.LiftingMechanism.Preset;
+import org.team217.rev.*;
 
 /**
- * Runs the arm and wrist together in teleop control mode.
+ * Runs the arm in teleop control mode using {@code PID} to reach a preset.
  * 
  * @author ThunderChickens
  */
-public class TeleopArmAndWrist extends Command {
+public class TeleopArmPreset extends Command {
     CANSparkMax rightArm1 = RobotMap.rightArm;
-    DigitalInput wristFrontLimit1 = RobotMap.wristFrontLimit;
-    DigitalInput wristBackLimit1 = RobotMap.wristBackLimit;
-    AnalogGyro intakeGyro1 = RobotMap.intakeGyro;
 
-    boolean isRunning = false;
+    boolean isPreset = false;
     boolean isBack = false;
     boolean setBack = true;
 
-    PID wristGyroPID = RobotMap.wristGyroPID;
-    Preset presetState = Preset.Manual, lastPreset = Preset.Manual;
-    APID armAPID = RobotMap.armAPID;
+    Preset presetState = Preset.Manual;
 
     /**
-     * Runs the arm and wrist together in teleop control mode.
+     * Runs the arm in teleop control mode using {@code PID} to reach a preset.
      * 
      * @author ThunderChickens
      */
-    public TeleopArmAndWrist() {
+    public TeleopArmPreset() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
-    // reset wrist to be in line with arm in init?
     @Override
     protected void initialize() {
-        intakeGyro1.initGyro();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (Robot.m_oi.rightTriggerOper.get() || Robot.m_oi.leftTriggerOper.get()) {
-            isRunning = false;
+        if (PresetState.getPOVStatus()) {
+            isPreset = PresetState.getStatus();
         }
-        else if (Robot.m_oi.touchPadOper.get()) {
-            isRunning = true;
-            presetState = Preset.Manual;
-            lastPreset = Preset.Manual;
+        else if (!PresetState.getStatus()) {
+            isPreset = false;
         }
 
-        if (isRunning) {
-            double armAngle = intakeGyro1.getAngle(); // Might be pitch or yaw, depending on how electical electricities
-
-            double rightAnalog = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
-
-            if (Robot.m_oi.oper.getPOV() != -1 && setBack) {
+        if (isPreset) {
+            if (setBack) {
                 isBack = rightArm1.getPosition() < -80;
                 isBack = Robot.m_oi.xOper.get() ? !isBack : isBack;
                 setBack = !Robot.m_oi.xOper.get();
@@ -77,11 +60,8 @@ public class TeleopArmAndWrist extends Command {
             else {
                 setBack = Robot.m_oi.oper.getPOV() == -1;
             }
-           
-            if (rightAnalog != 0) {
-                presetState = Preset.Manual;
-            }
-            else if (Robot.m_oi.oper.getPOV() == 180) {
+            
+            if (Robot.m_oi.oper.getPOV() == 180) {
                 presetState = Preset.Low;
             }
             else if (Robot.m_oi.oper.getPOV() == 270) {
@@ -93,30 +73,12 @@ public class TeleopArmAndWrist extends Command {
             else if (Robot.m_oi.oper.getPOV() == 90) {
                 presetState = Preset.RocketAdj;
             }
-
-            Robot.kLiftingMechanism.armPreset(presetState, isBack, rightAnalog);
-            System.out.println("Arm Gyro " + armAngle);
-
-            double speed = 0;
-
-            if (rightArm1.getPosition() > -70) {
-                speed = Range.inRange(-wristGyroPID.getOutput(armAngle, 0), -1.0, 1.0);
-            }
-            else if (rightArm1.getPosition() <= -70 && rightArm1.getPosition() >= -85) {
-                if (armAngle < 80) {
-                    speed = -.7073;
-                }
-                else if (armAngle > 100) {
-                    speed = .7073;
-                }
-            }
             else {
-                speed = Range.inRange(-wristGyroPID.getOutput(armAngle, 178), -0.5, 0.5);
+                presetState = Preset.Manual;
             }
 
-            Robot.kLiftingMechanism.wrist(speed);
+            Robot.kLiftingMechanism.armPreset(presetState, isBack);
         }
-
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -135,5 +97,4 @@ public class TeleopArmAndWrist extends Command {
     @Override
     protected void interrupted() {
     }
-
 }

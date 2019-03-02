@@ -43,6 +43,8 @@ public class LiftingMechanism extends Subsystem {
     public double lastArmPos = 0;
 
     boolean isBack = false, setBack = true;
+    
+    PID wristGyroPID = RobotMap.wristGyroPID;
 
     /** Variable that contains information on the current arm preset state. */
     public static enum Preset {
@@ -213,28 +215,59 @@ public class LiftingMechanism extends Subsystem {
         wrist1.set(speed * wristMult);
     }
 
-    public void armPreset(Preset presetState, boolean isBack, double speed) {
-        double armTarget = 0;
+    /** Runs the wrist using an {@code AnalogGyro}. */
+    public void autoWrist() {
+        double armAngle = intakeGyro1.getAngle(); // Might be pitch or yaw, depending on how electical electricities
+        double speed = 0;
+
+        if (rightArm1.getPosition() > -70) {
+            speed = Range.inRange(-wristGyroPID.getOutput(armAngle, 0), -1.0, 1.0);
+        }
+        else if (rightArm1.getPosition() <= -70 && rightArm1.getPosition() >= -85) {
+            if (armAngle < 80) {
+                speed = -.7073;
+            }
+            else if (armAngle > 100) {
+                speed = .7073;
+            }
+        }
+        else {
+            speed = Range.inRange(-wristGyroPID.getOutput(armAngle, 178), -0.5, 0.5);
+        }
+
+        Robot.kLiftingMechanism.wrist(speed);
+    }
+
+    /**
+     * Runs the arm using {@code PID} to reach a preset.
+     * 
+     * @param presetState
+     *        The {@code Preset} state 
+     * @param isBack
+     *        {@code true} if the preset moves the arm to the back region of the bot
+     */
+    public void armPreset(Preset presetState, boolean isBack) {
+        double target = 0;
         switch (presetState) {
         case Low:
-            armTarget = (isBack) ? -120 : -34;
+            target = (isBack) ? -120 : -34;
             break;
         case Mid:
-            armTarget = (isBack) ? -95 : -59;
+            target = (isBack) ? -95 : -59;
             break;
         case High:
-            armTarget = (isBack) ? -93 : -61;
+            target = (isBack) ? -93 : -61;
             break;
         case RocketAdj:
             switch (lastPreset) {
             case Low:
-                armTarget = (isBack) ? -120 : -34;
+                target = (isBack) ? -120 : -34;
                 break;
             case Mid:
-                armTarget = (isBack) ? -95 : -59;
+                target = (isBack) ? -95 : -59;
                 break;
             case High:
-                armTarget = (isBack) ? -93 : -61;
+                target = (isBack) ? -93 : -61;
                 break;
             default:
                 presetState = Preset.Manual;
@@ -243,13 +276,15 @@ public class LiftingMechanism extends Subsystem {
         default:
             break;
         }
+
+        double speed = 0;
         
         if (!presetState.equals(Preset.Manual)) {
             if (!lastPreset.equals(presetState)) {
                 armAPID.initialize();
             }
             else {
-                speed = Range.inRange(armAPID.getOutput(rightArm1.getPosition(), armTarget), -.45, .45);
+                speed = Range.inRange(armAPID.getOutput(rightArm1.getPosition(), target), -.45, .45);
             }
 
             if (!presetState.equals(Preset.RocketAdj)) {
@@ -260,4 +295,60 @@ public class LiftingMechanism extends Subsystem {
         Robot.kLiftingMechanism.arm(speed);
     }
 
+    /**
+     * Runs the wrist using {@code PID} to reach a preset.
+     * 
+     * @param presetState
+     *        The {@code Preset} state 
+     * @param isBack
+     *        {@code true} if the preset moves the arm to the back region of the bot
+     */
+    public void wristPreset(Preset presetState, boolean isBack) {
+        double target = 0;
+        switch (presetState) {
+        case Low:
+            target = (isBack) ? 1635 : 841;
+            break;
+        case Mid:
+            target = (isBack) ? 425 : 2090;
+            break;
+        case High:
+            target = (isBack) ? 285 : 2057;
+            break;
+        case RocketAdj:
+            switch (lastPreset) {
+            case Low:
+                target = (isBack) ? 1635 : 841;
+                break;
+            case Mid:
+                target = (isBack) ? 425 : 2090;
+                break;
+            case High:
+                target = (isBack) ? 285 : 2057;
+                break;
+            default:
+                presetState = Preset.Manual;
+                break;
+            }
+        default:
+            break;
+        }
+
+        double speed = 0;
+        
+        if (!presetState.equals(Preset.Manual)) {
+            if (!lastPreset.equals(presetState)) {
+                armAPID.initialize();
+            }
+            else {
+                speed = Range.inRange(armAPID.getOutput(rightArm1.getPosition(), target), -.6, .6);
+            }
+
+            if (!presetState.equals(Preset.RocketAdj)) {
+                lastPreset = presetState;
+            }
+        }
+
+        Robot.kLiftingMechanism.wrist(speed);
+    }
 }

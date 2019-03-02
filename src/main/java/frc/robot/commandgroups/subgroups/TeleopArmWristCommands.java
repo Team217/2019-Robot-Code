@@ -25,10 +25,11 @@ public class TeleopArmWristCommands extends CommandGroup {
     public TeleopArmWristCommands() {
         requires(Robot.kLiftingMechanism);
 
-        addParallel(new TeleopArmAndWrist()); //keep wrist parallel to floor
-
-        addParallel(new TeleopMoveWrist());
         addParallel(new TeleopArm());
+        addParallel(new TeleopArmPreset());
+        addParallel(new TeleopWrist());
+        addParallel(new TeleopWristGyro());
+        addParallel(new TeleopWristPreset());
     }
 
 }

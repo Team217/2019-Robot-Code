@@ -7,25 +7,33 @@
 
 package frc.robot.commands;
 
-import org.team217.*;
+import org.team217.rev.*;
+import org.team217.pid.*;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
 /**
- * Runs the arm in teleop control mode.
+ * Runs the wrist in teleop control mode using an {@code AnalogGyro}.
  * 
- * @author ThunderChickens
+ * @author ThunderChickens 217
  */
-public class TeleopArm extends Command {
-    boolean isPreset = false;
+public class TeleopWristGyro extends Command {
+    CANSparkMax rightArm1 = RobotMap.rightArm;
+    AnalogGyro intakeGyro1 = RobotMap.intakeGyro;
 
+    boolean isPreset = false;
+    boolean isAuto = false;
+    
+    PID wristGyroPID = RobotMap.wristGyroPID;
+    
     /**
-     * Runs the arm in teleop control mode.
+     * Runs the wrist in teleop control mode using an {@code AnalogGyro}.
      * 
-     * @author ThunderChickens
+     * @author ThunderChickens 217
      */
-    public TeleopArm() {
+    public TeleopWristGyro() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -44,10 +52,20 @@ public class TeleopArm extends Command {
         else if (!PresetState.getStatus()) {
             isPreset = false;
         }
+        
+        if (Robot.m_oi.rightTriggerOper.get() || Robot.m_oi.leftTriggerOper.get()) {
+            isAuto = false;
+        }
+        else if (Robot.m_oi.touchPadOper.get()) {
+            isAuto = true;
+        }
 
-        if (!isPreset) {
-            double speed = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
-            Robot.kLiftingMechanism.arm(speed);
+        if (!isPreset && isAuto) {
+            if (Robot.m_oi.psButtonOper.get()) {
+                RobotMap.intakeGyro.reset();
+            }
+
+            Robot.kLiftingMechanism.autoWrist();
         }
     }
 

@@ -13,26 +13,24 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
 /**
- * Runs the wrist in teleop control mode separately from the arm.
+ * Runs the wrist in teleop control mode.
  * 
  * @author ThunderChickens 217
  */
-public class TeleopMoveWrist extends Command {
+public class TeleopWrist extends Command {
 
-    boolean isRunning = true;
+    boolean isPreset = false;
+    boolean isAuto = false;
     
     /**
-     * Runs the wrist in teleop control mode separately from the arm.
+     * Runs the wrist in teleop control mode.
      * 
      * @author ThunderChickens 217
      */
-    public TeleopMoveWrist() {
+    public TeleopWrist() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
-
-    double upSpeed = 0;
-    double downSpeed = 0;
 
     // Called just before this Command runs the first time
     @Override
@@ -42,17 +40,24 @@ public class TeleopMoveWrist extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (Robot.m_oi.rightTriggerOper.get() || Robot.m_oi.leftTriggerOper.get()) {
-            isRunning = true;
+        if (PresetState.getPOVStatus()) {
+            isPreset = PresetState.getStatus();
         }
-        else if (Robot.m_oi.touchPadOper.get()) {
-            isRunning = false;
+        else if (!PresetState.getStatus()) {
+            isPreset = false;
         }
 
-        if (isRunning) {
+        if (Robot.m_oi.rightTriggerOper.get() || Robot.m_oi.leftTriggerOper.get()) {
+            isAuto = false;
+        }
+        else if (Robot.m_oi.touchPadOper.get()) {
+            isAuto = true;
+        }
+
+        if (!isPreset && !isAuto) {
             //moving wrist independently
-            upSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05);
-            downSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(4), 0.05);
+            double upSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05);
+            double downSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(4), 0.05);
 
             if (Robot.m_oi.leftTriggerOper.get()) { //moving up
                 Robot.kLiftingMechanism.wrist(upSpeed);
@@ -62,10 +67,6 @@ public class TeleopMoveWrist extends Command {
             }
             else {
                 Robot.kLiftingMechanism.wrist(0);
-            }
-
-            if (Robot.m_oi.psButtonOper.get()) {
-                RobotMap.intakeGyro.reset();
             }
         }
     }
