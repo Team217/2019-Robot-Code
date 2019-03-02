@@ -12,6 +12,11 @@ import frc.robot.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ * Runs the drivebase in auton control mode using {@code PID}.
+ * 
+ * @author ThunderChickens 217
+ */
 public class AutonDrive extends Command {
     PID drivePID = new PID(100);
     APID driveAPID;
@@ -19,33 +24,135 @@ public class AutonDrive extends Command {
     boolean forward = true;
     double target = 0.0;
 
-    public AutonDrive(double target, double kP, double kI, double kD, double accelTime, boolean isDriveStraight, double timeout) {
+    /**
+     * Runs the drivebase in auton control mode using {@code PID}.
+     * 
+     * @param target
+     *        The PID taret
+     * @param kP
+     *        The kP value for {@code PID}
+     * @param kI
+     *        The kI value for {@code PID}
+     * @param kD
+     *        The kD value for {@code PID}
+     * @param accelTime
+     *        The time to accelerate to max speed, in seconds
+     * @param isDriveStraight
+     *        {@code true} [not default] if the robot should use gyro correction to drive straight
+     * 
+     * @author ThunderChickens 217
+     */
+    public AutonDrive(double target, double kP, double kI, double kD, double accelTime, boolean isDriveStraight) {
         requires(Robot.kDrivingSubsystem);
-        setTimeout(timeout);
         
         this.isDriveStraight = isDriveStraight;
         this.target = target;
         driveAPID = new APID(drivePID.setPID(kP, kI, kD), accelTime);
     }
 
+    /**
+     * Runs the drivebase in auton control mode using {@code PID}.
+     * 
+     * @param target
+     *        The PID taret
+     * @param kP
+     *        The kP value for {@code PID}
+     * @param kI
+     *        The kI value for {@code PID}
+     * @param kD
+     *        The kD value for {@code PID}
+     * @param accelTime
+     *        The time to accelerate to max speed, in seconds
+     * @param isDriveStraight
+     *        {@code true} [not default] if the robot should use gyro correction to drive straight
+     * @param timeout
+     *        The time before automatically ending the command, in seconds
+     * 
+     * @author ThunderChickens 217
+     */
+    public AutonDrive(double target, double kP, double kI, double kD, double accelTime, boolean isDriveStraight, double timeout) {
+        this(target, kP, kI, kD, accelTime, isDriveStraight);
+        setTimeout(timeout);
+    }
+
+    /**
+     * Runs the drivebase in auton control mode using {@code PID}.
+     * 
+     * @param target
+     *        The PID taret
+     * @param kP
+     *        The kP value for {@code PID}
+     * @param kI
+     *        The kI value for {@code PID}
+     * @param kD
+     *        The kD value for {@code PID}
+     * @param isDriveStraight
+     *        {@code true} [not default] if the robot should use gyro correction to drive straight
+     * 
+     * @author ThunderChickens 217
+     */
+    public AutonDrive(double target, double kP, double kI, double kD, boolean isDriveStraight) {
+        this(target, kP, kI, kD, 0.0, isDriveStraight);
+    }
+
+    /**
+     * Runs the drivebase in auton control mode using {@code PID}.
+     * 
+     * @param target
+     *        The PID taret
+     * @param kP
+     *        The kP value for {@code PID}
+     * @param kI
+     *        The kI value for {@code PID}
+     * @param kD
+     *        The kD value for {@code PID}
+     * @param isDriveStraight
+     *        {@code true} [not default] if the robot should use gyro correction to drive straight
+     * @param timeout
+     *        The time before automatically ending the command, in seconds
+     * 
+     * @author ThunderChickens 217
+     */
     public AutonDrive(double target, double kP, double kI, double kD, boolean isDriveStraight, double timeout) {
         this(target, kP, kI, kD, 0.0, isDriveStraight, timeout);
     }
 
+    /**
+     * Runs the drivebase in auton control mode using {@code PID}.
+     * 
+     * @param target
+     *        The PID taret
+     * @param kP
+     *        The kP value for {@code PID}
+     * @param kI
+     *        The kI value for {@code PID}
+     * @param kD
+     *        The kD value for {@code PID}
+     * 
+     * @author ThunderChickens 217
+     */
+    public AutonDrive(double target, double kP, double kI, double kD) {
+        this(target, kP, kI, kD, 0.0, false);
+    }
+
+    /**
+     * Runs the drivebase in auton control mode using {@code PID}.
+     * 
+     * @param target
+     *        The PID taret
+     * @param kP
+     *        The kP value for {@code PID}
+     * @param kI
+     *        The kI value for {@code PID}
+     * @param kD
+     *        The kD value for {@code PID}
+     * @param timeout
+     *        The time before automatically ending the command, in seconds
+     * 
+     * @author ThunderChickens 217
+     */
     public AutonDrive(double target, double kP, double kI, double kD, double timeout) {
         this(target, kP, kI, kD, 0.0, false, timeout);
-    }
-
-    public AutonDrive(double target, double kP, double kI, double kD, double accelTime, boolean isDriveStraight) {
-        this(target, kP, kI, kD, accelTime, isDriveStraight, 0.0);
-    }
-
-    public AutonDrive(double target, double kP, double kI, double kD, boolean isDriveStraight) {
-        this(target, kP, kI, kD, 0.0, isDriveStraight, 0.0);
-    }
-
-    public AutonDrive(double target, double kP, double kI, double kD) {
-        this(target, kP, kI, kD, 0.0, false, 0.0);
     }
 
     // Called just before this Command runs the first time

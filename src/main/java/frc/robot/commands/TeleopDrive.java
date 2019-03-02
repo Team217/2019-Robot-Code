@@ -6,9 +6,16 @@ import org.team217.*;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * Runs the drivebase in teleop control mode.
+ * 
+ * @author ThunderChickens 217
  */
 public class TeleopDrive extends Command {
+    /**
+    * Runs the drivebase in teleop control mode.
+    * 
+    * @author ThunderChickens 217
+    */
     public TeleopDrive() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -56,10 +63,12 @@ public class TeleopDrive extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+        Robot.kDrivingSubsystem.drive(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        Robot.kDrivingSubsystem.drive(0);
     }
 }

@@ -11,9 +11,24 @@ import frc.robot.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ * Runs the drivebase in auton control mode using vision.
+ * 
+ * @author ThunderChickens 217
+ */
 public class AutonDriveV extends Command {
     double speed;
 
+    /**
+     * Runs the drivebase in auton control mode using vision.
+     * 
+     * @param speed
+     *        The forward/backward speed
+     * @param timeout
+     *        The time before automatically ending the command, in seconds
+     * 
+     * @author ThunderChickens 217
+     */
     public AutonDriveV(double speed, double timeout) {
         this.speed = speed;
         setTimeout(timeout);

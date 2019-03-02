@@ -11,16 +11,43 @@ import frc.robot.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ * Runs the drivebase in auton control mode using a timer.
+ * 
+ * @author ThunderChickens 217
+ */
 public class AutonDriveT extends Command {
     boolean isDriveStraight = false;
     double speed;
 
+    /**
+     * Runs the drivebase in auton control mode using a timer.
+     * 
+     * @param speed
+     *        The forward/backward speed
+     * @param time
+     *        The time to drive
+     * @param isDriveStraight
+     *        {@code true} [not default] if the robot should use gyro correction to drive straight
+     * 
+     * @author ThunderChickens 217
+     */
     public AutonDriveT(double speed, double time, boolean isDriveStraight) {
         this.speed = speed;
         setTimeout(time);
         this.isDriveStraight = isDriveStraight;
     }
 
+    /**
+     * Runs the drivebase in auton control mode using a timer.
+     * 
+     * @param speed
+     *        The forward/backward speed
+     * @param time
+     *        The time to drive
+     * 
+     * @author ThunderChickens 217
+     */
     public AutonDriveT(double speed, double time) {
         this(speed, time, false);
     }

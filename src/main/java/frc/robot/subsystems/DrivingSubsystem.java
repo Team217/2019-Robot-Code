@@ -71,7 +71,7 @@ public class DrivingSubsystem extends Subsystem {
      * @param speed
      *        The forward/backward speed
      * @param isDriveStraight
-     *        {@code true} if the bot should use the {@code PigeonIMU} to drive straight
+     *        {@code true} [default] if the bot should use the {@code PigeonIMU} to drive straight
      */
     public void drive(double speed, boolean isDriveStraight) {
         double turn = 0.0;
@@ -105,7 +105,7 @@ public class DrivingSubsystem extends Subsystem {
      * @param turn
      *        The turn speed
      * @param antiTipOn
-     *        {@code true} if the bot should run antitip code
+     *        {@code true} [not default] if the bot should run antitip code
      */
     public void drive(double speed, double turn, boolean antiTipOn) {
         double leftSpeed = speed + turn;
@@ -147,7 +147,7 @@ public class DrivingSubsystem extends Subsystem {
      * @param speed
      *        The forward/backward speed
      * @param antiTipOn
-     *        {@code true} if the bot should run antitip code
+     *        {@code true} [not default] if the bot should run antitip code
      */
     public void visionDrive(double speed, boolean antiTipOn) {
         double turn = visionTurn();
