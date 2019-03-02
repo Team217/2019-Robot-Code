@@ -56,6 +56,7 @@ public class LiftingMechanism extends Subsystem {
     }
     Preset lastPreset = Preset.Manual;
     APID armAPID = RobotMap.armAPID;
+    APID wristAPID = RobotMap.wristAPID;
 
     @Override
     public void initDefaultCommand() {
@@ -338,10 +339,10 @@ public class LiftingMechanism extends Subsystem {
         
         if (!presetState.equals(Preset.Manual)) {
             if (!lastPreset.equals(presetState)) {
-                armAPID.initialize();
+                wristAPID.initialize();
             }
             else {
-                speed = Range.inRange(armAPID.getOutput(rightArm1.getPosition(), target), -.6, .6);
+                speed = Range.inRange(wristAPID.getOutput(rightArm1.getPosition(), target), -.6, .6);
             }
 
             if (!presetState.equals(Preset.RocketAdj)) {
