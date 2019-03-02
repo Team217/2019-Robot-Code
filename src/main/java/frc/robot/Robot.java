@@ -186,18 +186,22 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
     }
 
+    /** Returns the X of Vision Camera 1. */
     public static double getX1Vis() { //front
         return x1;
     }
 
+    /** Returns the Area of Vision Camera 2. */
     public static double getArea1Vis() { //front
         return area1;
     }
 
+    /** Returns the X of Vision Camera 2. */
     public static double getX2Vis() { //back
         return x2;
     }
 
+    /** Returns the Area of Vision Camera 2. */
     public static double getArea2Vis() { //back
         return area2;
     }
@@ -239,6 +243,7 @@ public class Robot extends TimedRobot {
         }
     }
 
+    /** Sends data to SmartDashboard. */
     public void smartDashboard() {
         SmartDashboard.putNumber("Pigeon (drive) Yaw", RobotMap.pigeonDrive.getAngle());
         SmartDashboard.putNumber("Pigeon (drive) Pitch", RobotMap.pigeonDrive.getPitch());

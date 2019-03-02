@@ -12,9 +12,16 @@ import frc.robot.*;
 import frc.robot.commands.*;
 import frc.robot.commandgroups.subgroups.*;
 
+/**
+ * Command Group that runs teleop.
+ * 
+ * @author ThunderChickens 217
+ */
 public class TeleopCommands extends CommandGroup {
     /**
-     * Add your docs here.
+     * Command Group that runs teleop.
+     * 
+     * @author ThunderChickens 217
      */
     public TeleopCommands() {
         requires(Robot.kDrivingSubsystem);

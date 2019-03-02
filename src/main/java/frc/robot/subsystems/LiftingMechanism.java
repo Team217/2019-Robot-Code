@@ -14,6 +14,11 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.*;
 
+/**
+ * Manages the robot's arm, elevator, and wrist.
+ * 
+ * @author ThunderChickens 217
+ */
 public class LiftingMechanism extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -42,25 +47,26 @@ public class LiftingMechanism extends Subsystem {
         leftElevator1.follow(rightElevator1);
     }
 
+    public double elevatorLimitCheck(double speed) {
+        if (!RobotMap.elevatorBottomLimit.get()) {
+            rightElevator1.resetEncoder();
+            if (speed > 0) {
+                speed = 0;
+            }
+        }
+        else if (!RobotMap.elevatorTopLimit.get() && speed < 0) {
+            speed = 0;
+        }
+
+        return speed;
+    }
+
     /**
-     * Checks if the elevator's limit switches are hit and sets the elevator speed accordingly.
+     * Runs the elevator.
      * 
      * @param speed
-     *           The speed value currently being sent to the elevator motors
+     *        The elevator speed
      */
-    /*	
-    public void elevatorLimitCheck(double speed) {
-        if (!elevatorBottomLimit1.get() && speed >= 0.0) { //get some limit switches
-    		elevatorSpeed = 0;
-    		rightElevator1.resetEncoder();
-    		leftElevator1.resetEncoder();
-    		lastEncoder = 0;
-    	}
-    	else if(!elevatorTopLimit1.get() && speed <= 0.0) { // get a limit switch
-    		elevatorSpeed = -0.085;
-    	}
-    }
-    */
     public void elevator(double speed) {
         
         //elevatorMaintainPID1.setPID(0.0001417, 0.00000117, 0); //not even close to the right PID here
@@ -73,6 +79,10 @@ public class LiftingMechanism extends Subsystem {
         else if(rightElevator1.getEncoder() >= -5500 && speed >= 0.0) { //this one too
         	elevatorMult = .25;
         }
+
+        if (rightElevator1.getEncoder() >= 16180 && speed < 0) { //Check this first so we can still hold it up
+            speed = 0;
+        }
         
         if (speed != 0) {
             Robot.kLiftingMechanism.lastElevatorPos = RobotMap.rightElevator.getEncoder();
@@ -81,22 +91,18 @@ public class LiftingMechanism extends Subsystem {
             speed = RobotMap.elevatorHoldPID.getOutput(RobotMap.rightElevator.getEncoder(), Robot.kLiftingMechanism.lastElevatorPos);
             elevatorMult = 1;
         }
-
-        if (!RobotMap.elevatorBottomLimit.get()) {
-            rightElevator1.resetEncoder();
-            if (speed > 0) {
-                speed = 0;
-            }
-        }
-
-        if ((!RobotMap.elevatorTopLimit.get() || rightElevator1.getEncoder() >= 16180) && speed < 0) {
-            speed = 0;
-        }
-        //elevatorLimitCheck(speed);
+        
+        speed = elevatorLimitCheck(speed);
         rightElevator1.set(speed * elevatorMult);
         leftElevator1.set((speed * elevatorMult));
     }
 
+    /**
+     * Returns the new arm speed after checking the arm limits.
+     * 
+     * @param speed
+     *        The current arm speed
+     */
     public double armLimitCheck(double speed) {
         if (rightArm1.getPosition() >= 0 && speed >= 0.0) { //get some limit switches, make sure logic is right
             speed = 0;
@@ -107,6 +113,12 @@ public class LiftingMechanism extends Subsystem {
         return speed;
     }
 
+    /**
+     * Runs the arm.
+     * 
+     * @param speed
+     *        The arm speed
+     */
     public void arm(double speed) {
         /*
         if(rightArm1.getPosition() <= && speed <= 0){ 	//get encoder value, check logic (slow going to front extreme)
@@ -151,13 +163,19 @@ public class LiftingMechanism extends Subsystem {
         }
 
         speed = armLimitCheck(speed);
-        leftArm1.set(-(speed * armMult));
+        leftArm1.set(-speed * armMult);
         rightArm1.set(speed * armMult);
 
         System.out.println("Arm " + rightArm1.getPosition());
         System.out.println("Wrist Gyro " + intakeGyro1.getAngle());
     }
 
+    /**
+     * Returns the new wrist speed after checking the wrist limits.
+     * 
+     * @param speed
+     *        The current wrist speed
+     */
     public double wristLimitCheck(double speed) {
         if (!wristBackLimit1.get() && speed <= 0.0) { 
             speed = 0;
@@ -168,6 +186,12 @@ public class LiftingMechanism extends Subsystem {
         return speed;
     }
 
+    /**
+     * Runs the wrist.
+     * 
+     * @param speed
+     *        The wrist speed
+     */
     public void wrist(double speed) {
         double wristMult = .35;
         speed = wristLimitCheck(speed);

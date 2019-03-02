@@ -11,8 +11,13 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.*;
 
+/**
+ * Manages the robot's climbing mechanism.
+ * 
+ * @author ThunderChickens 217
+ */
 public class ClimbingSubsystem extends Subsystem {
-    private Value currentPTO = Value.kForward;
+    Value currentPTO = Value.kForward;
 
     @Override
     public void initDefaultCommand() {
@@ -20,20 +25,29 @@ public class ClimbingSubsystem extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
+    /** Returns {@code true} if the PTO is set to climbing mode. */
     public boolean isClimbing() {
         return currentPTO == Value.kReverse;
     }
 
+    /** Sets the PTO to climbing mode. */
     public void setClimbPTO() {
         currentPTO = Value.kReverse;
         setPTO(currentPTO);
     }
 
+    /** Sets the PTO to driving mode. */
     public void setDrivePTO() {
         currentPTO = Value.kForward;
         setPTO(currentPTO);
     }
 
+    /**
+     * Sets the PTO direction.
+     * 
+     * @param value
+     *        The PTO direction {@code Value}
+     */
     public void setPTO(Value value) {
         RobotMap.climbPTOSolenoid.set(value);
     }

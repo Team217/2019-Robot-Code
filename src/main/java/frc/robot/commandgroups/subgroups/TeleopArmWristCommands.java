@@ -11,9 +11,16 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.*;
 import frc.robot.commands.*;
 
+/**
+ * Command Group that runs the arm and wrist in teleop.
+ * 
+ * @author ThunderChickens 217
+ */
 public class TeleopArmWristCommands extends CommandGroup {
     /**
-     * Add your docs here.
+     * Command Group that runs the arm and wrist in teleop.
+     * 
+     * @author ThunderChickens 217
      */
     public TeleopArmWristCommands() {
         requires(Robot.kLiftingMechanism);
