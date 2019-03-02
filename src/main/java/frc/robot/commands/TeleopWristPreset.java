@@ -51,6 +51,7 @@ public class TeleopWristPreset extends Command {
         }
         else if (!PresetState.getStatus()) {
             isPreset = false;
+            setBack = true;
         }
 
         if (isPreset) {
@@ -60,7 +61,7 @@ public class TeleopWristPreset extends Command {
                 setBack = !Robot.m_oi.xOper.get();
             }
             else {
-                setBack = Robot.m_oi.oper.getPOV() == -1;
+                setBack = !PresetState.getPOVStatus();
             }
 
             if (Robot.m_oi.oper.getPOV() == 180) {
