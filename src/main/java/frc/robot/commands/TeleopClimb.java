@@ -10,7 +10,17 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
+/**
+ * Runs the climber in teleop control mode.
+ * 
+ * @author ThunderChickens 217
+ */
 public class TeleopClimb extends Command {
+    /**
+     * Runs the climber in teleop control mode.
+     * 
+     * @author ThunderChickens 217
+     */
     public TeleopClimb() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);

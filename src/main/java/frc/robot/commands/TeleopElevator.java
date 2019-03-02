@@ -13,12 +13,22 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 import org.team217.pid.*;
 
+/**
+ * Runs the elevator in teleop control mode.
+ * 
+ * @author ThunderChickens 217
+ */
 public class TeleopElevator extends Command {
     boolean isAuto = false;
     boolean canAuto = false;
     APID elevAPID = RobotMap.elevAPID;
     double target = 0;
 
+    /**
+     * Runs the elevator in teleop control mode.
+     * 
+     * @author ThunderChickens 217
+     */
     public TeleopElevator() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);

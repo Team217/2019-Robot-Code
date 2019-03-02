@@ -10,7 +10,17 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
+/**
+ * Runs the intake in teleop control mode.
+ * 
+ * @author ThunderChickens 217
+ */
 public class TeleopIntake extends Command {
+    /**
+     * Runs the intake in teleop control mode.
+     * 
+     * @author ThunderChickens 217
+     */
     public TeleopIntake() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);

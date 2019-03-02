@@ -12,10 +12,20 @@ import org.team217.*;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
+/**
+ * Runs the wrist in teleop control mode separately from the arm.
+ * 
+ * @author ThunderChickens 217
+ */
 public class TeleopMoveWrist extends Command {
 
     boolean isRunning = true;
-
+    
+    /**
+     * Runs the wrist in teleop control mode separately from the arm.
+     * 
+     * @author ThunderChickens 217
+     */
     public TeleopMoveWrist() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);

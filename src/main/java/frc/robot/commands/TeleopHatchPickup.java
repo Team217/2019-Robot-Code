@@ -10,7 +10,17 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
+/**
+ * Runs the hatch mechanism in teleop control mode.
+ * 
+ * @author ThunderChickens 217
+ */
 public class TeleopHatchPickup extends Command {
+    /**
+     * Runs the hatch mechanism in teleop control mode.
+     * 
+     * @author ThunderChickens 217
+     */
     public TeleopHatchPickup() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);

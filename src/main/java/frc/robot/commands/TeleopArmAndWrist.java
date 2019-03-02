@@ -15,6 +15,11 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
+/**
+ * Runs the arm and wrist together in teleop control mode.
+ * 
+ * @author ThunderChickens
+ */
 public class TeleopArmAndWrist extends Command {
     CANSparkMax rightArm1 = RobotMap.rightArm;
     DigitalInput wristFrontLimit1 = RobotMap.wristFrontLimit;
@@ -29,6 +34,7 @@ public class TeleopArmAndWrist extends Command {
     Preset presetState = Preset.Manual, lastPreset = Preset.Manual;
     APID armAPID = RobotMap.armAPID;
 
+    /** Variable that contains information on the current arm preset state. */
     enum Preset {
         Manual,
         Low,
@@ -37,6 +43,11 @@ public class TeleopArmAndWrist extends Command {
         RocketAdj
     }
 
+    /**
+     * Runs the arm and wrist together in teleop control mode.
+     * 
+     * @author ThunderChickens
+     */
     public TeleopArmAndWrist() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
