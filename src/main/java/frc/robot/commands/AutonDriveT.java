@@ -33,8 +33,7 @@ public class AutonDriveT extends Command {
      * @author ThunderChickens 217
      */
     public AutonDriveT(double speed, double time, boolean isDriveStraight) {
-        this.speed = speed;
-        setTimeout(time);
+        this(speed, time);
         this.isDriveStraight = isDriveStraight;
     }
 
@@ -49,7 +48,8 @@ public class AutonDriveT extends Command {
      * @author ThunderChickens 217
      */
     public AutonDriveT(double speed, double time) {
-        this(speed, time, false);
+        this.speed = speed;
+        setTimeout(time);
     }
 
     // Called just before this Command runs the first time
