@@ -2,7 +2,7 @@ The 2019 Code.
 
 There are some classes that make use of `this`, so here is an explanation:
 
-###`this.variable`:
+**`this.variable`:**
 
 ```Java
 public class ThisExampleBad {
@@ -45,7 +45,7 @@ public class ThisExampleAlsoGood {
 }
 ```
 
-###`this(param)`
+**`this(param)`**
 
 Sometimes, constructors do a lot of the same stuff as others except for one line.
 
