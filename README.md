@@ -14,7 +14,9 @@ public class ThisExampleBad {
 ```
 
 In the above code example, we havea huge problem: there are two variables called `var`: one in the parameter (`ThisExampleBad(double var)`) and one in the class (`double var = 0;`).
+
 The above code will actually set the parameter equal to itself! How do we resolve this?
+
 To call the variable in the class (`double var = 0;`), we add a `this.`. `this` is a keyword that means "this class" or "this object".
 It basically just access other parts of itself. In this case, `this.var` would access the class's `var` instead of the parameter `var`.
 
