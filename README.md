@@ -13,7 +13,7 @@ public class ThisExampleBad {
 }
 ```
 
-In the above code example, we havea huge problem: there are two variables called `var`: one in the parameter (`ThisExampleBad(double var)`) and one in the class (`double var = 0;`).
+In the above code example, we have a huge problem: there are two variables called `var`: one in the parameter (`ThisExampleBad(double var)`) and one in the class (`double var = 0;`).
 
 The above code will actually set the parameter equal to itself! How do we resolve this?
 
