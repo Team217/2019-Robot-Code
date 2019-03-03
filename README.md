@@ -4,14 +4,14 @@ There are some classes that make use of `this`, so here is an explanation:
 
 **`this.variable`**:
 
-`
+```Java
 public class ThisExampleBad {
     double var = 0;
     public ThisExampleBad(double var) {
         var = var;
     }
 }
-`
+```
 
 In the above code example, we havea huge problem: there are two variables called `var`: one in the parameter (`ThisExampleBad(double var)`) and one in the class (`double var = 0;`).
 The above code will actually set the parameter equal to itself! How do we resolve this?
@@ -20,14 +20,14 @@ It basically just access other parts of itself. In this case, `this.var` would a
 
 Here is the fixed code:
 
-`
+```Java
 public class ThisExampleGood {
     double var = 0;
     public ThisExampleAlsoGood(double var) {
         this.var = var;
     }
 }
-`
+```
 
 NOTE: The code above will perform the same operation as the code below:
 
@@ -45,7 +45,7 @@ public class ThisExampleAlsoGood {
 Let's say you have a constructor that does a lot of the same stuff as another except for one line.
 Let's say you want two that set a speed, but one of them should set a turn and the other default to 0. You could do the following:
 
-`
+```Java
 int speed = 0, turn = 0;
 
 public ThisExampleWorks(int a) {
@@ -56,13 +56,13 @@ public ThisExampleWorks(int a, int b) {
     speed = a;
     turn = b;
 }
-`
+```
 
 (NOTE: Those are constructors, not functions. Constructors create an object with the parameters affecting some of the default values; in this case, they set speed and turn.)
 
 However, as you add more variables, the code can get *really* long, and there may be multiple constructors. For example:
 
-`
+```Java
 double speed = 0, turn = 0;
 boolean driveStraight = false;
 long timeout = 0;
@@ -89,7 +89,7 @@ public ThisExampleIsLong(double speed, double turn, long timeout, boolean driveS
     this.driveStraight = driveStraight;
 }
 ...
-`
+```
 
 Instead of this *really* long example, we can simplify things with a `this`. Remember what `this` does? It calls "this class" or "this object".
 In `ThisExampleWorks(int speed, int turn)`, if you call `this(speed)`, it will actually create a new object using the `ThisExampleWorks(int speed)` consstructor
@@ -103,7 +103,7 @@ All the code below runs the same as the code above, but it is noticeably cleaner
 
 Method 1:
 
-`
+```Java
 double speed = 0, turn = 0;
 boolean driveStraight = false;
 long timeout = 0;
@@ -127,11 +127,11 @@ public ThisExampleIsLong(double speed, double turn, long timeout, boolean driveS
     this.driveStraight = driveStraight;
 }
 ...
-`
+```
 
 Method 2:
 
-`
+```Java
 double speed = 0, turn = 0;
 boolean driveStraight = false;
 long timeout = 0;
@@ -155,7 +155,7 @@ public ThisExampleIsLong(double speed, double turn, long timeout, boolean driveS
     this.driveStraight = driveStraight;
 }
 ...
-`
+```
 
 **Method 1 is recommended in most situations.** Even though both run the same way, Method 2 is harder to read since you always need to go back to the largest constructor
 to understand what the defaults are affecting (For example, what does `this(speed, 0, 0, false)` do? What do the two zeroes and the `false` change?).
