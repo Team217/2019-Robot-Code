@@ -98,12 +98,13 @@ public ThisExampleIsLong(double speed, double turn, long timeout, boolean driveS
 ```
 
 Instead of this *really* long example, we can simplify things with a `this`. Remember what `this` does? It calls "this class" or "this object".
+
 In `ThisExampleWorks(int speed, int turn)`, if you call `this(speed)`, it will actually create a new object using the `ThisExampleWorks(int speed)` consstructor
 before modifying `this.turn = turn;`. This can be extremely useful in longer code such as `ThisExampleIsLong`.
 
-There are two ways to implement this: one is the trickle-down method; the other is the complete opposite.
+There are two ways to implement this: one is a trickle-down method; the other is the complete opposite.
 
-Basically, you can either have the longer constructor call a smaller one (Method 1), or you can have the smaller ones call the largest one (Method 2).
+Basically, you can either have a longer constructor call a smaller one (Method 1), or you can have the smaller constructors call the largest one (Method 2).
 
 All the code below runs the same as the code above, but it is noticeably cleaner.
 
@@ -163,7 +164,9 @@ public ThisExampleIsLong(double speed, double turn, long timeout, boolean driveS
 ...
 ```
 
-**Method 1 is recommended in most situations.** Even though both run the same way, Method 2 is harder to read since you always need to go back to the largest constructor
+**Method 1 is recommended in most situations.**
+
+Even though both run the same way, Method 2 is harder to read since you always need to go back to the largest constructor
 to understand what the defaults are affecting (For example, what does `this(speed, 0, 0, false)` do? What do the two zeroes and the `false` change?).
 
 Hopefully this clears up confusion on the `this` keyword in Java.
