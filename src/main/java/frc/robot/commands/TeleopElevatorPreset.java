@@ -16,12 +16,15 @@ import frc.robot.subsystems.LiftingMechanism.Preset;
 import org.team217.pid.*;
 
 /**
- * Runs the elevator in teleop control mode.
+ * Runs the elevator in teleop control mode using {@code PID} to reach a preset.
  * 
  * @author ThunderChickens 217
  */
-public class TeleopElevator extends Command {
+public class TeleopElevatorPreset extends Command {
     boolean isPreset = false;
+    APID elevAPID = RobotMap.elevAPID;
+    double target = 0;
+
     Preset presetState = Preset.Manual;
 
     /**
@@ -29,7 +32,7 @@ public class TeleopElevator extends Command {
      * 
      * @author ThunderChickens 217
      */
-    public TeleopElevator() {
+    public TeleopElevatorPreset() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -50,9 +53,9 @@ public class TeleopElevator extends Command {
             presetState = Preset.Manual;
         }
 
-        if (!isPreset) {
-            double speed = Range.deadband(Robot.m_oi.oper.getY(), 0.08);
-            Robot.kLiftingMechanism.elevator(speed);
+        if (isPreset) {
+            presetState = PresetState.getPresetState();
+            Robot.kLiftingMechanism.elevatorPreset(presetState);
         }
     }
 

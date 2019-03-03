@@ -54,9 +54,13 @@ public class LiftingMechanism extends Subsystem {
         High,
         RocketAdj
     }
-    Preset lastPreset = Preset.Manual;
+    Preset lastPresetA = Preset.Manual;
+    Preset lastPresetW = Preset.Manual;
+    Preset lastPresetE = Preset.Manual;
+
     APID armAPID = RobotMap.armAPID;
     APID wristAPID = RobotMap.wristAPID;
+    APID elevatorAPID = RobotMap.elevAPID;
 
     @Override
     public void initDefaultCommand() {
@@ -263,7 +267,7 @@ public class LiftingMechanism extends Subsystem {
             target = (isBack) ? -95 : -67;
             break;
         case RocketAdj:
-            switch (lastPreset) {
+            switch (lastPresetA) {
             case Low:
                 target = (isBack) ? -120 : -34;
                 break;
@@ -284,7 +288,7 @@ public class LiftingMechanism extends Subsystem {
         double speed = 0;
         
         if (!presetState.equals(Preset.Manual)) {
-            if (!lastPreset.equals(presetState)) {
+            if (!lastPresetA.equals(presetState)) {
                 armAPID.initialize();
             }
             else {
@@ -292,7 +296,7 @@ public class LiftingMechanism extends Subsystem {
             }
 
             if (!presetState.equals(Preset.RocketAdj)) {
-                lastPreset = presetState;
+                lastPresetA = presetState;
             }
         }
 
@@ -320,7 +324,7 @@ public class LiftingMechanism extends Subsystem {
             target = (isBack) ? 285 : 2057;
             break;
         case RocketAdj:
-            switch (lastPreset) {
+            switch (lastPresetW) {
             case Low:
                 target = (isBack) ? 1635 : 841;
                 break;
@@ -341,7 +345,7 @@ public class LiftingMechanism extends Subsystem {
         double speed = 0;
         
         if (!presetState.equals(Preset.Manual)) {
-            if (!lastPreset.equals(presetState)) {
+            if (!lastPresetW.equals(presetState)) {
                 wristAPID.initialize();
             }
             else {
@@ -349,10 +353,65 @@ public class LiftingMechanism extends Subsystem {
             }
 
             if (!presetState.equals(Preset.RocketAdj)) {
-                lastPreset = presetState;
+                lastPresetW = presetState;
             }
         }
 
         Robot.kLiftingMechanism.wrist(speed);
+    }
+
+    /**
+     * Runs the elevator using {@code PID} to reach a preset.
+     * 
+     * @param presetState
+     *        The {@code Preset} state
+     */
+    public void elevatorPreset(Preset presetState) {
+        double target = 0;
+        switch (presetState) {
+        case Low:
+            target = 841;
+            break;
+        case Mid:
+            target = 2090;
+            break;
+        case High:
+            target = 2057;
+            break;
+        case RocketAdj:
+            switch (lastPresetE) {
+            case Low:
+                target = 841;
+                break;
+            case Mid:
+                target = 2090;
+                break;
+            case High:
+                target = 2057;
+                break;
+            default:
+                presetState = Preset.Manual;
+                break;
+            }
+        default:
+            break;
+        }
+
+        double speed = 0;
+        
+        if (!presetState.equals(Preset.Manual)) {
+            if (!lastPresetE.equals(presetState)) {
+                elevatorAPID.initialize();
+            }
+            else {
+                speed = Range.inRange(elevatorAPID.getOutput(rightElevator1.getEncoder(), target), -.6, .6);
+            }
+
+            if (!presetState.equals(Preset.RocketAdj)) {
+                lastPresetE = presetState;
+            }
+        }
+
+        Robot.kLiftingMechanism.elevator(speed);
     }
 }
