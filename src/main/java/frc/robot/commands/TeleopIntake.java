@@ -66,11 +66,13 @@ public class TeleopIntake extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.kIntakeSubsystem.intake(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        Robot.kIntakeSubsystem.intake(0);
     }
 }
