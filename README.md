@@ -20,6 +20,9 @@ The above code will actually set the parameter equal to itself! How do we resolv
 To call the variable in the class (`double var = 0;`), we add a `this.`. `this` is a keyword that means "this class" or "this object".
 It basically just access other parts of itself. In this case, `this.var` would access the class's `var` instead of the parameter `var`.
 
+No matter what the situation is, `this.var` calls a global variable (the class's var), while `var` calls a local variable if it exists (the parameter's `var).
+If there is no local variable called `var`, it calls the global variable.
+
 Here is the fixed code:
 
 ```Java
