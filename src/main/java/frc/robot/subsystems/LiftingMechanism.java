@@ -218,7 +218,7 @@ public class LiftingMechanism extends Subsystem {
      *        The wrist speed
      */
     public void wrist(double speed) {
-        double wristMult = .35;
+        double wristMult = .7;
         speed = wristLimitCheck(speed);
         wrist1.set(speed * wristMult);
     }

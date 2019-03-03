@@ -229,18 +229,10 @@ public class Robot extends TimedRobot {
         RobotMap.leftArm.set(-armSpeed);
 
         //Wrist
-        double upSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05);
-        double downSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(4), 0.05);
+        double upSpeed = Range.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05); //Right trigger, starts at -1
+        double downSpeed = Range.deadband(Robot.m_oi.oper.getRawAxis(4), 0.05); //Left trigger, starts at -1
 
-        if (Robot.m_oi.leftTriggerOper.get()) { //moving up
-            Robot.kLiftingMechanism.wrist(upSpeed);
-        }
-        else if (Robot.m_oi.rightTriggerOper.get()) { //moving down
-            Robot.kLiftingMechanism.wrist(-downSpeed);
-        }
-        else {
-            Robot.kLiftingMechanism.wrist(0);
-        }
+        Robot.kLiftingMechanism.wrist((upSpeed - downSpeed) / 2); //1 - (-1) = 2, needs to be 1
     }
 
     /** Sends data to SmartDashboard. */
