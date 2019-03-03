@@ -134,9 +134,11 @@ public class DrivingSubsystem extends Subsystem {
      * 
      * @param speed
      *        The forward/backward speed
+     * @param isCamFront
+     *        {@code true} if using the front camera
      */
-    public void visionDrive(double speed) {
-        visionDrive(speed, false);
+    public void visionDrive(double speed, boolean isCamFront) {
+        visionDrive(speed, isCamFront, false);
     }
 
     /**
@@ -144,19 +146,27 @@ public class DrivingSubsystem extends Subsystem {
      * 
      * @param speed
      *        The forward/backward speed
+     * @param isCamFront
+     *        {@code true} if using the front camera
      * @param antiTipOn
      *        {@code true} [not default] if the bot should run antitip code
      */
-    public void visionDrive(double speed, boolean antiTipOn) {
-        double turn = visionTurn();
+    public void visionDrive(double speed, boolean isCamFront, boolean antiTipOn) {
+        double turn = visionTurn(isCamFront);
         drive(speed, turn, antiTipOn);
     }
 
-    /** Calculates and returns the turn speed for vision-managed turning */
-    public double visionTurn() {
+    /**
+     * Calculates and returns the turn speed for vision-managed turning.
+     * 
+     * @param isCamFront
+     *        {@code true} if using the front camera
+     */
+    public double visionTurn(boolean isCamFront) {
         double turn = 0;
-        double x = Robot.getX1Vis();
-        double kP = Range.inRange(.03 / Math.sqrt(Robot.getArea1Vis()) - .01, 0.015, 0.025);
+        double x = isCamFront ? Robot.getX1Vis() : Robot.getX2Vis();
+        double area = isCamFront ? Robot.getArea1Vis() : Robot.getArea2Vis();
+        double kP = Range.inRange(.03 / Math.sqrt(area) - .01, 0.015, 0.025);
 
         visionPID.setP(kP);
 

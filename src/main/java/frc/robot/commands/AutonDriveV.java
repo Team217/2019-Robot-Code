@@ -18,19 +18,23 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class AutonDriveV extends Command {
     double speed;
+    boolean isCamFront;
 
     /**
      * Runs the drivebase in auton control mode using vision.
      * 
      * @param speed
      *        The forward/backward speed
+     * @param isCamFront
+     *        {@code true} if using the front camera
      * @param timeout
      *        The time before automatically ending the command, in seconds
      * 
      * @author ThunderChickens 217
      */
-    public AutonDriveV(double speed, double timeout) {
+    public AutonDriveV(double speed, boolean isCamFront, double timeout) {
         this.speed = speed;
+        this.isCamFront = isCamFront;
         setTimeout(timeout);
     }
 
@@ -43,7 +47,7 @@ public class AutonDriveV extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.kDrivingSubsystem.visionDrive(speed);
+        Robot.kDrivingSubsystem.visionDrive(speed, isCamFront);
     }
 
     // Make this return true when this Command no longer needs to run execute()
