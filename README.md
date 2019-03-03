@@ -170,6 +170,7 @@ Even though both run the same way, Method 2 is harder to read since you always n
 to understand what the defaults are affecting (For example, what does `this(speed, 0, 0, false)` do? What do the two zeroes and the `false` change?).
 
 Hopefully this clears up confusion on the `this` keyword in Java.
-Tl;dr:
+
+**Tl;dr:**
 - `this.var` calls the global variable in the class instead of the local variable or the parameter. You only need to call `this.` if there are two variables with the same name.
 - `this(param)` calls the constructor that accepts that parameter so you don't need to copy-paste code between constructors.
