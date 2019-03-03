@@ -38,15 +38,13 @@ public class DrivingSubsystem extends Subsystem {
      */
     protected MotorSpeed antiTip(double leftSpeed, double rightSpeed) {
         double antiTipAngle = (useAntiTipAngle) ? 6.0 : 12.0;
-        if (RobotMap.pigeonDrive.getPitch() >= antiTipAngle) {
+        double angle = RobotMap.pigeonDrive.getPitch();
+        int tipSign = Range.sign(angle);
+        
+        if (Math.abs(angle) >= antiTipAngle) {
             useAntiTipAngle = true;
-            leftSpeed = -0.3707;
-            rightSpeed = 0.3707;
-        }
-        else if (RobotMap.pigeonDrive.getPitch() <= -antiTipAngle) {
-            useAntiTipAngle = true;
-            leftSpeed = 0.3707;
-            rightSpeed = -0.3707;
+            leftSpeed = tipSign * -0.3707;
+            rightSpeed = tipSign * 0.3707;
         }
         else {
             useAntiTipAngle = false;
