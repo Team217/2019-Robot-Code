@@ -29,7 +29,7 @@ Here is the fixed code:
 public class ThisExampleGood {
     double var = 0;
     public ThisExampleAlsoGood(double var) {
-        this.var = var;
+        this.var = var; // this.var calls the first var and not the parameter var
     }
 }
 ```
@@ -100,7 +100,7 @@ public ThisExampleIsLong(double speed, double turn, long timeout, boolean driveS
 Instead of this *really* long example, we can simplify things with a `this`. Remember what `this` does? It calls "this class" or "this object".
 
 In `ThisExampleWorks(int speed, int turn)`, if you call `this(speed)`, it will actually create a new object using the `ThisExampleWorks(int speed)` consstructor
-before modifying `this.turn = turn;`. This can be extremely useful in longer code such as `ThisExampleIsLong`.
+before calling `this.turn = turn;`. This can be extremely useful in longer code such as `ThisExampleIsLong`.
 
 There are two ways to implement this: one is a trickle-down method; the other is the complete opposite.
 
@@ -120,18 +120,18 @@ public ThisExampleIsLong(double speed) {
 }
 
 public ThisExampleIsLong(double speed, double turn) {
-    this(speed);
-    this.turn = turn;
+    this(speed); // creates an object using the above constructor: ThisExampleIsLong(double speed)
+    this.turn = turn; // does other modifications in addition to the above constructor
 }
 
 public ThisExampleIsLong(double speed, double turn, long timeout) {
-    this(speed, turn);
-    this.timeout = timeout;
+    this(speed, turn); // creates an object using the above constructor: ThisExampleIsLong(double speed, double turn)
+    this.timeout = timeout; // does other modifications in addition to the above constructor
 }
 
 public ThisExampleIsLong(double speed, double turn, long timeout, boolean driveStraight) {
-    this(speed, turn, timeout);
-    this.driveStraight = driveStraight;
+    this(speed, turn, timeout); // creates an object using the above constructor: ThisExampleIsLong(double speed, double turn, long timeout)
+    this.driveStraight = driveStraight; // does other modifications in addition to the above constructor
 }
 ...
 ```
@@ -144,15 +144,15 @@ boolean driveStraight = false;
 long timeout = 0;
 
 public ThisExampleIsLong(double speed) {
-    this(speed, 0, 0, false);
+    this(speed, 0, 0, false); // calls the bottom constructor with default parameters
 }
 
 public ThisExampleIsLong(double speed, double turn) {
-    this(speed, turn, 0, false);
+    this(speed, turn, 0, false); // calls the bottom constructor with default parameters
 }
 
 public ThisExampleIsLong(double speed, double turn, long timeout) {
-    this(speed, turn, timeout, false);
+    this(speed, turn, timeout, false); // calls the bottom constructor with default parameters
 }
 
 public ThisExampleIsLong(double speed, double turn, long timeout, boolean driveStraight) {
