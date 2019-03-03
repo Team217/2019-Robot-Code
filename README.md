@@ -36,19 +36,20 @@ public class ThisExampleGood {
 
 NOTE: The code above will perform the same operation as the code below:
 
-`
+```Java
 public class ThisExampleAlsoGood {
     double var = 0;
     public ThisExampleAlsoGood(double var1) {
         var = var1;
     }
 }
-`
+```
 
 **`this(param)`**
 
-Let's say you have a constructor that does a lot of the same stuff as another except for one line.
-Let's say you want two that set a speed, but one of them should set a turn and the other default to 0. You could do the following:
+Sometimes, constructors do a lot of the same stuff as others except for one line.
+
+For example, let's say you want two that set a speed, but one of them should set a turn and the other default to 0. You could do the following:
 
 ```Java
 int speed = 0, turn = 0;
