@@ -34,6 +34,7 @@ public class TeleopCommands extends CommandGroup {
         addParallel(new TeleopArmWristCommands());
         addParallel(new TeleopElevator());
         addParallel(new TeleopClimb());
+        addParallel(new TeleopElevatorPreset());
 
         // Add Commands here:
         // e.g. addSequential(new Command1());

@@ -264,18 +264,18 @@ public class LiftingMechanism extends Subsystem {
             target = (isBack) ? -92 : -57;
             break;
         case High:
-            target = (isBack) ? -95 : -67;
+            target = (isBack) ? -85 : -67;
             break;
         case RocketAdj:
             switch (lastPresetA) {
             case Low:
-                target = (isBack) ? -120 : -34;
+                target = (isBack) ? -143 : -3.5;
                 break;
             case Mid:
-                target = (isBack) ? -85 : -59;
+                target = (isBack) ? -92 : -57;
                 break;
             case High:
-                target = (isBack) ? -93 : -61;
+                target = (isBack) ? -85 : -67;
                 break;
             default:
                 presetState = Preset.Manual;
@@ -315,24 +315,24 @@ public class LiftingMechanism extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = (isBack) ? 1635 : 841;
+            target = (isBack) ? 3468 : 124;
             break;
         case Mid:
-            target = (isBack) ? 425 : 2090;
+            target = (isBack) ? 1023 : 2834;
             break;
         case High:
-            target = (isBack) ? 285 : 2057;
+            target = (isBack) ? 657 : 3345;
             break;
         case RocketAdj:
             switch (lastPresetW) {
             case Low:
-                target = (isBack) ? 1635 : 841;
+                target = (isBack) ? 3468 : 124;
                 break;
             case Mid:
-                target = (isBack) ? 425 : 2090;
+                target = (isBack) ? 1023 : 2834;
                 break;
             case High:
-                target = (isBack) ? 285 : 2057;
+                target = (isBack) ? 657 : 3345;
                 break;
             default:
                 presetState = Preset.Manual;
@@ -370,24 +370,24 @@ public class LiftingMechanism extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = 841;
+            target = -12762;
             break;
         case Mid:
-            target = 2090;
+            target = 0;
             break;
         case High:
-            target = 2057;
+            target = -13300;
             break;
         case RocketAdj:
             switch (lastPresetE) {
             case Low:
-                target = 841;
+                target = -12762;
                 break;
             case Mid:
-                target = 2090;
+                target = 0;
                 break;
             case High:
-                target = 2057;
+                target = -13300;
                 break;
             default:
                 presetState = Preset.Manual;
