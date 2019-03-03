@@ -63,7 +63,6 @@ public class TeleopArmPreset extends Command {
         }
 
         if (isPreset) {
-
             if (Robot.m_oi.oper.getPOV() == 180) {
                 presetState = Preset.Low;
             }

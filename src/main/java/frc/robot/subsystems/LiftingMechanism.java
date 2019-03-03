@@ -125,11 +125,14 @@ public class LiftingMechanism extends Subsystem {
         if (rightArm1.getPosition() >= 0 && speed >= 0.0) { //get some limit switches, make sure logic is right
             speed = 0;
         }
-        else if (rightArm1.getPosition() <= -125 && speed <= 0.0) { // get a limit switch //Practice -188 Comp -207
+        else if ((rightArm1.getPosition() <= -125 && speed <= 0.0) && rightElevator1.getEncoder() >= -10000) { // get a limit switch //Practice -188 Comp -207
+            speed = 0;
+        }
+        else if ((rightArm1.getPosition() <= -143 && speed <= 0.0) && rightElevator1.getEncoder() < -10000){
             speed = 0;
         }
         return speed;
-    }
+}
 
     /**
      * Runs the arm.
