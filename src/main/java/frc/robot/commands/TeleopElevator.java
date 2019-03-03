@@ -22,6 +22,7 @@ public class TeleopElevator extends Command {
     boolean isPreset = false;
     APID elevAPID = RobotMap.elevAPID;
     double target = 0;
+    double lastPOV = -1;
 
     /**
      * Runs the elevator in teleop control mode.
@@ -43,13 +44,11 @@ public class TeleopElevator extends Command {
     protected void execute() {
         if (PresetState.getPOVStatus()) {
             isPreset = PresetState.getStatus();
-        }
-        else if (!PresetState.getStatus()) {
-            isPreset = false;
-        }
-
-        if (Robot.m_oi.oper.getPOV() != -1) {
-            elevAPID.initialize();
+            
+            if (Robot.m_oi.oper.getPOV() != lastPOV) {
+                elevAPID.initialize();
+            }
+            
             if (Robot.m_oi.oper.getPOV() == 0) {
                 target = -15300;
             }
@@ -57,6 +56,10 @@ public class TeleopElevator extends Command {
                 target = 0;
             }
         }
+        else if (!PresetState.getStatus()) {
+            isPreset = false;
+        }
+        lastPOV = Robot.m_oi.oper.getPOV();
 
         double speed = Range.deadband(Robot.m_oi.oper.getY(), 0.08);
 

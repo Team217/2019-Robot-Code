@@ -50,6 +50,7 @@ public class TeleopArmPreset extends Command {
         else if (!PresetState.getStatus()) {
             isPreset = false;
             setBack = true;
+            presetState = Preset.Manual;
         }
 
         if (isPreset) {
@@ -73,9 +74,6 @@ public class TeleopArmPreset extends Command {
             }
             else if (Robot.m_oi.oper.getPOV() == 90) {
                 presetState = Preset.RocketAdj;
-            }
-            else {
-                presetState = Preset.Manual;
             }
 
             Robot.kLiftingMechanism.armPreset(presetState, isBack);

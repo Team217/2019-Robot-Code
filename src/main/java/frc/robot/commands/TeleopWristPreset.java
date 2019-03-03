@@ -52,6 +52,7 @@ public class TeleopWristPreset extends Command {
         else if (!PresetState.getStatus()) {
             isPreset = false;
             setBack = true;
+            presetState = Preset.Manual;
         }
 
         if (isPreset) {
@@ -75,9 +76,6 @@ public class TeleopWristPreset extends Command {
             }
             else if (Robot.m_oi.oper.getPOV() == 90) {
                 presetState = Preset.RocketAdj;
-            }
-            else {
-                presetState = Preset.Manual;
             }
 
             Robot.kLiftingMechanism.wristPreset(presetState, isBack);
