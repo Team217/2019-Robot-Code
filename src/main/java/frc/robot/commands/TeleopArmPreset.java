@@ -53,15 +53,16 @@ public class TeleopArmPreset extends Command {
             presetState = Preset.Manual;
         }
 
+        if (setBack && PresetState.getPOVStatus()) {
+            isBack = rightArm1.getPosition() < -80;
+            isBack = Robot.m_oi.xOper.get() ? !isBack : isBack;
+            setBack = !Robot.m_oi.xOper.get();
+        }
+        else {
+            setBack = !PresetState.getPOVStatus();
+        }
+
         if (isPreset) {
-            if (setBack) {
-                isBack = rightArm1.getPosition() < -80;
-                isBack = Robot.m_oi.xOper.get() ? !isBack : isBack;
-                setBack = !Robot.m_oi.xOper.get();
-            }
-            else {
-                setBack = !PresetState.getPOVStatus();
-            }
 
             if (Robot.m_oi.oper.getPOV() == 180) {
                 presetState = Preset.Low;

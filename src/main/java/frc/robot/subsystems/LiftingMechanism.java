@@ -342,7 +342,7 @@ public class LiftingMechanism extends Subsystem {
                 wristAPID.initialize();
             }
             else {
-                speed = Range.inRange(wristAPID.getOutput(rightArm1.getPosition(), target), -.6, .6);
+                speed = Range.inRange(wristAPID.getOutput(wrist1.getEncoder(), target), -.6, .6);
             }
 
             if (!presetState.equals(Preset.RocketAdj)) {
