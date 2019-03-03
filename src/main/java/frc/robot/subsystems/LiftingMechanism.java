@@ -132,7 +132,7 @@ public class LiftingMechanism extends Subsystem {
             speed = 0;
         }
         return speed;
-}
+    }
 
     /**
      * Runs the arm.
