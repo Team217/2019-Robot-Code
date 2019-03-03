@@ -254,13 +254,13 @@ public class LiftingMechanism extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = (isBack) ? -120 : -34;
+            target = (isBack) ? -143 : -3.5;
             break;
         case Mid:
-            target = (isBack) ? -95 : -59;
+            target = (isBack) ? -92 : -57;
             break;
         case High:
-            target = (isBack) ? -93 : -61;
+            target = (isBack) ? -95 : -67;
             break;
         case RocketAdj:
             switch (lastPreset) {
@@ -268,7 +268,7 @@ public class LiftingMechanism extends Subsystem {
                 target = (isBack) ? -120 : -34;
                 break;
             case Mid:
-                target = (isBack) ? -95 : -59;
+                target = (isBack) ? -85 : -59;
                 break;
             case High:
                 target = (isBack) ? -93 : -61;
