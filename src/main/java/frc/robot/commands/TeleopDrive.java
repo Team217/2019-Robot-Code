@@ -36,6 +36,7 @@ public class TeleopDrive extends Command {
         if (Robot.kClimbingSubsystem.isClimbing()) {
             turn /= 2;
             speed += Math.abs(turn);
+            //turn += 0.05 * Range.deadband(RobotMap.pigeon.getRoll(), -2, 2); // Correct the climber automatically to stay level
             Robot.kDrivingSubsystem.drive(speed, turn);
         }
         else {
