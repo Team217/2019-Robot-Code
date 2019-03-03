@@ -13,8 +13,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 import frc.robot.subsystems.LiftingMechanism.Preset;
 
-import org.team217.pid.*;
-
 /**
  * Runs the elevator in teleop control mode.
  * 
