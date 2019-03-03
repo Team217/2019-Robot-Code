@@ -120,18 +120,18 @@ public ThisExampleIsLong(double speed) {
 }
 
 public ThisExampleIsLong(double speed, double turn) {
-    this(speed); // creates an object using the above constructor: ThisExampleIsLong(double speed)
+    this(speed); // creates an object using the above (smaller) constructor: ThisExampleIsLong(double speed)
     this.turn = turn; // does other modifications in addition to the above constructor
 }
 
 public ThisExampleIsLong(double speed, double turn, long timeout) {
-    this(speed, turn); // creates an object using the above constructor: ThisExampleIsLong(double speed, double turn)
-    this.timeout = timeout; // does other modifications in addition to the above constructor
+    this(speed, turn);
+    this.timeout = timeout;
 }
 
 public ThisExampleIsLong(double speed, double turn, long timeout, boolean driveStraight) {
-    this(speed, turn, timeout); // creates an object using the above constructor: ThisExampleIsLong(double speed, double turn, long timeout)
-    this.driveStraight = driveStraight; // does other modifications in addition to the above constructor
+    this(speed, turn, timeout);
+    this.driveStraight = driveStraight;
 }
 ...
 ```
@@ -144,15 +144,15 @@ boolean driveStraight = false;
 long timeout = 0;
 
 public ThisExampleIsLong(double speed) {
-    this(speed, 0, 0, false); // calls the bottom constructor with default parameters
+    this(speed, 0, 0, false); // creates an object using the bottom (largest) constructor with some default parameters
 }
 
 public ThisExampleIsLong(double speed, double turn) {
-    this(speed, turn, 0, false); // calls the bottom constructor with default parameters
+    this(speed, turn, 0, false);
 }
 
 public ThisExampleIsLong(double speed, double turn, long timeout) {
-    this(speed, turn, timeout, false); // calls the bottom constructor with default parameters
+    this(speed, turn, timeout, false);
 }
 
 public ThisExampleIsLong(double speed, double turn, long timeout, boolean driveStraight) {
