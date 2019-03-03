@@ -31,10 +31,12 @@ public class TeleopDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         double speed = Range.deadband(Robot.m_oi.driver.getY(), 0.08);
+        double turn = Range.deadband(Robot.m_oi.driver.getZ(), 0.08);
 
         if (Robot.kClimbingSubsystem.isClimbing()) {
-            speed *= -1.0;
-            Robot.kDrivingSubsystem.drive(speed);
+            turn /= 2;
+            speed += Math.abs(turn);
+            Robot.kDrivingSubsystem.drive(speed, turn);
         }
         else {
             if (Robot.m_oi.leftTriggerDriver.get()) {
@@ -49,8 +51,6 @@ public class TeleopDrive extends Command {
             }
             else {
                 Robot.kDrivingSubsystem.resetVisionPID();
-                
-                double turn = Range.deadband(Robot.m_oi.driver.getZ(), 0.08);
                 Robot.kDrivingSubsystem.drive(speed, turn, antiTipOn);
             }
         }
