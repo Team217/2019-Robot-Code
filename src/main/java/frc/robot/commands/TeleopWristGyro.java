@@ -56,7 +56,7 @@ public class TeleopWristGyro extends Command {
         if (Robot.m_oi.rightTriggerOper.get() || Robot.m_oi.leftTriggerOper.get()) {
             isAuto = false;
         }
-        else if (Robot.m_oi.touchPadOper.get()) {
+        else if (Robot.m_oi.buttonShareOper.get()) {
             isAuto = true;
         }
 

@@ -55,8 +55,8 @@ public class TeleopArmPreset extends Command {
 
         if (setBack && PresetState.getPOVStatus()) {
             isBack = rightArm1.getPosition() < -80;
-            isBack = Robot.m_oi.xOper.get() ? !isBack : isBack;
-            setBack = !Robot.m_oi.xOper.get();
+            isBack = Robot.m_oi.touchPadOper.get() ? !isBack : isBack;
+            setBack = !Robot.m_oi.touchPadOper.get();
         }
         else {
             setBack = !PresetState.getPOVStatus();
