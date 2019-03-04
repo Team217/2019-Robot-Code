@@ -43,7 +43,7 @@ public class RobotMap {
     public static final int pigeonDrive_ID = 0; //PigeonIMU
 
     //Lift Mechanism _IDs
-    public static final int leftArm_ID = 11; //SparkMAX 11 
+    public static final int telescope_ID = 11; //SparkMAX 11 
     public static final int rightArm_ID = 4; //SparkMAX 4 
     public static final int leftElevator_ID = 15; //TalonSRX 15
     public static final int rightElevator_ID = 0; //TalonSRX 0
@@ -81,7 +81,7 @@ public class RobotMap {
     public static PigeonIMU pigeonDrive = new PigeonIMU(RobotMap.pigeonDrive_ID);
 
     //Lift Mechanism Controllers/Gyro/Limits
-    public static CANSparkMax leftArm = new CANSparkMax(RobotMap.leftArm_ID, MotorType.kBrushless); //CANSparkMAX, Brushless
+    public static CANSparkMax telescope = new CANSparkMax(RobotMap.telescope_ID, MotorType.kBrushed); //CANSparkMAX, Brushless
     public static CANSparkMax rightArm = new CANSparkMax(RobotMap.rightArm_ID, MotorType.kBrushless); //CANSparkMAX, Brushless
 
     public static WPI_TalonSRX leftElevator = new WPI_TalonSRX(RobotMap.leftElevator_ID); //WPI_TalonSRX

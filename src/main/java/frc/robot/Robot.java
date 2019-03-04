@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
         RobotMap.leftMaster.resetEncoder();
 
         RobotMap.rightArm.resetEncoder();
-        RobotMap.leftArm.resetEncoder();
+        RobotMap.telescope.resetEncoder();
 
         RobotMap.rightElevator.resetEncoder();
         RobotMap.leftElevator.resetEncoder();
@@ -243,7 +243,6 @@ public class Robot extends TimedRobot {
         //Arm
         double armSpeed = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.05);
         RobotMap.rightArm.set(armSpeed);
-        RobotMap.leftArm.set(-armSpeed);
 
         //Wrist
         double upSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05);

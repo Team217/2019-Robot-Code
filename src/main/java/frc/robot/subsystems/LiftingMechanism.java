@@ -25,7 +25,7 @@ public class LiftingMechanism extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    CANSparkMax leftArm1 = RobotMap.leftArm;
+    CANSparkMax telescope1 = RobotMap.telescope;
     CANSparkMax rightArm1 = RobotMap.rightArm;
     WPI_TalonSRX leftElevator1 = RobotMap.leftElevator;
     WPI_TalonSRX rightElevator1 = RobotMap.rightElevator;
@@ -188,7 +188,6 @@ public class LiftingMechanism extends Subsystem {
         }
 
         speed = armLimitCheck(speed);
-        leftArm1.set(-speed * armMult);
         rightArm1.set(speed * armMult);
 
         System.out.println("Arm " + rightArm1.getPosition());
