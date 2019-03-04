@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import java.time.Clock;
+
 import org.team217.*;
 
 import edu.wpi.first.networktables.*;
@@ -41,6 +43,11 @@ public class Robot extends TimedRobot {
     static double x2 = 0;
     static double y2 = 0;
     static double area2 = 0;
+
+    static final Clock clock = Clock.systemUTC();
+    boolean pigeonValid = true;
+    long pigeonValidStart = 0;
+    double lastRoll = 0, lastPitch = 0;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -127,6 +134,11 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
+        if (!isValidPigeon()) {
+            RobotMap.pigeonDrive.resetPitch();
+            RobotMap.pigeonDrive.resetRoll();
+        }
+
         Scheduler.getInstance().run();
     }
 
@@ -155,7 +167,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        NetworkTable table1 = NetworkTableInstance.getDefault().getTable("limelight-color"); //first limelight (front)
+        NetworkTable table1 = NetworkTableInstance.getDefault().getTable("limelight-front"); //first limelight (front)
         NetworkTableEntry tx1 = table1.getEntry("tx"); //first limelight
         NetworkTableEntry ty1 = table1.getEntry("ty"); //first limelight
         NetworkTableEntry ta1 = table1.getEntry("ta"); //first limelight
@@ -168,7 +180,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("LimelightY1", y1); //first limelight
         SmartDashboard.putNumber("LimelightA1", area1); //first limelight
 
-        NetworkTable table2 = NetworkTableInstance.getDefault().getTable("limelight-ir"); //second limelight (back)
+        NetworkTable table2 = NetworkTableInstance.getDefault().getTable("limelight-back"); //second limelight (back)
         NetworkTableEntry tx2 = table2.getEntry("tx"); //second limelight
         NetworkTableEntry ty2 = table2.getEntry("ty"); //second limelight
         NetworkTableEntry ta2 = table2.getEntry("ta"); //second limelight
@@ -182,6 +194,11 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("LimelightA2", area2); //second limelight
 
         smartDashboard();
+
+        if (!isValidPigeon()) {
+            RobotMap.pigeonDrive.resetPitch();
+            RobotMap.pigeonDrive.resetRoll();
+        }
 
         Scheduler.getInstance().run();
     }
@@ -229,10 +246,18 @@ public class Robot extends TimedRobot {
         RobotMap.leftArm.set(-armSpeed);
 
         //Wrist
-        double upSpeed = Range.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05); //Right trigger, starts at -1
-        double downSpeed = Range.deadband(Robot.m_oi.oper.getRawAxis(4), 0.05); //Left trigger, starts at -1
+        double upSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05);
+        double downSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(4), 0.05);
 
-        Robot.kLiftingMechanism.wrist((upSpeed - downSpeed) / 2); //1 - (-1) = 2, needs to be 1
+        if (Robot.m_oi.leftTriggerOper.get()) { //moving up
+            Robot.kLiftingMechanism.wrist(upSpeed);
+        }
+        else if (Robot.m_oi.rightTriggerOper.get()) { //moving down
+            Robot.kLiftingMechanism.wrist(-downSpeed);
+        }
+        else {
+            Robot.kLiftingMechanism.wrist(0);
+        }
     }
 
     /** Sends data to SmartDashboard. */
@@ -262,5 +287,24 @@ public class Robot extends TimedRobot {
 
         //SmartDashboard.putBoolean("Elevator Bottom Limit", RobotMap.elevatorBottomLimit.get());
         //SmartDashboard.putBoolean("Elevator Top Limit", RobotMap.elevatorTopLimit.get());
+    }
+
+    public boolean isValidPigeon() {
+        if (RobotMap.pigeonDrive.getRoll() == lastRoll && RobotMap.pigeonDrive.getPitch() == lastPitch) {
+            if (pigeonValid) {
+                pigeonValid = false;
+                pigeonValidStart = clock.millis();
+            }
+            else if (clock.millis() - pigeonValidStart > 10000l) {
+                return false;
+            }
+        }
+        else {
+            pigeonValid = true;
+            lastRoll = RobotMap.pigeonDrive.getRoll();
+            lastPitch = RobotMap.pigeonDrive.getPitch();
+        }
+
+        return true;
     }
 }
