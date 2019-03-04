@@ -51,7 +51,10 @@ public class TeleopDrive extends Command {
             }
     
             if (Robot.m_oi.rightBumperDriver.get()) {
-                Robot.kDrivingSubsystem.visionDrive(speed, antiTipOn);
+                Robot.kDrivingSubsystem.visionDrive(speed, true, antiTipOn);
+            }
+            else if (Robot.m_oi.leftBumperDriver.get()) {
+                Robot.kDrivingSubsystem.visionDrive(speed, false, antiTipOn);
             }
             else {
                 Robot.kDrivingSubsystem.resetVisionPID();
