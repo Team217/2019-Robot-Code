@@ -36,10 +36,10 @@ public class TeleopDrive extends Command {
         if (Robot.kClimbingSubsystem.isClimbing()) {
             turn /= 2;
             speed += Math.abs(turn);
-            //if (turn == 0) {
-                //double tilt = Range.deadband(RobotMap.pigeon.getRoll(), -2, 2);
-                //turn += Range.inRange(0.05 * tilt, -0.35, 0.35); // Correct the climber automatically to stay level
-            //}
+            if (turn == 0) {
+                double tilt = Range.deadband(RobotMap.pigeonDrive.getRoll(), 1.5);
+                turn += Range.inRange(0.05 * tilt, -0.35, 0.35); // Correct the climber automatically to stay level
+            }
             Robot.kDrivingSubsystem.drive(speed, turn);
         }
         else {
@@ -51,7 +51,10 @@ public class TeleopDrive extends Command {
             }
     
             if (Robot.m_oi.rightBumperDriver.get()) {
-                Robot.kDrivingSubsystem.visionDrive(speed, antiTipOn);
+                Robot.kDrivingSubsystem.visionDrive(speed, true, antiTipOn);
+            }
+            else if (Robot.m_oi.leftBumperDriver.get()) {
+                Robot.kDrivingSubsystem.visionDrive(speed, false, antiTipOn);
             }
             else {
                 Robot.kDrivingSubsystem.resetVisionPID();
