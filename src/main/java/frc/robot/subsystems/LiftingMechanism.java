@@ -57,10 +57,14 @@ public class LiftingMechanism extends Subsystem {
     Preset lastPresetA = Preset.Manual;
     Preset lastPresetW = Preset.Manual;
     Preset lastPresetE = Preset.Manual;
+    Preset lastPresetT = Preset.Manual;
 
     APID armAPID = RobotMap.armAPID;
     APID wristAPID = RobotMap.wristAPID;
     APID elevatorAPID = RobotMap.elevAPID;
+    APID telescopeAPID = RobotMap.telescopeAPID;
+
+    boolean isTelescopeIn = true;
 
     @Override
     public void initDefaultCommand() {
@@ -69,6 +73,60 @@ public class LiftingMechanism extends Subsystem {
         leftElevator1.follow(rightElevator1);
     }
 
+    /**
+     * Returns the new telescope speed after checking the telescope limits.
+     * 
+     * @param speed
+     *        The current telescope speed
+     */
+    public double telescopeLimitCheck(double speed) {
+        if (RobotMap.telescopeOutLimit.get() && speed < 0) {
+            speed = 0;
+        }
+        else if (RobotMap.telescopeInLimit.get() && speed > 0) {
+            speed = 0;
+            telescope1.resetEncoder();
+        }
+        return speed;
+    }
+
+    /**
+     * Runs the telescope.
+     * 
+     * @param speed
+     *        The telescope speed
+     */
+    public void telescope(double speed) {
+        speed = telescopeLimitCheck(speed);
+        telescope1.set(speed);
+    }
+
+    /** Moves the telescope to the out position. */
+    public void telescopeOut() {
+        if (isTelescopeIn) {
+            telescopeAPID.initialize();
+            isTelescopeIn = false;
+        }
+        double speed = telescopeAPID.getOutput(telescope1.getPosition(), 1000);
+        telescope(speed);
+    }
+
+    /** Moves the telescope to the in position. */
+    public void telescopeIn() {
+        if (!isTelescopeIn) {
+            telescopeAPID.initialize();
+            isTelescopeIn = true;
+        }
+        double speed = telescopeAPID.getOutput(telescope1.getPosition(), 0);
+        telescope(speed);
+    }
+
+    /**
+     * Returns the new elevator speed after checking the elevator limits.
+     * 
+     * @param speed
+     *        The current elevator speed
+     */
     public double elevatorLimitCheck(double speed) {
         if (!RobotMap.elevatorBottomLimit.get()) {
             rightElevator1.resetEncoder();
@@ -246,7 +304,7 @@ public class LiftingMechanism extends Subsystem {
     }
 
     /**
-     * Runs the arm using {@code PID} to reach a preset.
+     * Runs the arm using {@code APID} to reach a preset.
      * 
      * @param presetState
      *        The {@code Preset} state 
@@ -303,7 +361,7 @@ public class LiftingMechanism extends Subsystem {
     }
 
     /**
-     * Runs the wrist using {@code PID} to reach a preset.
+     * Runs the wrist using {@code APID} to reach a preset.
      * 
      * @param presetState
      *        The {@code Preset} state 
@@ -360,7 +418,7 @@ public class LiftingMechanism extends Subsystem {
     }
 
     /**
-     * Runs the elevator using {@code PID} to reach a preset.
+     * Runs the elevator using {@code APID} to reach a preset.
      * 
      * @param presetState
      *        The {@code Preset} state
@@ -412,5 +470,46 @@ public class LiftingMechanism extends Subsystem {
         }
 
         Robot.kLiftingMechanism.elevator(speed);
+    }
+
+    /**
+     * Runs the telescope using {@code APID} to reach a preset.
+     * 
+     * @param presetState
+     *        The {@code Preset} state
+     */
+    public void telescopePreset(Preset presetState) {
+        switch (presetState) {
+        case Low:
+            telescopeIn();
+            break;
+        case Mid:
+            telescopeIn();
+            break;
+        case High:
+            telescopeOut();
+            break;
+        case RocketAdj:
+            switch (lastPresetE) {
+            case Low:
+            telescopeIn();
+                break;
+            case Mid:
+                telescopeIn();
+                break;
+            case High:
+                telescopeOut();
+                break;
+            default:
+                presetState = Preset.Manual;
+                break;
+            }
+        default:
+            break;
+        }
+        
+        if (!presetState.equals(Preset.Manual) && !presetState.equals(Preset.RocketAdj)) {
+            lastPresetT = presetState;
+        }
     }
 }

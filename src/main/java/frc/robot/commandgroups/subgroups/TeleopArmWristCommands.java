@@ -30,6 +30,8 @@ public class TeleopArmWristCommands extends CommandGroup {
         addParallel(new TeleopWrist());
         addParallel(new TeleopWristGyro());
         addParallel(new TeleopWristPreset());
+        addParallel(new TeleopTelescope());
+        addParallel(new TeleopTelescopePreset());
     }
 
 }
