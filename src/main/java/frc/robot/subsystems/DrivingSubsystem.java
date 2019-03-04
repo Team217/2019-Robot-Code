@@ -171,7 +171,7 @@ public class DrivingSubsystem extends Subsystem {
         visionPID.setP(kP);
 
         if(!Range.isWithinRange(x, -0.5, 0.5)) {
-            turn = visionPID.getOutput(0, x);
+            turn = visionPID.getOutput(1.5 * area, x);
         }
 
         return turn;
