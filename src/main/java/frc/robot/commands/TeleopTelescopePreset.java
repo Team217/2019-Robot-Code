@@ -7,25 +7,26 @@
 
 package frc.robot.commands;
 
-import org.team217.*;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
+import frc.robot.subsystems.LiftingMechanism.Preset;
 
 /**
- * Runs the arm in teleop control mode.
+ * Runs the telescope in teleop control mode.
  * 
- * @author ThunderChickens
+ * @author ThunderChickens 217
  */
-public class TeleopArm extends Command {
-    boolean isPreset = false;
+public class TeleopTelescopePreset extends Command {
 
+    boolean isPreset = false;
+    Preset presetState = Preset.Manual;
+    
     /**
-     * Runs the arm in teleop control mode.
+     * Runs the telescope in teleop control mode.
      * 
-     * @author ThunderChickens
+     * @author ThunderChickens 217
      */
-    public TeleopArm() {
+    public TeleopTelescopePreset() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -45,9 +46,9 @@ public class TeleopArm extends Command {
             isPreset = false;
         }
 
-        if (!isPreset) {
-            double speed = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
-            Robot.kLiftingMechanism.arm(-speed);
+        if (isPreset) {
+            presetState = PresetState.getPresetState();
+            Robot.kLiftingMechanism.telescopePreset(presetState);
         }
     }
 
@@ -60,13 +61,13 @@ public class TeleopArm extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kLiftingMechanism.arm(0);
+        Robot.kLiftingMechanism.telescope(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kLiftingMechanism.arm(0);
+        Robot.kLiftingMechanism.telescope(0);
     }
 }

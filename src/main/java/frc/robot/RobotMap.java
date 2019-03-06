@@ -43,7 +43,7 @@ public class RobotMap {
     public static final int pigeonDrive_ID = 0; //PigeonIMU
 
     //Lift Mechanism _IDs
-    public static final int leftArm_ID = 11; //SparkMAX 11 
+    public static final int telescope_ID = 11; //TalonSRX 11 
     public static final int rightArm_ID = 4; //SparkMAX 4 
     public static final int leftElevator_ID = 15; //TalonSRX 15
     public static final int rightElevator_ID = 0; //TalonSRX 0
@@ -54,6 +54,8 @@ public class RobotMap {
     public static final int wristFrontLimit_ID = 5; //DigitalInput Limit Switch
     public static final int wristBackLimit_ID = 6; //DigitalInput Limit Switch
     public static final int ballLimit_ID = 8; //DigitalInput Limit Switch 
+    public static final int telescopeOutLimit_ID = 1; //DigitalInput Limit Switch 
+    public static final int telescopeInLimit_ID = 2; //DigitalInput Limit Switch 
     public static final int LED_ID = 4; //DigitalInput LED
 
     //Intake _IDs
@@ -70,43 +72,44 @@ public class RobotMap {
     public static final int climbPTOSolenoid_ID2 = 3; //Double Solenoid
 
     //Driving Controllers/Gyro
-    public static CANSparkMax leftMaster = new CANSparkMax(RobotMap.leftDrive_ID1, MotorType.kBrushless);
-    public static CANSparkMax leftMidSlave = new CANSparkMax(RobotMap.leftDrive_ID2, MotorType.kBrushless);
-    public static CANSparkMax leftBackSlave = new CANSparkMax(RobotMap.leftDrive_ID3, MotorType.kBrushless);
+    public static CANSparkMax leftMaster = new CANSparkMax(leftDrive_ID1, MotorType.kBrushless);
+    public static CANSparkMax leftMidSlave = new CANSparkMax(leftDrive_ID2, MotorType.kBrushless);
+    public static CANSparkMax leftBackSlave = new CANSparkMax(leftDrive_ID3, MotorType.kBrushless);
 
-    public static CANSparkMax rightMaster = new CANSparkMax(RobotMap.rightDrive_ID1, MotorType.kBrushless);
-    public static CANSparkMax rightMidSlave = new CANSparkMax(RobotMap.rightDrive_ID2, MotorType.kBrushless);
-    public static CANSparkMax rightBackSlave = new CANSparkMax(RobotMap.rightDrive_ID3, MotorType.kBrushless);
+    public static CANSparkMax rightMaster = new CANSparkMax(rightDrive_ID1, MotorType.kBrushless);
+    public static CANSparkMax rightMidSlave = new CANSparkMax(rightDrive_ID2, MotorType.kBrushless);
+    public static CANSparkMax rightBackSlave = new CANSparkMax(rightDrive_ID3, MotorType.kBrushless);
 
-    public static PigeonIMU pigeonDrive = new PigeonIMU(RobotMap.pigeonDrive_ID);
+    public static PigeonIMU pigeonDrive = new PigeonIMU(pigeonDrive_ID);
 
     //Lift Mechanism Controllers/Gyro/Limits
-    public static CANSparkMax leftArm = new CANSparkMax(RobotMap.leftArm_ID, MotorType.kBrushless); //CANSparkMAX, Brushless
-    public static CANSparkMax rightArm = new CANSparkMax(RobotMap.rightArm_ID, MotorType.kBrushless); //CANSparkMAX, Brushless
+    public static WPI_TalonSRX telescope = new WPI_TalonSRX(telescope_ID); //TalonSRX
+    public static CANSparkMax rightArm = new CANSparkMax(rightArm_ID, MotorType.kBrushless); //CANSparkMAX, Brushless
 
-    public static WPI_TalonSRX leftElevator = new WPI_TalonSRX(RobotMap.leftElevator_ID); //WPI_TalonSRX
-    public static WPI_TalonSRX rightElevator = new WPI_TalonSRX(RobotMap.rightElevator_ID); //WPI_TalonSRX
-    public static WPI_TalonSRX wrist = new WPI_TalonSRX(RobotMap.wrist_ID); //WPI_TalonSRX
+    public static WPI_TalonSRX leftElevator = new WPI_TalonSRX(leftElevator_ID); //WPI_TalonSRX
+    public static WPI_TalonSRX rightElevator = new WPI_TalonSRX(rightElevator_ID); //WPI_TalonSRX
+    public static WPI_TalonSRX wrist = new WPI_TalonSRX(wrist_ID); //WPI_TalonSRX
 
-    public static AnalogGyro intakeGyro = new AnalogGyro(RobotMap.intakeGyro_ID);
+    public static AnalogGyro intakeGyro = new AnalogGyro(intakeGyro_ID);
 
-    public static DigitalInput elevatorBottomLimit = new DigitalInput(RobotMap.elevatorBottomLimit_ID);
-    public static DigitalInput elevatorTopLimit = new DigitalInput(RobotMap.elevatorTopLimit_ID);
-    //  public static DigitalInput armFrontLimit = new DigitalInput(RobotMap.armFrontLimit_ID);
-    //  public static DigitalInput armBackLimit = new DigitalInput(RobotMap.armBackLimit_ID);
-    public static DigitalInput wristFrontLimit = new DigitalInput(RobotMap.wristFrontLimit_ID);
-    public static DigitalInput wristBackLimit = new DigitalInput(RobotMap.wristBackLimit_ID);
-    public static DigitalInput ballLimit = new DigitalInput(RobotMap.ballLimit_ID);
+    public static DigitalInput elevatorBottomLimit = new DigitalInput(elevatorBottomLimit_ID);
+    public static DigitalInput elevatorTopLimit = new DigitalInput(elevatorTopLimit_ID);
+    //  public static DigitalInput armFrontLimit = new DigitalInput(armFrontLimit_ID);
+    //  public static DigitalInput armBackLimit = new DigitalInput(armBackLimit_ID);
+    public static DigitalInput wristFrontLimit = new DigitalInput(wristFrontLimit_ID);
+    public static DigitalInput wristBackLimit = new DigitalInput(wristBackLimit_ID);
+    public static DigitalInput ballLimit = new DigitalInput(ballLimit_ID);
+    public static DigitalInput telescopeOutLimit = new DigitalInput(telescopeOutLimit_ID);
+    public static DigitalInput telescopeInLimit = new DigitalInput(telescopeInLimit_ID);
 
     //Intake Controllers/Solenoids
-    public static WPI_VictorSPX intakeOne = new WPI_VictorSPX(RobotMap.intake_ID1); //VictorSPX 
-    public static WPI_VictorSPX intakeTwo = new WPI_VictorSPX(RobotMap.intake_ID2); //VictorSPX
+    public static WPI_VictorSPX intakeOne = new WPI_VictorSPX(intake_ID1); //VictorSPX 
+    public static WPI_VictorSPX intakeTwo = new WPI_VictorSPX(intake_ID2); //VictorSPX
 
-    public static DoubleSolenoid topHatchSolenoid = new DoubleSolenoid(RobotMap.topHatchSolenoid_ID1,
-            RobotMap.topHatchSolenoid_ID2);
+    public static DoubleSolenoid topHatchSolenoid = new DoubleSolenoid(topHatchSolenoid_ID1, topHatchSolenoid_ID2);
 
     //Climber PTOs
-    public static DoubleSolenoid climbPTOSolenoid = new DoubleSolenoid(RobotMap.climbPTOSolenoid_ID1, RobotMap.climbPTOSolenoid_ID2);
+    public static DoubleSolenoid climbPTOSolenoid = new DoubleSolenoid(climbPTOSolenoid_ID1, climbPTOSolenoid_ID2);
 
     //PID
     public static final PID elevatorHoldPID = new PID(0.0005, 0.000005, 0, 100).setMinMax(-0.1, 0.1);
@@ -116,6 +119,7 @@ public class RobotMap {
     public static final APID armAPID = new APID(new PID(0.05, 0.0002, 0, 100).setMinMax(-0.2, 0.2), 1.5);
     public static final APID wristAPID = new APID(new PID(0.001, 0.00001, 0, 100).setMinMax(-0.2, 0.2), 1.0);
     public static final APID elevAPID = new APID(new PID(0.0005, 0.000005, 0, 100).setMinMax(-0.2, 0.2), 1.5);
+    public static final APID telescopeAPID = new APID(new PID(0.0001, 0, 0, 100).setMinMax(-0.1, 0.1), 0.5);
 
     //Joysticks
     public static final int driverPort = 0;

@@ -13,6 +13,7 @@ import org.team217.rev.*;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.*;
+
 import org.team217.*;
 import org.team217.pid.*;
 
@@ -25,7 +26,7 @@ public class LiftingMechanism extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    CANSparkMax leftArm1 = RobotMap.leftArm;
+    WPI_TalonSRX telescope1 = RobotMap.telescope;
     CANSparkMax rightArm1 = RobotMap.rightArm;
     WPI_TalonSRX leftElevator1 = RobotMap.leftElevator;
     WPI_TalonSRX rightElevator1 = RobotMap.rightElevator;
@@ -38,6 +39,8 @@ public class LiftingMechanism extends Subsystem {
     DigitalInput wristFrontLimit1 = RobotMap.wristFrontLimit;
     //	DigitalInput armFrontLimit1 = RobotMap.armFrontLimit;
     //	DigitalInput armBackLimit1 = RobotMap.armBackLimit;
+    DigitalInput telescopeInLimit1 = RobotMap.telescopeInLimit;
+    DigitalInput telescopeOutLimit1 = RobotMap.telescopeOutLimit;
 
     public double lastElevatorPos = 0;
     public double lastArmPos = 0;
@@ -57,10 +60,14 @@ public class LiftingMechanism extends Subsystem {
     Preset lastPresetA = Preset.Manual;
     Preset lastPresetW = Preset.Manual;
     Preset lastPresetE = Preset.Manual;
+    Preset lastPresetT = Preset.Manual;
 
     APID armAPID = RobotMap.armAPID;
     APID wristAPID = RobotMap.wristAPID;
     APID elevatorAPID = RobotMap.elevAPID;
+    APID telescopeAPID = RobotMap.telescopeAPID;
+
+    boolean isTelescopeOut = false;
 
     @Override
     public void initDefaultCommand() {
@@ -69,6 +76,59 @@ public class LiftingMechanism extends Subsystem {
         leftElevator1.follow(rightElevator1);
     }
 
+    /**
+     * Returns the new telescope speed after checking the telescope limits.
+     * 
+     * @param speed
+     *        The current telescope speed
+     */
+    public double telescopeLimitCheck(double speed) {
+        if (!telescopeOutLimit1.get() && speed <= 0) {
+            speed = 0;
+ //           System.out.println("In");
+        }
+        else if (!telescopeInLimit1.get() && speed >= 0) {
+            speed = 0;
+ //           System.out.println("Out");
+        }
+        return speed;
+    }
+
+    /**
+     * Runs the telescope.
+     * 
+     * @param speed
+     *        The telescope speed
+     */
+    public void telescope(double speed) {
+        speed = telescopeLimitCheck(speed);
+//        System.out.println(speed);
+        telescope1.set(speed);
+    }
+
+    /** Moves the telescope to the out position. */
+    public void telescopeOut() {
+        telescope(-.25);
+        isTelescopeOut = true;
+    }
+
+    /** Moves the telescope to the in position. */
+    public void telescopeIn() {
+        telescope(.25);
+        isTelescopeOut = false;
+    }
+
+    /** Returns {@code true} if the telescope is out. */
+    public boolean getTelescopeOut() {
+        return isTelescopeOut;
+    }
+
+    /**
+     * Returns the new elevator speed after checking the elevator limits.
+     * 
+     * @param speed
+     *        The current elevator speed
+     */
     public double elevatorLimitCheck(double speed) {
         if (!RobotMap.elevatorBottomLimit.get()) {
             rightElevator1.resetEncoder();
@@ -102,7 +162,7 @@ public class LiftingMechanism extends Subsystem {
         	elevatorMult = .25;
         }
 
-        if (rightElevator1.getEncoder() >= 16180 && speed < 0) { //Check this first so we can still hold it up
+        if (rightElevator1.getEncoder() <= -16180 && speed < 0) { //Check this first so we can still hold it up
             speed = 0;
         }
         
@@ -115,6 +175,7 @@ public class LiftingMechanism extends Subsystem {
         }
         
         speed = elevatorLimitCheck(speed);
+
         rightElevator1.set(speed * elevatorMult);
         leftElevator1.set((speed * elevatorMult));
     }
@@ -126,14 +187,27 @@ public class LiftingMechanism extends Subsystem {
      *        The current arm speed
      */
     public double armLimitCheck(double speed) {
-        if (rightArm1.getPosition() >= 0 && speed >= 0.0) { //get some limit switches, make sure logic is right
-            speed = 0;
-        }
-        else if (rightArm1.getPosition() <= -125 && speed <= 0.0 && rightElevator1.getEncoder() >= -10000) { // get a limit switch //Practice -188 Comp -207
-            speed = 0;
-        }
-        else if (rightArm1.getPosition() <= -143 && speed <= 0.0 && rightElevator1.getEncoder() < -10000){
-            speed = 0;
+        if(isTelescopeOut) {
+            if (rightArm1.getPosition() >= 0 && speed >= 0.0) { //get some limit switches, make sure logic is right
+                speed = 0;
+            }
+            else if (rightArm1.getPosition() <= -125 && speed <= 0.0 && rightElevator1.getEncoder() >= -10000) { //Practice: 107 when tele is out, ; Comp: -207
+                speed = 0;
+            }
+            else if (rightArm1.getPosition() <= -143 && speed <= 0.0 && rightElevator1.getEncoder() < -10000){
+                speed = 0;
+            }
+        } 
+        else {
+            if (rightArm1.getPosition() >= 0 && speed >= 0.0) { //get some limit switches, make sure logic is right
+                speed = 0;
+            }
+            else if (rightArm1.getPosition() <= -125 && speed <= 0.0 && rightElevator1.getEncoder() >= -10000) { //Practice: 107 when tele is out, ; Comp: -207
+                speed = 0;
+            }
+            else if (rightArm1.getPosition() <= -143 && speed <= 0.0 && rightElevator1.getEncoder() < -10000){
+                speed = 0;
+            }
         }
         return speed;
     }
@@ -187,12 +261,11 @@ public class LiftingMechanism extends Subsystem {
             armMult = 1;
         }
 
-        speed = armLimitCheck(speed);
-        leftArm1.set(-speed * armMult);
+      //  speed = armLimitCheck(speed);
         rightArm1.set(speed * armMult);
 
         System.out.println("Arm " + rightArm1.getPosition());
-        System.out.println("Wrist Gyro " + intakeGyro1.getAngle());
+ //       System.out.println("Wrist Gyro " + intakeGyro1.getAngle());
     }
 
     /**
@@ -247,7 +320,7 @@ public class LiftingMechanism extends Subsystem {
     }
 
     /**
-     * Runs the arm using {@code PID} to reach a preset.
+     * Runs the arm using {@code APID} to reach a preset.
      * 
      * @param presetState
      *        The {@code Preset} state 
@@ -304,7 +377,7 @@ public class LiftingMechanism extends Subsystem {
     }
 
     /**
-     * Runs the wrist using {@code PID} to reach a preset.
+     * Runs the wrist using {@code APID} to reach a preset.
      * 
      * @param presetState
      *        The {@code Preset} state 
@@ -361,7 +434,7 @@ public class LiftingMechanism extends Subsystem {
     }
 
     /**
-     * Runs the elevator using {@code PID} to reach a preset.
+     * Runs the elevator using {@code APID} to reach a preset.
      * 
      * @param presetState
      *        The {@code Preset} state
@@ -413,5 +486,46 @@ public class LiftingMechanism extends Subsystem {
         }
 
         Robot.kLiftingMechanism.elevator(speed);
+    }
+
+    /**
+     * Runs the telescope using {@code APID} to reach a preset.
+     * 
+     * @param presetState
+     *        The {@code Preset} state
+     */
+    public void telescopePreset(Preset presetState) {
+        switch (presetState) {
+        case Low:
+            telescopeIn();
+            break;
+        case Mid:
+            telescopeIn();
+            break;
+        case High:
+            telescopeOut();
+            break;
+        case RocketAdj:
+            switch (lastPresetE) {
+            case Low:
+            telescopeIn();
+                break;
+            case Mid:
+                telescopeIn();
+                break;
+            case High:
+                telescopeOut();
+                break;
+            default:
+                presetState = Preset.Manual;
+                break;
+            }
+        default:
+            break;
+        }
+        
+        if (!presetState.equals(Preset.Manual) && !presetState.equals(Preset.RocketAdj)) {
+            lastPresetT = presetState;
+        }
     }
 }

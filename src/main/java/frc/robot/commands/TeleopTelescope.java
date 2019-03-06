@@ -7,25 +7,25 @@
 
 package frc.robot.commands;
 
-import org.team217.*;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
 /**
- * Runs the arm in teleop control mode.
+ * Runs the telescope in teleop control mode.
  * 
- * @author ThunderChickens
+ * @author ThunderChickens 217
  */
-public class TeleopArm extends Command {
-    boolean isPreset = false;
+public class TeleopTelescope extends Command {
 
+    boolean isPreset = false;
+    int direction = 0;
+    
     /**
-     * Runs the arm in teleop control mode.
+     * Runs the telescope in teleop control mode.
      * 
-     * @author ThunderChickens
+     * @author ThunderChickens 217
      */
-    public TeleopArm() {
+    public TeleopTelescope() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -46,8 +46,26 @@ public class TeleopArm extends Command {
         }
 
         if (!isPreset) {
-            double speed = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
-            Robot.kLiftingMechanism.arm(-speed);
+            if (Robot.m_oi.squareOper.get()) {
+                direction = -1;
+            }
+            else if (Robot.m_oi.xOper.get()) {
+                direction = 1;
+            }
+
+            switch (direction) {
+            case 1:
+                Robot.kLiftingMechanism.telescopeOut();
+                break;
+            case -1:
+                Robot.kLiftingMechanism.telescopeIn();
+                break;
+            default:
+                Robot.kLiftingMechanism.telescope(0);
+            }
+        }
+        else {
+            direction = 0;
         }
     }
 
@@ -60,13 +78,13 @@ public class TeleopArm extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kLiftingMechanism.arm(0);
+        Robot.kLiftingMechanism.telescope(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kLiftingMechanism.arm(0);
+        Robot.kLiftingMechanism.telescope(0);
     }
 }
