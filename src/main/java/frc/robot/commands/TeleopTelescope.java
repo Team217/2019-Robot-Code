@@ -18,6 +18,7 @@ import frc.robot.*;
 public class TeleopTelescope extends Command {
 
     boolean isPreset = false;
+    int direction = 0;
     
     /**
      * Runs the telescope in teleop control mode.
@@ -45,23 +46,26 @@ public class TeleopTelescope extends Command {
         }
 
         if (!isPreset) {
-            if (Robot.m_oi.xOper.get()) {
-                Robot.kLiftingMechanism.telescopeIn();
+            if (Robot.m_oi.squareOper.get()) {
+                direction = -1;
             }
-            else if (Robot.m_oi.squareOper.get()) {
+            else if (Robot.m_oi.xOper.get()) {
+                direction = 1;
+            }
+
+            switch (direction) {
+            case 1:
                 Robot.kLiftingMechanism.telescopeOut();
-            }
-            else if (Robot.m_oi.buttonOptionOper.get()) { //out
-                Robot.kLiftingMechanism.telescope(-1.0);
-                System.out.println("Option");
-            }
-            else if (Robot.m_oi.psButtonOper.get()){ //in
-                Robot.kLiftingMechanism.telescope(1.0);
-                System.out.println("PS Button");
-            }
-            else{
+                break;
+            case -1:
+                Robot.kLiftingMechanism.telescopeIn();
+                break;
+            default:
                 Robot.kLiftingMechanism.telescope(0);
             }
+        }
+        else {
+            direction = 0;
         }
     }
 

@@ -28,7 +28,7 @@ public class LiftingMechanism extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    CANSparkMax telescope1 = RobotMap.telescope;
+    WPI_TalonSRX telescope1 = RobotMap.telescope;
     CANSparkMax rightArm1 = RobotMap.rightArm;
     WPI_TalonSRX leftElevator1 = RobotMap.leftElevator;
     WPI_TalonSRX rightElevator1 = RobotMap.rightElevator;
@@ -41,11 +41,12 @@ public class LiftingMechanism extends Subsystem {
     DigitalInput wristFrontLimit1 = RobotMap.wristFrontLimit;
     //	DigitalInput armFrontLimit1 = RobotMap.armFrontLimit;
     //	DigitalInput armBackLimit1 = RobotMap.armBackLimit;
-    CANDigitalInput telescopeInLimit1 = RobotMap.telescopeInLimit;
-    CANDigitalInput telescopeOutLimit1 = RobotMap.telescopeOutLimit;
+    DigitalInput telescopeInLimit1 = RobotMap.telescopeInLimit;
+    DigitalInput telescopeOutLimit1 = RobotMap.telescopeOutLimit;
 
     public double lastElevatorPos = 0;
     public double lastArmPos = 0;
+    public boolean isArmOut = false;
 
     boolean isBack = false, setBack = true;
     
@@ -85,13 +86,13 @@ public class LiftingMechanism extends Subsystem {
      *        The current telescope speed
      */
     public double telescopeLimitCheck(double speed) {
-        if (telescopeOutLimit1.get() && speed <= 0) {
+        if (!telescopeOutLimit1.get() && speed <= 0) {
             speed = 0;
-            System.out.println("In");
+ //           System.out.println("In");
         }
-        else if (telescopeInLimit1.get() && speed >= 0) {
+        else if (!telescopeInLimit1.get() && speed >= 0) {
             speed = 0;
-            System.out.println("Out");
+ //           System.out.println("Out");
         }
         return speed;
     }
@@ -104,18 +105,20 @@ public class LiftingMechanism extends Subsystem {
      */
     public void telescope(double speed) {
         speed = telescopeLimitCheck(speed);
-        System.out.println(speed);
+//        System.out.println(speed);
         telescope1.set(speed);
     }
 
     /** Moves the telescope to the out position. */
     public void telescopeOut() {
-        telescope(-1);
+        telescope(-.25);
+        isArmOut = true;
     }
 
     /** Moves the telescope to the in position. */
     public void telescopeIn() {
-        telescope(1);
+        telescope(.25);
+        isArmOut = false;
     }
 
     /**
@@ -182,16 +185,30 @@ public class LiftingMechanism extends Subsystem {
      *        The current arm speed
      */
     public double armLimitCheck(double speed) {
+    if(isArmOut){
         if (rightArm1.getPosition() >= 0 && speed >= 0.0) { //get some limit switches, make sure logic is right
             speed = 0;
         }
-        else if (rightArm1.getPosition() <= -125 && speed <= 0.0 && rightElevator1.getEncoder() >= -10000) { // get a limit switch //Practice -188 Comp -207
+        else if (rightArm1.getPosition() <= -125 && speed <= 0.0 && rightElevator1.getEncoder() >= -10000) { //Practice: 107 when tele is out, ; Comp: -207
             speed = 0;
         }
         else if (rightArm1.getPosition() <= -143 && speed <= 0.0 && rightElevator1.getEncoder() < -10000){
             speed = 0;
         }
-        return speed;
+
+    } 
+    else if(!isArmOut){
+        if (rightArm1.getPosition() >= 0 && speed >= 0.0) { //get some limit switches, make sure logic is right
+            speed = 0;
+        }
+        else if (rightArm1.getPosition() <= -125 && speed <= 0.0 && rightElevator1.getEncoder() >= -10000) { //Practice: 107 when tele is out, ; Comp: -207
+            speed = 0;
+        }
+        else if (rightArm1.getPosition() <= -143 && speed <= 0.0 && rightElevator1.getEncoder() < -10000){
+            speed = 0;
+        }
+    }
+    return speed;
     }
 
     /**
@@ -246,7 +263,7 @@ public class LiftingMechanism extends Subsystem {
       //  speed = armLimitCheck(speed);
         rightArm1.set(speed * armMult);
 
-//        System.out.println("Arm " + rightArm1.getPosition());
+        System.out.println("Arm " + rightArm1.getPosition());
  //       System.out.println("Wrist Gyro " + intakeGyro1.getAngle());
     }
 

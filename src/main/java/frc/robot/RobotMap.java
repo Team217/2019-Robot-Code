@@ -45,19 +45,19 @@ public class RobotMap {
     public static final int pigeonDrive_ID = 0; //PigeonIMU
 
     //Lift Mechanism _IDs
-    public static final int telescope_ID = 11; //SparkMAX 11 
+    public static final int telescope_ID = 11; //TalonSRX 11 
     public static final int rightArm_ID = 4; //SparkMAX 4 
     public static final int leftElevator_ID = 15; //TalonSRX 15
     public static final int rightElevator_ID = 0; //TalonSRX 0
     public static final int wrist_ID = 8; //TalonSRX 8 
 
     public static final int elevatorBottomLimit_ID = 7; //DigitalInput Limit Switch
-    public static final int elevatorTopLimit_ID = 2; //DigitalInput Limit Switch
+    public static final int elevatorTopLimit_ID = 9; //DigitalInput Limit Switch
     public static final int wristFrontLimit_ID = 5; //DigitalInput Limit Switch
     public static final int wristBackLimit_ID = 6; //DigitalInput Limit Switch
     public static final int ballLimit_ID = 8; //DigitalInput Limit Switch 
-    //public static final int telescopeOutLimit_ID = 1; //DigitalInput Limit Switch 
-    //public static final int telescopeInLimit_ID = 2; //DigitalInput Limit Switch 
+    public static final int telescopeOutLimit_ID = 1; //DigitalInput Limit Switch 
+    public static final int telescopeInLimit_ID = 2; //DigitalInput Limit Switch 
     public static final int LED_ID = 4; //DigitalInput LED
 
     //Intake _IDs
@@ -85,7 +85,7 @@ public class RobotMap {
     public static PigeonIMU pigeonDrive = new PigeonIMU(pigeonDrive_ID);
 
     //Lift Mechanism Controllers/Gyro/Limits
-    public static CANSparkMax telescope = new CANSparkMax(telescope_ID, MotorType.kBrushed); //CANSparkMAX, Brushless
+    public static WPI_TalonSRX telescope = new WPI_TalonSRX(telescope_ID); //TalonSRX
     public static CANSparkMax rightArm = new CANSparkMax(rightArm_ID, MotorType.kBrushless); //CANSparkMAX, Brushless
 
     public static WPI_TalonSRX leftElevator = new WPI_TalonSRX(leftElevator_ID); //WPI_TalonSRX
@@ -101,8 +101,8 @@ public class RobotMap {
     public static DigitalInput wristFrontLimit = new DigitalInput(wristFrontLimit_ID);
     public static DigitalInput wristBackLimit = new DigitalInput(wristBackLimit_ID);
     public static DigitalInput ballLimit = new DigitalInput(ballLimit_ID);
-    public static CANDigitalInput telescopeOutLimit = telescope.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-    public static CANDigitalInput telescopeInLimit = telescope.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+    public static DigitalInput telescopeOutLimit = new DigitalInput(telescopeOutLimit_ID);
+    public static DigitalInput telescopeInLimit = new DigitalInput(telescopeInLimit_ID);
 
     //Intake Controllers/Solenoids
     public static WPI_VictorSPX intakeOne = new WPI_VictorSPX(intake_ID1); //VictorSPX 
