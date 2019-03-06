@@ -108,14 +108,24 @@ public class LiftingMechanism extends Subsystem {
 
     /** Moves the telescope to the out position. */
     public void telescopeOut() {
-        telescope(-.25);
-        isTelescopeOut = true;
+        if (!isTelescopeOut) {
+            telescopeAPID.initialize();
+            isTelescopeOut = true;
+        }
+
+        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), -10000);
+        telescope(speed);
     }
 
     /** Moves the telescope to the in position. */
     public void telescopeIn() {
-        telescope(.25);
-        isTelescopeOut = false;
+        if (isTelescopeOut) {
+            telescopeAPID.initialize();
+            isTelescopeOut = false;
+        }
+
+        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 0);
+        telescope(speed);
     }
 
     /** Returns {@code true} if the telescope is out. */
