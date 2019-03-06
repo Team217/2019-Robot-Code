@@ -1,10 +1,10 @@
-The 2019 Code.
+The 2019 robot code.
 
 There are some classes that make use of `this`, so here is an explanation:
 
 **`this.variable`:**
 
-```Java
+```java
 public class ThisExampleBad {
     double var = 0;
     public ThisExampleBad(double var) {
@@ -25,7 +25,7 @@ If there is no local variable called `var`, it calls the global variable.
 
 Here is the fixed code:
 
-```Java
+```java
 public class ThisExampleGood {
     double var = 0;
     public ThisExampleAlsoGood(double var) {
@@ -36,7 +36,7 @@ public class ThisExampleGood {
 
 NOTE: The code above will perform the same operation as the code below:
 
-```Java
+```java
 public class ThisExampleAlsoGood {
     double var = 0;
     public ThisExampleAlsoGood(double var1) {
@@ -51,7 +51,7 @@ Sometimes, constructors do a lot of the same stuff as others except for one line
 
 For example, let's say you want two that set a speed, but one of them should set a turn and the other default to 0. You could do the following:
 
-```Java
+```java
 int speed = 0, turn = 0;
 
 public ThisExampleWorks(int a) {
@@ -68,7 +68,7 @@ public ThisExampleWorks(int a, int b) {
 
 However, as you add more variables, the code can get *really* long, and there may be multiple constructors. For example:
 
-```Java
+```java
 double speed = 0, turn = 0;
 boolean driveStraight = false;
 long timeout = 0;
@@ -110,7 +110,7 @@ All the code below runs the same as the code above, but it is noticeably cleaner
 
 Method 1:
 
-```Java
+```java
 double speed = 0, turn = 0;
 boolean driveStraight = false;
 long timeout = 0;
@@ -138,7 +138,7 @@ public ThisExampleIsLong(double speed, double turn, long timeout, boolean driveS
 
 Method 2:
 
-```Java
+```java
 double speed = 0, turn = 0;
 boolean driveStraight = false;
 long timeout = 0;
