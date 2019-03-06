@@ -14,8 +14,6 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.*;
 
-import com.revrobotics.CANDigitalInput;
-
 import org.team217.*;
 import org.team217.pid.*;
 
@@ -46,7 +44,6 @@ public class LiftingMechanism extends Subsystem {
 
     public double lastElevatorPos = 0;
     public double lastArmPos = 0;
-    public boolean isArmOut = false;
 
     boolean isBack = false, setBack = true;
     
@@ -70,7 +67,7 @@ public class LiftingMechanism extends Subsystem {
     APID elevatorAPID = RobotMap.elevAPID;
     APID telescopeAPID = RobotMap.telescopeAPID;
 
-    boolean isTelescopeIn = true;
+    boolean isTelescopeOut = false;
 
     @Override
     public void initDefaultCommand() {
@@ -112,13 +109,18 @@ public class LiftingMechanism extends Subsystem {
     /** Moves the telescope to the out position. */
     public void telescopeOut() {
         telescope(-.25);
-        isArmOut = true;
+        isTelescopeOut = true;
     }
 
     /** Moves the telescope to the in position. */
     public void telescopeIn() {
         telescope(.25);
-        isArmOut = false;
+        isTelescopeOut = false;
+    }
+
+    /** Returns {@code true} if the telescope is out. */
+    public boolean getTelescopeOut() {
+        return isTelescopeOut;
     }
 
     /**
@@ -185,30 +187,29 @@ public class LiftingMechanism extends Subsystem {
      *        The current arm speed
      */
     public double armLimitCheck(double speed) {
-    if(isArmOut){
-        if (rightArm1.getPosition() >= 0 && speed >= 0.0) { //get some limit switches, make sure logic is right
-            speed = 0;
+        if(isTelescopeOut) {
+            if (rightArm1.getPosition() >= 0 && speed >= 0.0) { //get some limit switches, make sure logic is right
+                speed = 0;
+            }
+            else if (rightArm1.getPosition() <= -125 && speed <= 0.0 && rightElevator1.getEncoder() >= -10000) { //Practice: 107 when tele is out, ; Comp: -207
+                speed = 0;
+            }
+            else if (rightArm1.getPosition() <= -143 && speed <= 0.0 && rightElevator1.getEncoder() < -10000){
+                speed = 0;
+            }
+        } 
+        else {
+            if (rightArm1.getPosition() >= 0 && speed >= 0.0) { //get some limit switches, make sure logic is right
+                speed = 0;
+            }
+            else if (rightArm1.getPosition() <= -125 && speed <= 0.0 && rightElevator1.getEncoder() >= -10000) { //Practice: 107 when tele is out, ; Comp: -207
+                speed = 0;
+            }
+            else if (rightArm1.getPosition() <= -143 && speed <= 0.0 && rightElevator1.getEncoder() < -10000){
+                speed = 0;
+            }
         }
-        else if (rightArm1.getPosition() <= -125 && speed <= 0.0 && rightElevator1.getEncoder() >= -10000) { //Practice: 107 when tele is out, ; Comp: -207
-            speed = 0;
-        }
-        else if (rightArm1.getPosition() <= -143 && speed <= 0.0 && rightElevator1.getEncoder() < -10000){
-            speed = 0;
-        }
-
-    } 
-    else if(!isArmOut){
-        if (rightArm1.getPosition() >= 0 && speed >= 0.0) { //get some limit switches, make sure logic is right
-            speed = 0;
-        }
-        else if (rightArm1.getPosition() <= -125 && speed <= 0.0 && rightElevator1.getEncoder() >= -10000) { //Practice: 107 when tele is out, ; Comp: -207
-            speed = 0;
-        }
-        else if (rightArm1.getPosition() <= -143 && speed <= 0.0 && rightElevator1.getEncoder() < -10000){
-            speed = 0;
-        }
-    }
-    return speed;
+        return speed;
     }
 
     /**
