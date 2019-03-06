@@ -13,6 +13,9 @@ import org.team217.rev.*;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.*;
+
+import com.revrobotics.CANDigitalInput;
+
 import org.team217.*;
 import org.team217.pid.*;
 
@@ -38,6 +41,8 @@ public class LiftingMechanism extends Subsystem {
     DigitalInput wristFrontLimit1 = RobotMap.wristFrontLimit;
     //	DigitalInput armFrontLimit1 = RobotMap.armFrontLimit;
     //	DigitalInput armBackLimit1 = RobotMap.armBackLimit;
+    CANDigitalInput telescopeInLimit1 = RobotMap.telescopeInLimit;
+    CANDigitalInput telescopeOutLimit1 = RobotMap.telescopeOutLimit;
 
     public double lastElevatorPos = 0;
     public double lastArmPos = 0;
@@ -80,12 +85,13 @@ public class LiftingMechanism extends Subsystem {
      *        The current telescope speed
      */
     public double telescopeLimitCheck(double speed) {
-        if (RobotMap.telescopeOutLimit.get() && speed < 0) {
+        if (telescopeOutLimit1.get() && speed <= 0) {
             speed = 0;
+            System.out.println("In");
         }
-        else if (RobotMap.telescopeInLimit.get() && speed > 0) {
+        else if (telescopeInLimit1.get() && speed >= 0) {
             speed = 0;
-            telescope1.resetEncoder();
+            System.out.println("Out");
         }
         return speed;
     }
@@ -98,27 +104,18 @@ public class LiftingMechanism extends Subsystem {
      */
     public void telescope(double speed) {
         speed = telescopeLimitCheck(speed);
+        System.out.println(speed);
         telescope1.set(speed);
     }
 
     /** Moves the telescope to the out position. */
     public void telescopeOut() {
-        if (isTelescopeIn) {
-            telescopeAPID.initialize();
-            isTelescopeIn = false;
-        }
-        double speed = telescopeAPID.getOutput(telescope1.getPosition(), 1000);
-        telescope(speed);
+        telescope(-1);
     }
 
     /** Moves the telescope to the in position. */
     public void telescopeIn() {
-        if (!isTelescopeIn) {
-            telescopeAPID.initialize();
-            isTelescopeIn = true;
-        }
-        double speed = telescopeAPID.getOutput(telescope1.getPosition(), 0);
-        telescope(speed);
+        telescope(1);
     }
 
     /**
@@ -160,7 +157,7 @@ public class LiftingMechanism extends Subsystem {
         	elevatorMult = .25;
         }
 
-        if (rightElevator1.getEncoder() >= 16180 && speed < 0) { //Check this first so we can still hold it up
+        if (rightElevator1.getEncoder() <= -16180 && speed < 0) { //Check this first so we can still hold it up
             speed = 0;
         }
         
@@ -173,6 +170,7 @@ public class LiftingMechanism extends Subsystem {
         }
         
         speed = elevatorLimitCheck(speed);
+
         rightElevator1.set(speed * elevatorMult);
         leftElevator1.set((speed * elevatorMult));
     }
@@ -245,11 +243,11 @@ public class LiftingMechanism extends Subsystem {
             armMult = 1;
         }
 
-        speed = armLimitCheck(speed);
+      //  speed = armLimitCheck(speed);
         rightArm1.set(speed * armMult);
 
-        System.out.println("Arm " + rightArm1.getPosition());
-        System.out.println("Wrist Gyro " + intakeGyro1.getAngle());
+//        System.out.println("Arm " + rightArm1.getPosition());
+ //       System.out.println("Wrist Gyro " + intakeGyro1.getAngle());
     }
 
     /**

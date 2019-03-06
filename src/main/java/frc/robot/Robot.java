@@ -281,11 +281,13 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Wrist Limit Front", RobotMap.wristFrontLimit.get());
         SmartDashboard.putBoolean("Wrist Limit Back", RobotMap.wristBackLimit.get());
 
+        SmartDashboard.putBoolean("Telescope Limit Out", RobotMap.telescopeOutLimit.get());
+        SmartDashboard.putBoolean("Telescope Limit In", RobotMap.telescopeInLimit.get());
         //SmartDashboard.putBoolean("Arm Limit Front", RobotMap.armFrontLimit.get());
         //SmartDashboard.putBoolean("Arm Limit Back", RobotMap.armBackLimit.get());
 
-        //SmartDashboard.putBoolean("Elevator Bottom Limit", RobotMap.elevatorBottomLimit.get());
-        //SmartDashboard.putBoolean("Elevator Top Limit", RobotMap.elevatorTopLimit.get());
+        SmartDashboard.putBoolean("Elevator Bottom Limit", RobotMap.elevatorBottomLimit.get());
+        SmartDashboard.putBoolean("Elevator Top Limit", RobotMap.elevatorTopLimit.get());
     }
 
     public boolean isValidPigeon() {

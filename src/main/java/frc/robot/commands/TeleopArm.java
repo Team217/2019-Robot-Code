@@ -47,7 +47,7 @@ public class TeleopArm extends Command {
 
         if (!isPreset) {
             double speed = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
-            Robot.kLiftingMechanism.arm(speed);
+            Robot.kLiftingMechanism.arm(-speed);
         }
     }
 

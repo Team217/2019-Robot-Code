@@ -51,8 +51,16 @@ public class TeleopTelescope extends Command {
             else if (Robot.m_oi.squareOper.get()) {
                 Robot.kLiftingMechanism.telescopeOut();
             }
-            else if (Robot.m_oi.buttonOptionOper.get()) {
-                Robot.kLiftingMechanism.telescope(-0.2);
+            else if (Robot.m_oi.buttonOptionOper.get()) { //out
+                Robot.kLiftingMechanism.telescope(-1.0);
+                System.out.println("Option");
+            }
+            else if (Robot.m_oi.psButtonOper.get()){ //in
+                Robot.kLiftingMechanism.telescope(1.0);
+                System.out.println("PS Button");
+            }
+            else{
+                Robot.kLiftingMechanism.telescope(0);
             }
         }
     }

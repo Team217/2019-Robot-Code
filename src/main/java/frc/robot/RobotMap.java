@@ -8,6 +8,8 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.revrobotics.CANDigitalInput;
+import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import org.team217.ctre.*;
@@ -50,12 +52,12 @@ public class RobotMap {
     public static final int wrist_ID = 8; //TalonSRX 8 
 
     public static final int elevatorBottomLimit_ID = 7; //DigitalInput Limit Switch
-    public static final int elevatorTopLimit_ID = 9; //DigitalInput Limit Switch
+    public static final int elevatorTopLimit_ID = 2; //DigitalInput Limit Switch
     public static final int wristFrontLimit_ID = 5; //DigitalInput Limit Switch
     public static final int wristBackLimit_ID = 6; //DigitalInput Limit Switch
     public static final int ballLimit_ID = 8; //DigitalInput Limit Switch 
-    public static final int telescopeOutLimit_ID = 1; //DigitalInput Limit Switch 
-    public static final int telescopeInLimit_ID = 2; //DigitalInput Limit Switch 
+    //public static final int telescopeOutLimit_ID = 1; //DigitalInput Limit Switch 
+    //public static final int telescopeInLimit_ID = 2; //DigitalInput Limit Switch 
     public static final int LED_ID = 4; //DigitalInput LED
 
     //Intake _IDs
@@ -99,8 +101,8 @@ public class RobotMap {
     public static DigitalInput wristFrontLimit = new DigitalInput(wristFrontLimit_ID);
     public static DigitalInput wristBackLimit = new DigitalInput(wristBackLimit_ID);
     public static DigitalInput ballLimit = new DigitalInput(ballLimit_ID);
-    public static DigitalInput telescopeOutLimit = new DigitalInput(telescopeOutLimit_ID);
-    public static DigitalInput telescopeInLimit = new DigitalInput(telescopeInLimit_ID);
+    public static CANDigitalInput telescopeOutLimit = telescope.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+    public static CANDigitalInput telescopeInLimit = telescope.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
 
     //Intake Controllers/Solenoids
     public static WPI_VictorSPX intakeOne = new WPI_VictorSPX(intake_ID1); //VictorSPX 
