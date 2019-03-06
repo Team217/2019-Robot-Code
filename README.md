@@ -45,6 +45,8 @@ public class ThisExampleAlsoGood {
 }
 ```
 
+NOTE 2: You do not need to call `this.var` in the code above because there is no local variable called `var` that would conflict with the variable call.
+
 **`this(param)`**
 
 Sometimes, constructors do a lot of the same stuff as others except for one line.
