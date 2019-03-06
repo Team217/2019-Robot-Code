@@ -106,8 +106,7 @@ public class RobotMap {
     public static WPI_VictorSPX intakeOne = new WPI_VictorSPX(intake_ID1); //VictorSPX 
     public static WPI_VictorSPX intakeTwo = new WPI_VictorSPX(intake_ID2); //VictorSPX
 
-    public static DoubleSolenoid topHatchSolenoid = new DoubleSolenoid(topHatchSolenoid_ID1,
-            topHatchSolenoid_ID2);
+    public static DoubleSolenoid topHatchSolenoid = new DoubleSolenoid(topHatchSolenoid_ID1, topHatchSolenoid_ID2);
 
     //Climber PTOs
     public static DoubleSolenoid climbPTOSolenoid = new DoubleSolenoid(climbPTOSolenoid_ID1, climbPTOSolenoid_ID2);
