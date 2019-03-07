@@ -160,9 +160,6 @@ public class LiftingMechanism extends Subsystem {
      *        The elevator speed
      */
     public void elevator(double speed) {
-        
-        //elevatorMaintainPID1.setPID(0.0001417, 0.00000117, 0); //not even close to the right PID here
-
         double elevatorMult = 0.65;
         
         if (rightElevator1.getEncoder() <= -11500 && speed <= 0) { //encoder values are wrong, check the logic
@@ -229,38 +226,6 @@ public class LiftingMechanism extends Subsystem {
      *        The arm speed
      */
     public void arm(double speed) {
-        /*
-        if(rightArm1.getPosition() <= && speed <= 0){ 	//get encoder value, check logic (slow going to front extreme)
-        	armMult = .35;
-        }	
-        else if(rightArm1.getPosition() >= && speed >= 0){ 	//same as above. (slow top when front goes to back)
-        	armMult = .5;
-        }
-        else if(rightArm1.getPosition() <= && speed <= 0){ //same as above. (slow top when back goes to front)
-        	armMult = .5;
-        }
-        else if(rightArm1.getPosition() >= && speed >= 0){ 	//same as above. (slow going to back extreme)
-        	armMult = .35;
-        }
-        else {
-        	armMult = 1;
-        }
-        
-        if (speed != 0) {
-        	lastEncoder = rightArm1.getPosition(); //wrong encoder perhaps?
-        	armSpeed = speed;
-        }
-        
-        else if(speed == 0 && rightArm1.getPosition() == ) { //value should be right before the middle, coming from the front (use potentiometer?)
-        	armSpeed = -0; //find right value, might need to use PID this time
-        	armMult = 1.0;
-        }
-        else if(speed == 0 && rightArm1.getPosition() == ) { //value should be right before the middle, coming from the back (use potentiometer?)
-        	armSpeed = 0; //find right value, might need to use PID this time
-        	armMult = 1.0;
-        }
-        */
-
         double armMult = .50;
 
         if (speed != 0) {
