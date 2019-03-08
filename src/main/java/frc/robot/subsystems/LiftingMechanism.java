@@ -44,6 +44,7 @@ public class LiftingMechanism extends Subsystem {
 
     public double lastElevatorPos = 0;
     public double lastArmPos = 0;
+    
 
     boolean isBack = false, setBack = true;
     
@@ -83,13 +84,14 @@ public class LiftingMechanism extends Subsystem {
      *        The current telescope speed
      */
     public double telescopeLimitCheck(double speed) {
-        if (!telescopeOutLimit1.get() && speed <= 0) {
+        if (!telescopeOutLimit1.get() && speed >= 0) {   
             speed = 0;
- //           System.out.println("In");
         }
-        else if (!telescopeInLimit1.get() && speed >= 0) {
-            speed = 0;
- //           System.out.println("Out");
+        else if (!telescopeInLimit1.get()){
+            telescope1.resetEncoder();
+            if(speed <= 0){
+                speed = 0;
+            }
         }
         return speed;
     }
@@ -101,10 +103,19 @@ public class LiftingMechanism extends Subsystem {
      *        The telescope speed
      */
     public void telescope(double speed) {
+        double telescopeMult = 1;
+
+        if(telescope1.getEncoder() <= 5000){
+            telescopeMult = .75;
+        }
+        else if(telescope1.getEncoder() >= 15000){
+            telescopeMult = .75;
+        }
+
         speed = telescopeLimitCheck(speed);
-//        System.out.println(speed);
-        telescope1.set(speed);
+        telescope1.set(speed * telescopeMult);
     }
+
 
     /** Moves the telescope to the out position. */
     public void telescopeOut() {
@@ -113,7 +124,7 @@ public class LiftingMechanism extends Subsystem {
             isTelescopeOut = true;
         }
 
-        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), -10000);
+        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 28000); //TODO: Get correct value
         telescope(speed);
     }
 
@@ -141,8 +152,8 @@ public class LiftingMechanism extends Subsystem {
      */
     public double elevatorLimitCheck(double speed) {
         if (!RobotMap.elevatorBottomLimit.get()) {
-            rightElevator1.resetEncoder();
-            if (speed > 0) {
+            leftElevator1.resetEncoder();
+            if (speed > 0){
                 speed = 0;
             }
         }
@@ -162,24 +173,24 @@ public class LiftingMechanism extends Subsystem {
     public void elevator(double speed) {
         double elevatorMult = 0.65;
         
-        if (rightElevator1.getEncoder() <= -11500 && speed <= 0) { //encoder values are wrong, check the logic
+        if (leftElevator1.getEncoder() <= -11500 && speed <= 0) { //encoder values are wrong, check the logic
         	elevatorMult = .35;
         }
-        else if(rightElevator1.getEncoder() >= -5500 && speed >= 0.0) { //this one too
+        else if(leftElevator1.getEncoder() >= -5500 && speed >= 0.0) { //this one too
         	elevatorMult = .25;
         }
 
-        if (rightElevator1.getEncoder() <= -16180 && speed < 0) { //Check this first so we can still hold it up
+        if (leftElevator1.getEncoder() <= -16180 && speed < 0) { //Check this first so we can still hold it up
             speed = 0;
         }
         
         if (speed != 0) {
-            Robot.kLiftingMechanism.lastElevatorPos = RobotMap.rightElevator.getEncoder();
+            Robot.kLiftingMechanism.lastElevatorPos = leftElevator1.getEncoder();
         }
-        else {
-            speed = RobotMap.elevatorHoldPID.getOutput(RobotMap.rightElevator.getEncoder(), Robot.kLiftingMechanism.lastElevatorPos);
-            elevatorMult = 1;
-        }
+     //   else {
+     //       speed = RobotMap.elevatorHoldPID.getOutput(RobotMap.rightElevator.getEncoder(), Robot.kLiftingMechanism.lastElevatorPos);
+     //       elevatorMult = 1;
+     //   }  obselete
         
         speed = elevatorLimitCheck(speed);
 
@@ -195,24 +206,24 @@ public class LiftingMechanism extends Subsystem {
      */
     public double armLimitCheck(double speed) {
         if(isTelescopeOut) {
-            if (rightArm1.getPosition() >= 0 && speed >= 0.0) { //get some limit switches, make sure logic is right
+            if (rightArm1.getPosition() <= 0 && speed <= 0.0) { //get some limit switches, make sure logic is right
                 speed = 0;
             }
-            else if (rightArm1.getPosition() <= -125 && speed <= 0.0 && rightElevator1.getEncoder() >= -10000) { //Practice: 107 when tele is out, ; Comp: -207
+            else if (rightArm1.getPosition() >= 109 && speed >= 0.0) { //Practice: 107 when tele is out, ; Comp: -207
                 speed = 0;
             }
-            else if (rightArm1.getPosition() <= -143 && speed <= 0.0 && rightElevator1.getEncoder() < -10000){
+            else if (rightArm1.getPosition() >= 109 && speed >= 0.0){
                 speed = 0;
             }
         } 
         else {
-            if (rightArm1.getPosition() >= 0 && speed >= 0.0) { //get some limit switches, make sure logic is right
+            if (rightArm1.getPosition() <= 0 && speed <= 0.0) { //get some limit switches, make sure logic is right
                 speed = 0;
             }
-            else if (rightArm1.getPosition() <= -125 && speed <= 0.0 && rightElevator1.getEncoder() >= -10000) { //Practice: 107 when tele is out, ; Comp: -207
+            else if (rightArm1.getPosition() >= 109 && speed >= 0.0) { //Practice: 107 when tele is out, ; Comp: -207
                 speed = 0;
             }
-            else if (rightArm1.getPosition() <= -143 && speed <= 0.0 && rightElevator1.getEncoder() < -10000){
+            else if (rightArm1.getPosition() >= 109 && speed >= 0.0){
                 speed = 0;
             }
         }
@@ -227,19 +238,23 @@ public class LiftingMechanism extends Subsystem {
      */
     public void arm(double speed) {
         double armMult = .50;
-
-        if (speed != 0) {
-            lastArmPos = RobotMap.rightArm.getPosition();
+       
+        if (!Robot.kClimbingSubsystem.isClimbing()) {
+            if (speed != 0) {
+                lastArmPos = RobotMap.rightArm.getPosition();
+            }
+            else {
+                speed = RobotMap.armHoldPID.getOutput(RobotMap.rightArm.getPosition(), Robot.kLiftingMechanism.lastArmPos);
+            }
+    
+            speed = armLimitCheck(speed);
+            
         }
-        else {
-            speed = RobotMap.armHoldPID.getOutput(RobotMap.rightArm.getPosition(), Robot.kLiftingMechanism.lastArmPos);
-            armMult = 1;
-        }
-
-      //  speed = armLimitCheck(speed);
+      
         rightArm1.set(speed * armMult);
 
         System.out.println("Arm " + rightArm1.getPosition());
+        System.out.println("Arm speed" + speed);
  //       System.out.println("Wrist Gyro " + intakeGyro1.getAngle());
     }
 
@@ -303,27 +318,28 @@ public class LiftingMechanism extends Subsystem {
      *        {@code true} if the preset moves the arm to the back region of the bot
      */
     public void armPreset(Preset presetState, boolean isBack) {
+        System.out.println("Here");
         double target = 0;
         switch (presetState) {
         case Low:
-            target = (isBack) ? -143 : -3.5;
+            target = (isBack) ? 111.14 : 13;
             break;
         case Mid:
-            target = (isBack) ? -92 : -57;
+            target = (isBack) ? 73.1 : 58;
             break;
         case High:
-            target = (isBack) ? -85 : -67;
+            target = (isBack) ? 68.168 : 56.5;
             break;
         case RocketAdj:
             switch (lastPresetA) {
-            case Low:
-                target = (isBack) ? -143 : -3.5;
+                case Low:
+                target = (isBack) ? 111.14 : 6.98;
                 break;
             case Mid:
-                target = (isBack) ? -92 : -57;
+                target = (isBack) ? 73.1 : 56.19;
                 break;
             case High:
-                target = (isBack) ? -85 : -67;
+                target = (isBack) ? 68.168 : 59.334;
                 break;
             default:
                 presetState = Preset.Manual;
@@ -363,24 +379,24 @@ public class LiftingMechanism extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = (isBack) ? 3468 : 124;
+            target = (isBack) ? -4140 : -773;
             break;
         case Mid:
-            target = (isBack) ? 1023 : 2834;
+            target = (isBack) ? -3950 : -4090;
             break;
         case High:
-            target = (isBack) ? 657 : 3345;
+            target = (isBack) ? -377 : -4100;
             break;
         case RocketAdj:
             switch (lastPresetW) {
-            case Low:
-                target = (isBack) ? 3468 : 124;
+                case Low:
+                target = (isBack) ? -4140 : -377;
                 break;
             case Mid:
-                target = (isBack) ? 1023 : 2834;
+                target = (isBack) ? -3950 : -3950;
                 break;
             case High:
-                target = (isBack) ? 657 : 3345;
+                target = (isBack) ? -377 : -4140;
                 break;
             default:
                 presetState = Preset.Manual;
@@ -397,7 +413,7 @@ public class LiftingMechanism extends Subsystem {
                 wristAPID.initialize();
             }
             else {
-                speed = Range.inRange(wristAPID.getOutput(wrist1.getEncoder(), target), -.6, .6);
+                speed = Range.inRange(-wristAPID.getOutput(wrist1.getEncoder(), target), -1, 1);
             }
 
             if (!presetState.equals(Preset.RocketAdj)) {
@@ -418,24 +434,24 @@ public class LiftingMechanism extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = -12762;
+            target = -6800;
             break;
         case Mid:
             target = 0;
             break;
         case High:
-            target = -13300;
+            target = -13762;
             break;
         case RocketAdj:
             switch (lastPresetE) {
             case Low:
-                target = -12762;
+                target = -5183;
                 break;
             case Mid:
                 target = 0;
                 break;
             case High:
-                target = -13300;
+                target = -11762;
                 break;
             default:
                 presetState = Preset.Manual;
@@ -452,7 +468,7 @@ public class LiftingMechanism extends Subsystem {
                 elevatorAPID.initialize();
             }
             else {
-                speed = Range.inRange(elevatorAPID.getOutput(rightElevator1.getEncoder(), target), -.6, .6);
+                speed = Range.inRange(elevatorAPID.getOutput(leftElevator1.getEncoder(), target), -.6, .6);
             }
 
             if (!presetState.equals(Preset.RocketAdj)) {

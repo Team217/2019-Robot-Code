@@ -63,8 +63,11 @@ public class Robot extends TimedRobot {
         RobotMap.rightArm.resetEncoder();
         RobotMap.telescope.resetEncoder();
 
+
         RobotMap.rightElevator.resetEncoder();
         RobotMap.leftElevator.resetEncoder();
+
+        RobotMap.wrist.resetEncoder();
 
         RobotMap.pigeonDrive.reset();
         RobotMap.intakeGyro.reset();
@@ -241,7 +244,7 @@ public class Robot extends TimedRobot {
         kLiftingMechanism.elevator(elevatorSpeed);
 
         //Arm
-        double armSpeed = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.05);
+        double armSpeed = Range.deadband(-Robot.m_oi.oper.getRawAxis(5), 0.05);
         RobotMap.rightArm.set(armSpeed);
 
         //Wrist
@@ -267,12 +270,12 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Wrist Gyro", RobotMap.intakeGyro.getAngle());
 
         //SmartDashboard.putNumber("Left Drive Encoder", RobotMap.leftMaster.getPosition());
-        SmartDashboard.putNumber("Right Drive Encoder", RobotMap.rightMaster.getPosition());
+        //SmartDashboard.putNumber("Right Drive Encoder", RobotMap.rightMaster.getPosition());
 
-        //SmartDashboard.putNumber("Left Elevator Encoder", RobotMap.leftElevator.getEncoder());
+        SmartDashboard.putNumber("Left Elevator Encoder", RobotMap.leftElevator.getEncoder());
         SmartDashboard.putNumber("Right Elevator Encoder", RobotMap.rightElevator.getEncoder());
 
-        //SmartDashboard.putNumber("Right Arm Encoder", RobotMap.rightArm.getPosition());
+        SmartDashboard.putNumber("Right Arm Encoder", RobotMap.rightArm.getPosition());
         //SmartDashboard.putNumber("Right Arm Encoder", RobotMap.rightArm.getPosition());
 
         SmartDashboard.putNumber("Right Wrist Encoder", RobotMap.wrist.getEncoder());
@@ -283,6 +286,8 @@ public class Robot extends TimedRobot {
 
         SmartDashboard.putBoolean("Telescope Limit Out", RobotMap.telescopeOutLimit.get());
         SmartDashboard.putBoolean("Telescope Limit In", RobotMap.telescopeInLimit.get());
+        SmartDashboard.putNumber("Telescope Encoder", RobotMap.telescope.getEncoder());
+
         //SmartDashboard.putBoolean("Arm Limit Front", RobotMap.armFrontLimit.get());
         //SmartDashboard.putBoolean("Arm Limit Back", RobotMap.armBackLimit.get());
 

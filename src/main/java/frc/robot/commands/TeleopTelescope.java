@@ -38,21 +38,26 @@ public class TeleopTelescope extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (PresetState.getPOVStatus()) {
-            isPreset = PresetState.getStatus();
-        }
-        else if (!PresetState.getStatus()) {
-            isPreset = false;
-        }
+ //       if (PresetState.getPOVStatus()) {
+ //           isPreset = PresetState.getStatus();
+ //       }
+ //       else if (!PresetState.getStatus()) {
+ //           isPreset = false;
+ //       }
 
-        if (!isPreset) {
-            if (Robot.m_oi.squareOper.get()) {
-                direction = -1;
+ //       if (!isPreset) {
+            if (Robot.m_oi.squareOper.get()) { //out
+                Robot.kLiftingMechanism.telescope(1);
             }
-            else if (Robot.m_oi.xOper.get()) {
-                direction = 1;
+            else if (Robot.m_oi.xOper.get()) { //in
+                Robot.kLiftingMechanism.telescope(-1);
+            }
+            else{
+                Robot.kLiftingMechanism.telescope(0);
             }
 
+
+/*
             switch (direction) {
             case 1:
                 Robot.kLiftingMechanism.telescopeOut();
@@ -66,7 +71,8 @@ public class TeleopTelescope extends Command {
         }
         else {
             direction = 0;
-        }
+        }*/
+ //   }
     }
 
     // Make this return true when this Command no longer needs to run execute()

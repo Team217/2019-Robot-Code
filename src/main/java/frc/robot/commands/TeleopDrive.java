@@ -38,7 +38,7 @@ public class TeleopDrive extends Command {
             speed += Math.abs(turn);
             if (turn == 0) {
                 double tilt = Range.deadband(RobotMap.pigeonDrive.getRoll(), 1.5);
-                turn += Range.inRange(0.05 * tilt, -0.35, 0.35); // Correct the climber automatically to stay level
+                //turn += Range.inRange(0.03 * tilt, -0.35, 0.35); // Correct the climber automatically to stay level
             }
             Robot.kDrivingSubsystem.drive(speed, turn);
         }

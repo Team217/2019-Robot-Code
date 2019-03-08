@@ -56,7 +56,7 @@ public class TeleopWristPreset extends Command {
         }
 
         if (setBack && PresetState.getPOVStatus()) {
-            isBack = rightArm1.getPosition() < -80;
+            isBack = rightArm1.getPosition() > 60;
             isBack = Robot.m_oi.touchPadOper.get() ? !isBack : isBack;
             setBack = !Robot.m_oi.touchPadOper.get();
         }
