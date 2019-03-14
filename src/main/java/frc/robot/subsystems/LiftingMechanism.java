@@ -295,10 +295,10 @@ public class LiftingMechanism extends Subsystem {
         double armAngle = intakeGyro1.getAngle(); // Might be pitch or yaw, depending on how electical electricities
         double speed = 0;
 
-        if (rightArm1.getPosition() > -70) {
+        if (rightArm1.getPosition() < 60) {
             speed = Range.inRange(-wristGyroPID.getOutput(armAngle, 0), -1.0, 1.0);
         }
-        else if (rightArm1.getPosition() <= -70 && rightArm1.getPosition() >= -85) {
+        else if (rightArm1.getPosition() >= 60 && rightArm1.getPosition() <= 75) {
             if (armAngle < 80) {
                 speed = -.7073;
             }
@@ -337,13 +337,13 @@ public class LiftingMechanism extends Subsystem {
         case RocketAdj:
             switch (lastPresetA) {
                 case Low:
-                target = (isBack) ? 111.14 : 6.98;
+                target = (isBack) ? 111.14 : 13;
                 break;
             case Mid:
-                target = (isBack) ? 73.1 : 56.19;
+                target = (isBack) ? 73.1 : 58;
                 break;
             case High:
-                target = (isBack) ? 68.168 : 59.334;
+                target = (isBack) ? 68.168 : 56.5;
                 break;
             default:
                 presetState = Preset.Manual;
