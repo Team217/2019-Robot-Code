@@ -9,12 +9,30 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
+import frc.robot.subsystems.LiftingMechanism.Preset;
 
-public class teleopHatchPickup extends Command {
-    public teleopHatchPickup() {
+import org.team217.pid.*;
+
+/**
+ * Runs the elevator in teleop control mode using {@code PID} to reach a preset.
+ * 
+ * @author ThunderChickens 217
+ */
+public class TeleopElevatorPreset extends Command {
+    boolean isPreset = false;
+    APID elevAPID = RobotMap.elevAPID;
+    double target = 0;
+
+    Preset presetState = Preset.Manual;
+
+    /**
+     * Runs the elevator in teleop control mode.
+     * 
+     * @author ThunderChickens 217
+     */
+    public TeleopElevatorPreset() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        super("teleopHatchPickup");
     }
 
     // Called just before this Command runs the first time
@@ -25,11 +43,17 @@ public class teleopHatchPickup extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (Robot.m_oi.circleOper.get()) {
-            Robot.kIntakeSubsystem.extend();
+        if (PresetState.getPOVStatus()) {
+            isPreset = PresetState.getStatus();
         }
-        else if (Robot.m_oi.triangleOper.get()) {
-            Robot.kIntakeSubsystem.retract();
+        else if (!PresetState.getStatus()) {
+            isPreset = false;
+            presetState = Preset.Manual;
+        }
+
+        if (isPreset) {
+            presetState = PresetState.getPresetState();
+            Robot.kLiftingMechanism.elevatorPreset(presetState);
         }
     }
 
@@ -42,11 +66,13 @@ public class teleopHatchPickup extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.kLiftingMechanism.elevator(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        Robot.kLiftingMechanism.elevator(0);
     }
 }

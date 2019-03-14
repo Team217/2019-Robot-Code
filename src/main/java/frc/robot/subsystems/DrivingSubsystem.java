@@ -1,12 +1,15 @@
 package frc.robot.subsystems;
 
 import org.team217.pid.*;
+import org.team217.*;
 import frc.robot.*;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- *
+ * Manages the robot's drivebase.
+ * 
+ * @author ThunderChickens 217
  */
 public class DrivingSubsystem extends Subsystem {
 
@@ -21,20 +24,27 @@ public class DrivingSubsystem extends Subsystem {
     }
 
     PID driveStraightPID = new PID(0.01, 0, 0);
+    PID visionPID = RobotMap.visionPID;
     public double targetAngle = 0.0;
-    boolean useAntiTipAngle = false;
+    private boolean useAntiTipAngle = false;
 
+    /**
+     * Returns the modified motor speeds if antitip code is triggered.
+     * 
+     * @param leftSpeed
+     *        The current left motor speed
+     * @param rightSpeed
+     *        The current right motor speed
+     */
     protected MotorSpeed antiTip(double leftSpeed, double rightSpeed) {
         double antiTipAngle = (useAntiTipAngle) ? 6.0 : 12.0;
-        if (RobotMap.pigeonDrive.getPitch() >= antiTipAngle) {
+        double angle = RobotMap.pigeonDrive.getPitch();
+        int tipSign = Range.sign(angle);
+        
+        if (Math.abs(angle) >= antiTipAngle) {
             useAntiTipAngle = true;
-            leftSpeed = -0.3707;
-            rightSpeed = 0.3707;
-        }
-        else if (RobotMap.pigeonDrive.getPitch() <= -antiTipAngle) {
-            useAntiTipAngle = true;
-            leftSpeed = 0.3707;
-            rightSpeed = -0.3707;
+            leftSpeed = tipSign * -0.3707;
+            rightSpeed = tipSign * 0.3707;
         }
         else {
             useAntiTipAngle = false;
@@ -43,7 +53,59 @@ public class DrivingSubsystem extends Subsystem {
         return new MotorSpeed(leftSpeed, rightSpeed);
     }
 
-    public void teleopDrive(double speed, double turn, boolean antiTipOn) {
+    /**
+     * Drives the bot.
+     * 
+     * @param speed
+     *        The forward/backward speed
+     */
+    public void drive(double speed) {
+        drive(speed, false);
+    }
+
+    /**
+     * Drives the bot with gyro correction.
+     * 
+     * @param speed
+     *        The forward/backward speed
+     * @param isDriveStraight
+     *        {@code true} [default] if the bot should use the {@code PigeonIMU} to drive straight
+     */
+    public void drive(double speed, boolean isDriveStraight) {
+        double turn = 0.0;
+
+        if (isDriveStraight) {
+            double correction = 0.5 * driveStraightPID.getOutput(RobotMap.pigeonDrive.getAngle(), targetAngle);
+            turn = correction * speed;
+            speed *= (1 - Math.abs(correction));
+        }
+
+        drive(speed, turn, false);
+    }
+
+    /**
+     * Drives the bot with turning.
+     * 
+     * @param speed
+     *        The forward/backward speed
+     * @param turn
+     *        The turn speed
+     */
+    public void drive(double speed, double turn) {
+        drive(speed, turn, false);
+    }
+
+    /**
+     * Drives the bot with turning and antitip.
+     * 
+     * @param speed
+     *        The forward/backward speed
+     * @param turn
+     *        The turn speed
+     * @param antiTipOn
+     *        {@code true} [not default] if the bot should run antitip code
+     */
+    public void drive(double speed, double turn, boolean antiTipOn) {
         double leftSpeed = speed + turn;
         double rightSpeed = -speed + turn;
 
@@ -57,30 +119,93 @@ public class DrivingSubsystem extends Subsystem {
         RobotMap.rightMaster.set(rightSpeed);
     }
 
-    public void autonDrive(double speed, boolean isDriveStraight) {
-        double turn = 0.0;
-
-        if (isDriveStraight) {
-            double correction = 0.5 * driveStraightPID.getOutput(RobotMap.pigeonDrive.getAngle(), targetAngle);
-            turn = correction * speed;
-            speed *= (1 - Math.abs(correction));
-        }
-
-        teleopDrive(speed, turn, false);
+    /**
+     * Turns the bot.
+     * 
+     * @param turn
+     *        The turn speed
+     */
+    public void autonTurn(double turn) {
+        drive(0.0, turn);
     }
 
-    public void autonTurn(double turn) {
-        teleopDrive(0.0, turn, false);
+    /**
+     * Drives the bot with vision-managed turning.
+     * 
+     * @param speed
+     *        The forward/backward speed
+     * @param isCamFront
+     *        {@code true} if using the front camera
+     */
+    public void visionDrive(double speed, boolean isCamFront) {
+        visionDrive(speed, isCamFront, false);
+    }
+
+    /**
+     * Drives the bot with vision-managed turning and antitip.
+     * 
+     * @param speed
+     *        The forward/backward speed
+     * @param isCamFront
+     *        {@code true} if using the front camera
+     * @param antiTipOn
+     *        {@code true} [not default] if the bot should run antitip code
+     */
+    public void visionDrive(double speed, boolean isCamFront, boolean antiTipOn) {
+        double turn = visionTurn(isCamFront);
+        drive(speed, turn, antiTipOn);
+    }
+
+    /**
+     * Calculates and returns the turn speed for vision-managed turning.
+     * 
+     * @param isCamFront
+     *        {@code true} if using the front camera
+     */
+    public double visionTurn(boolean isCamFront) {
+        double turn = 0;
+        double x = isCamFront ? Robot.getX1Vis() : Robot.getX2Vis();
+        double area = isCamFront ? Robot.getArea1Vis() : Robot.getArea2Vis();
+        double kP = Range.inRange(.03 / Math.sqrt(area) - .01, 0.015, 0.025);
+
+        visionPID.setP(kP);
+
+        if(!Range.isWithinRange(x, -0.5, 0.5)) {
+            turn = visionPID.getOutput(1.5 * area, x);
+        }
+
+        return turn;
+    }
+
+    /** Resets the vision-managed turning's PID. */
+    public void resetVisionPID() {
+        visionPID.resetErrors();
     }
 }
 
+/**
+ * Holds information for left and right motor speeds.
+ * 
+ * @author ThunderChickens 217
+ */
 final class MotorSpeed {
+    /** The left motor speed */
     public double leftSpeed = 0.0;
+    /** The right motor speed */
     public double rightSpeed = 0.0;
 
+    /** Constructor to make a new blank object that holds information for left and right motor speeds. */
     public MotorSpeed() {
     }
 
+    /**
+     * Constructor to make a new variable that holds information for left and right motor speeds.
+     * 
+     * @param leftSpeed
+     *        The left motor speed
+     * @param rightSpeed
+     *        The right motor speed
+     */
     public MotorSpeed(double leftSpeed, double rightSpeed) {
         this.leftSpeed = leftSpeed;
         this.rightSpeed = rightSpeed;

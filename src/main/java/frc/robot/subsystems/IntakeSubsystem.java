@@ -13,13 +13,18 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.*;
 
+/**
+ * Manages the robot's intake mechanism.
+ * 
+ * @author ThunderChickens 217
+ */
 public class IntakeSubsystem extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    WPI_VictorSPX intakeOne1 = RobotMap.intakeOne; //VictorSPX 
-    WPI_VictorSPX intakeTwo1 = RobotMap.intakeTwo; // VictorSPX 
-    DoubleSolenoid topHatchSolenoid1 = RobotMap.topHatchSolenoid;
+    WPI_VictorSPX intakeOne = RobotMap.intakeOne; //VictorSPX 
+    WPI_VictorSPX intakeTwo = RobotMap.intakeTwo; // VictorSPX 
+    DoubleSolenoid topHatchSolenoid = RobotMap.topHatchSolenoid;
 
     @Override
     public void initDefaultCommand() {
@@ -27,16 +32,24 @@ public class IntakeSubsystem extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
+    /**
+     * Runs the intake motors.
+     * 
+     * @param speed
+     *        The intake speed
+     */
     public void intake(double speed) {
-        intakeOne1.set(speed);
-        intakeTwo1.set(speed);
+        intakeOne.set(speed);
+        intakeTwo.set(speed);
     }
 
+    /** Extends the velcro panel. */
     public void extend() {
-        topHatchSolenoid1.set(DoubleSolenoid.Value.kForward);
+        topHatchSolenoid.set(DoubleSolenoid.Value.kForward);
     }
-
+    
+    /** Retracts the velcro panel. */
     public void retract() {
-        topHatchSolenoid1.set(DoubleSolenoid.Value.kReverse);
+        topHatchSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
 }

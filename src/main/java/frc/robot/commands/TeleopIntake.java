@@ -4,14 +4,24 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-/*
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
-public class teleopClimb extends Command {
-    public teleopClimb() {
+/**
+ * Runs the intake in teleop control mode.
+ * 
+ * @author ThunderChickens 217
+ */
+public class TeleopIntake extends Command {
+    /**
+     * Runs the intake in teleop control mode.
+     * 
+     * @author ThunderChickens 217
+     */
+    public TeleopIntake() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -24,18 +34,28 @@ public class teleopClimb extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (Robot.m_oi.circleDriver.get()) {
-            Robot.kClimbingSubsystem.fullClimbMode();
-        }
-        else if (Robot.m_oi.triangleDriver.get()) {
-            Robot.kClimbingSubsystem.driveMode();
-        }
+        double speed = 0;
 
+        if(!RobotMap.ballLimit.get()){
+            speed = .45;
+        }
+        
+        if (Robot.m_oi.leftBumperOper.get()) {
+            speed = 1;
+        }
+   //     else if (Robot.m_oi.oper.getPOV() == 180) {
+   //         speed = -0.35;
+   //     }
+       // else if (Robot.m_oi.rightBumperOper.get()) {
+        //    speed = -0.5;
+       // }
+        else if (Robot.m_oi.rightBumperOper.get()) {
+            speed = -1.0;
+        }
+    
+
+        Robot.kIntakeSubsystem.intake(speed);
     }
-    //full climb speed positive
-    //half front climb speed negative
-    //kdriveBase speed positive
-    //while in parallel with full climb speed negative?
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
@@ -46,13 +66,13 @@ public class teleopClimb extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.kIntakeSubsystem.intake(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        Robot.kIntakeSubsystem.intake(0);
     }
-
 }
-*/

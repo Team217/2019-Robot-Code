@@ -7,15 +7,33 @@
 
 package frc.robot.commands;
 
-import org.team217.*;
+import org.team217.rev.*;
+import org.team217.pid.*;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
-public class teleopArm extends Command {
-    boolean isRunning = true;
+/**
+ * Runs the wrist in teleop control mode using an {@code AnalogGyro}.
+ * 
+ * @author ThunderChickens 217
+ */
+public class TeleopWristGyro extends Command {
+    CANSparkMax rightArm1 = RobotMap.rightArm;
+    AnalogGyro intakeGyro1 = RobotMap.intakeGyro;
 
-    public teleopArm() {
+    boolean isPreset = false;
+    boolean isAuto = false;
+    
+    PID wristGyroPID = RobotMap.wristGyroPID;
+    
+    /**
+     * Runs the wrist in teleop control mode using an {@code AnalogGyro}.
+     * 
+     * @author ThunderChickens 217
+     */
+    public TeleopWristGyro() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -28,17 +46,26 @@ public class teleopArm extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (Robot.m_oi.rightTriggerOper.get() || Robot.m_oi.leftTriggerOper.get()) {
-            isRunning = true;
+        if (PresetState.getPOVStatus()) {
+            isPreset = PresetState.getStatus();
         }
-        else if (Robot.m_oi.touchPadOper.get()) {
-            isRunning = false;
+        else if (!PresetState.getStatus()) {
+            isPreset = false;
+        }
+        
+        if (Robot.m_oi.rightTriggerOper.get() || Robot.m_oi.leftTriggerOper.get()) {
+            isAuto = false;
+        }
+        else if (Robot.m_oi.buttonShareOper.get()) {
+            isAuto = true;
         }
 
-        if (isRunning) {
-            //moving arm w/wrist independence
-            double rightAnalog = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.05);
-            Robot.kLiftingMechanism.arm(rightAnalog);
+        if (!isPreset && isAuto) {
+            if (Robot.m_oi.psButtonOper.get()) {
+                RobotMap.intakeGyro.reset();
+            }
+
+            Robot.kLiftingMechanism.autoWrist();
         }
     }
 
@@ -51,11 +78,13 @@ public class teleopArm extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.kLiftingMechanism.wrist(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        Robot.kLiftingMechanism.wrist(0);
     }
 }

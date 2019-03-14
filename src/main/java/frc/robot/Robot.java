@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import java.time.Clock;
+
 import org.team217.*;
 
 import edu.wpi.first.networktables.*;
@@ -14,6 +16,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.*;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import frc.robot.commands.*;
+import frc.robot.commandgroups.*;
 import frc.robot.subsystems.*;
 
 /**
@@ -27,7 +30,7 @@ public class Robot extends TimedRobot {
     public static final DrivingSubsystem kDrivingSubsystem = new DrivingSubsystem();
     public static final IntakeSubsystem kIntakeSubsystem = new IntakeSubsystem();
     public static final LiftingMechanism kLiftingMechanism = new LiftingMechanism();
-    //public static final ClimbingSubsystem kClimbingSubsystem = new ClimbingSubsystem();
+    public static final ClimbingSubsystem kClimbingSubsystem = new ClimbingSubsystem();
     public static OI m_oi;
 
     Command teleopCommand;
@@ -41,6 +44,11 @@ public class Robot extends TimedRobot {
     static double y2 = 0;
     static double area2 = 0;
 
+    static final Clock clock = Clock.systemUTC();
+    boolean pigeonValid = true;
+    long pigeonValidStart = 0;
+    double lastRoll = 0, lastPitch = 0;
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -53,14 +61,18 @@ public class Robot extends TimedRobot {
         RobotMap.leftMaster.resetEncoder();
 
         RobotMap.rightArm.resetEncoder();
-        RobotMap.leftArm.resetEncoder();
+        RobotMap.telescope.resetEncoder();
+
 
         RobotMap.rightElevator.resetEncoder();
         RobotMap.leftElevator.resetEncoder();
 
+        RobotMap.wrist.resetEncoder();
+
         RobotMap.pigeonDrive.reset();
         RobotMap.intakeGyro.reset();
 
+        kClimbingSubsystem.setDrivePTO();
     }
 
     /**
@@ -86,6 +98,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
+        kLiftingMechanism.lastArmPos = RobotMap.rightArm.getPosition();
+        kLiftingMechanism.lastElevatorPos = RobotMap.rightElevator.getEncoder();
         Scheduler.getInstance().run();
     }
 
@@ -114,6 +128,8 @@ public class Robot extends TimedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.start();
         }
+
+        kClimbingSubsystem.setDrivePTO();
     }
 
     /**
@@ -121,6 +137,11 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
+        if (!isValidPigeon()) {
+            RobotMap.pigeonDrive.resetPitch();
+            RobotMap.pigeonDrive.resetRoll();
+        }
+
         Scheduler.getInstance().run();
     }
 
@@ -141,6 +162,7 @@ public class Robot extends TimedRobot {
             teleopCommand.start();
         }
 
+        kClimbingSubsystem.setDrivePTO();
     }
 
     /**
@@ -148,7 +170,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        NetworkTable table1 = NetworkTableInstance.getDefault().getTable("limelight-color"); //first limelight (front)
+        NetworkTable table1 = NetworkTableInstance.getDefault().getTable("limelight-front"); //first limelight (front)
         NetworkTableEntry tx1 = table1.getEntry("tx"); //first limelight
         NetworkTableEntry ty1 = table1.getEntry("ty"); //first limelight
         NetworkTableEntry ta1 = table1.getEntry("ta"); //first limelight
@@ -161,7 +183,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("LimelightY1", y1); //first limelight
         SmartDashboard.putNumber("LimelightA1", area1); //first limelight
 
-        NetworkTable table2 = NetworkTableInstance.getDefault().getTable("limelight-ir"); //second limelight (back)
+        NetworkTable table2 = NetworkTableInstance.getDefault().getTable("limelight-back"); //second limelight (back)
         NetworkTableEntry tx2 = table2.getEntry("tx"); //second limelight
         NetworkTableEntry ty2 = table2.getEntry("ty"); //second limelight
         NetworkTableEntry ta2 = table2.getEntry("ta"); //second limelight
@@ -176,22 +198,31 @@ public class Robot extends TimedRobot {
 
         smartDashboard();
 
+        if (!isValidPigeon()) {
+            RobotMap.pigeonDrive.resetPitch();
+            RobotMap.pigeonDrive.resetRoll();
+        }
+
         Scheduler.getInstance().run();
     }
 
-    public static double getX1Vis() {
+    /** Returns the X of Vision Camera 1. */
+    public static double getX1Vis() { //front
         return x1;
     }
 
-    public static double getArea1Vis() {
+    /** Returns the Area of Vision Camera 2. */
+    public static double getArea1Vis() { //front
         return area1;
     }
 
-    public static double getX2Vis() {
+    /** Returns the X of Vision Camera 2. */
+    public static double getX2Vis() { //back
         return x2;
     }
 
-    public static double getArea2Vis() {
+    /** Returns the Area of Vision Camera 2. */
+    public static double getArea2Vis() { //back
         return area2;
     }
 
@@ -213,9 +244,9 @@ public class Robot extends TimedRobot {
         kLiftingMechanism.elevator(elevatorSpeed);
 
         //Arm
-        double armSpeed = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.05);
+        double armSpeed = Range.deadband(-Robot.m_oi.oper.getRawAxis(5), 0.05);
         RobotMap.rightArm.set(armSpeed);
-        RobotMap.leftArm.set(-armSpeed);
+        RobotMap.leftArm.set(armSpeed);
 
         //Wrist
         double upSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05);
@@ -232,6 +263,7 @@ public class Robot extends TimedRobot {
         }
     }
 
+    /** Sends data to SmartDashboard. */
     public void smartDashboard() {
         SmartDashboard.putNumber("Pigeon (drive) Yaw", RobotMap.pigeonDrive.getAngle());
         SmartDashboard.putNumber("Pigeon (drive) Pitch", RobotMap.pigeonDrive.getPitch());
@@ -239,12 +271,12 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Wrist Gyro", RobotMap.intakeGyro.getAngle());
 
         //SmartDashboard.putNumber("Left Drive Encoder", RobotMap.leftMaster.getPosition());
-        SmartDashboard.putNumber("Right Drive Encoder", RobotMap.rightMaster.getPosition());
+        //SmartDashboard.putNumber("Right Drive Encoder", RobotMap.rightMaster.getPosition());
 
-        //SmartDashboard.putNumber("Left Elevator Encoder", RobotMap.leftElevator.getEncoder());
+        SmartDashboard.putNumber("Left Elevator Encoder", RobotMap.leftElevator.getEncoder());
         SmartDashboard.putNumber("Right Elevator Encoder", RobotMap.rightElevator.getEncoder());
 
-        //SmartDashboard.putNumber("Right Arm Encoder", RobotMap.rightArm.getPosition());
+        SmartDashboard.putNumber("Right Arm Encoder", RobotMap.rightArm.getPosition());
         //SmartDashboard.putNumber("Right Arm Encoder", RobotMap.rightArm.getPosition());
 
         SmartDashboard.putNumber("Right Wrist Encoder", RobotMap.wrist.getEncoder());
@@ -253,11 +285,33 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Wrist Limit Front", RobotMap.wristFrontLimit.get());
         SmartDashboard.putBoolean("Wrist Limit Back", RobotMap.wristBackLimit.get());
 
+        SmartDashboard.putBoolean("Telescope Limit Out", RobotMap.telescopeOutLimit.get());
+        SmartDashboard.putBoolean("Telescope Limit In", RobotMap.telescopeInLimit.get());
+        SmartDashboard.putNumber("Telescope Encoder", RobotMap.telescope.getEncoder());
+
         //SmartDashboard.putBoolean("Arm Limit Front", RobotMap.armFrontLimit.get());
         //SmartDashboard.putBoolean("Arm Limit Back", RobotMap.armBackLimit.get());
 
-        //SmartDashboard.putBoolean("Elevator Bottom Limit", RobotMap.elevatorBottomLimit.get());
-        //SmartDashboard.putBoolean("Elevator Top Limit", RobotMap.elevatorTopLimit.get());
+        SmartDashboard.putBoolean("Elevator Bottom Limit", RobotMap.elevatorBottomLimit.get());
+        SmartDashboard.putBoolean("Elevator Top Limit", RobotMap.elevatorTopLimit.get());
+    }
 
+    public boolean isValidPigeon() {
+        if (RobotMap.pigeonDrive.getRoll() == lastRoll && RobotMap.pigeonDrive.getPitch() == lastPitch) {
+            if (pigeonValid) {
+                pigeonValid = false;
+                pigeonValidStart = clock.millis();
+            }
+            else if (clock.millis() - pigeonValidStart > 10000l) {
+                return false;
+            }
+        }
+        else {
+            pigeonValid = true;
+            lastRoll = RobotMap.pigeonDrive.getRoll();
+            lastPitch = RobotMap.pigeonDrive.getPitch();
+        }
+
+        return true;
     }
 }

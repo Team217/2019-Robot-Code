@@ -7,44 +7,65 @@
 
 package frc.robot.commands;
 
-import org.team217.*;
-
-import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
-public class teleopElevator extends Command {
-    public teleopElevator() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-        super("teleopElevator");
+import edu.wpi.first.wpilibj.command.Command;
+
+/**
+ * Runs the drivebase in auton control mode using vision.
+ * 
+ * @author ThunderChickens 217
+ */
+public class AutonDriveV extends Command {
+    double speed;
+    boolean isCamFront;
+
+    /**
+     * Runs the drivebase in auton control mode using vision.
+     * 
+     * @param speed
+     *        The forward/backward speed
+     * @param isCamFront
+     *        {@code true} if using the front camera
+     * @param timeout
+     *        The time before automatically ending the command, in seconds
+     * 
+     * @author ThunderChickens 217
+     */
+    public AutonDriveV(double speed, boolean isCamFront, double timeout) {
+        this.speed = speed;
+        this.isCamFront = isCamFront;
+        setTimeout(timeout);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.kDrivingSubsystem.resetVisionPID();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double leftAnalog = Range.deadband(Robot.m_oi.oper.getY(), 0.05);
-        Robot.kLiftingMechanism.elevator(leftAnalog);
+        Robot.kDrivingSubsystem.visionDrive(speed, isCamFront);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.kDrivingSubsystem.drive(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        Robot.kDrivingSubsystem.drive(0);
     }
 }

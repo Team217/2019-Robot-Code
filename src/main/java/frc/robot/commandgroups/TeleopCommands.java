@@ -5,28 +5,36 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commandgroups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.*;
+import frc.robot.commands.*;
+import frc.robot.commandgroups.subgroups.*;
 
+/**
+ * Command Group that runs teleop.
+ * 
+ * @author ThunderChickens 217
+ */
 public class TeleopCommands extends CommandGroup {
     /**
-     * Add your docs here.
+     * Command Group that runs teleop.
+     * 
+     * @author ThunderChickens 217
      */
     public TeleopCommands() {
         requires(Robot.kDrivingSubsystem);
         requires(Robot.kIntakeSubsystem);
         requires(Robot.kLiftingMechanism);
 
-        addParallel(new teleopDrive());
-        //addParallel(new teleopMoveWrist());
-        addParallel(new teleopIntake());
-        addParallel(new teleopHatchPickup());
-        //addParallel(new teleopArm());
-        //  addParallel(new teleopArmAndWrist()); 
-        addParallel(new teleopArmWristCommandGroup());
-        addParallel(new teleopElevator());
+        addParallel(new TeleopDrive());
+        addParallel(new TeleopIntake());
+        addParallel(new TeleopHatchPickup());
+        addParallel(new TeleopArmWristCommands());
+        addParallel(new TeleopElevator());
+        addParallel(new TeleopElevatorPreset());
+        addParallel(new TeleopClimb());
 
         // Add Commands here:
         // e.g. addSequential(new Command1());

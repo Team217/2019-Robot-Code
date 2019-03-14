@@ -7,30 +7,21 @@
 
 package frc.robot.subsystems;
 
-import org.team217.ctre.*;
-import org.team217.rev.*;
-
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.*;
 
-/*
+/**
+ * Manages the robot's climbing mechanism.
+ * 
+ * @author ThunderChickens 217
+ */
 public class ClimbingSubsystem extends Subsystem {
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+    Value currentPTO = Value.kForward;
 
-    CANSparkMax leftRearClimb1 = RobotMap.leftRearClimb;
-    CANSparkMax rightRearClimb1 = RobotMap.rightRearClimb;
-    WPI_TalonSRX climbRoller1 = RobotMap.climbRoller;
-    DoubleSolenoid leftPTO = RobotMap.leftPTOSolenoid; //front climber
-    DoubleSolenoid rightPTO = RobotMap.rightPTOSolenoid; //back climber
-
-    enum PTOMode {
-        driveMode, climbMode
-    };
-
-    public static PTOMode currentPTO = PTOMode.driveMode;
+    DoubleSolenoid elevatorLockDoubleSolenoid1 = RobotMap.elevatorLockDoubleSolenoid;
+    DoubleSolenoid spoolLockDoubleSolenoid1 = RobotMap.spoolLockDoubleSolenoid;
 
     @Override
     public void initDefaultCommand() {
@@ -38,34 +29,34 @@ public class ClimbingSubsystem extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
-    public void driveMode() {
-        leftPTO.set(Value.kReverse);
-        rightPTO.set(Value.kReverse);
-        currentPTO = PTOMode.driveMode;
+    /** Returns {@code true} if the PTO is set to climbing mode. */
+    public boolean isClimbing() {
+        return currentPTO == Value.kReverse;
     }
 
-    public void fullClimbMode() {
-        leftPTO.set(Value.kForward);
-        rightPTO.set(Value.kForward);
-        currentPTO = PTOMode.climbMode;
+    /** Sets the PTO to climbing mode. */
+    public void setClimbPTO() {
+        currentPTO = Value.kReverse;
+        setPTO(currentPTO);
+        elevatorLockDoubleSolenoid1.set(Value.kReverse); // should be extended
+        spoolLockDoubleSolenoid1.set(Value.kForward); // should be retracted
     }
 
-    public void frontClimbMode() {
-        leftPTO.set(Value.kForward);
-        rightPTO.set(Value.kReverse);
-        currentPTO = PTOMode.climbMode;
+    /** Sets the PTO to driving mode. */
+    public void setDrivePTO() {
+        currentPTO = Value.kForward;
+        setPTO(currentPTO);
+        elevatorLockDoubleSolenoid1.set(Value.kForward); //should be retracted
+        spoolLockDoubleSolenoid1.set(Value.kReverse); //should be extended
     }
 
-    public void backClimbMode() {
-        leftPTO.set(Value.kReverse);
-        rightPTO.set(Value.kForward);
-        currentPTO = PTOMode.climbMode;
+    /**
+     * Sets the PTO direction.
+     * 
+     * @param value
+     *        The PTO direction {@code Value}
+     */
+    public void setPTO(Value value) {
+        RobotMap.climbPTOSolenoid.set(value);
     }
-
-    public void climbDrive(double speed) {
-        leftRearClimb1.set(speed);
-        rightRearClimb1.set(speed);
-    }
-
 }
-*/

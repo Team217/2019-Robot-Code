@@ -7,11 +7,27 @@
 
 package frc.robot.commands;
 
+import org.team217.*;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
+import frc.robot.subsystems.LiftingMechanism.Preset;
 
-public class teleopIntake extends Command {
-    public teleopIntake() {
+/**
+ * Runs the elevator in teleop control mode.
+ * 
+ * @author ThunderChickens 217
+ */
+public class TeleopElevator extends Command {
+    boolean isPreset = false;
+    Preset presetState = Preset.Manual;
+
+    /**
+     * Runs the elevator in teleop control mode.
+     * 
+     * @author ThunderChickens 217
+     */
+    public TeleopElevator() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -24,22 +40,18 @@ public class teleopIntake extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double speed = 0;
-
-        if (Robot.m_oi.xOper.get()) {
-            speed = 0.5;
+        if (PresetState.getPOVStatus()) {
+            isPreset = PresetState.getStatus();
         }
-        else if (Robot.m_oi.oper.getPOV() == 180) {
-            speed = -0.35;
-        }
-        else if (Robot.m_oi.rightBumperOper.get()) {
-            speed = -0.5;
-        }
-        else if (Robot.m_oi.oper.getPOV() == 0) {
-            speed = -1.0;
+        else if (!PresetState.getStatus()) {
+            isPreset = false;
+            presetState = Preset.Manual;
         }
 
-        Robot.kIntakeSubsystem.intake(speed);
+        if (!isPreset) {
+            double speed = Range.deadband(Robot.m_oi.oper.getY(), 0.08);
+            Robot.kLiftingMechanism.elevator(speed);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -51,11 +63,13 @@ public class teleopIntake extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.kLiftingMechanism.elevator(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        Robot.kLiftingMechanism.elevator(0);
     }
 }
