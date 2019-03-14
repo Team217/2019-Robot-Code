@@ -246,6 +246,7 @@ public class Robot extends TimedRobot {
         //Arm
         double armSpeed = Range.deadband(-Robot.m_oi.oper.getRawAxis(5), 0.05);
         RobotMap.rightArm.set(armSpeed);
+        RobotMap.leftArm.set(armSpeed);
 
         //Wrist
         double upSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05);
