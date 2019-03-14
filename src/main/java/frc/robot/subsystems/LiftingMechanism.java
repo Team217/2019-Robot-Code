@@ -28,6 +28,7 @@ public class LiftingMechanism extends Subsystem {
 
     WPI_TalonSRX telescope1 = RobotMap.telescope;
     CANSparkMax rightArm1 = RobotMap.rightArm;
+    CANSparkMax leftArm1 = RobotMap.leftArm;
     WPI_TalonSRX leftElevator1 = RobotMap.leftElevator;
     WPI_TalonSRX rightElevator1 = RobotMap.rightElevator;
     WPI_TalonSRX wrist1 = RobotMap.wrist;
@@ -252,6 +253,7 @@ public class LiftingMechanism extends Subsystem {
         }
       
         rightArm1.set(speed * armMult);
+        leftArm1.set(speed * armMult);
 
         System.out.println("Arm " + rightArm1.getPosition());
         System.out.println("Arm speed" + speed);

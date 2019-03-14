@@ -41,7 +41,7 @@ public class TeleopIntake extends Command {
         }
         
         if (Robot.m_oi.leftBumperOper.get()) {
-            speed = 0.75;
+            speed = 1;
         }
    //     else if (Robot.m_oi.oper.getPOV() == 180) {
    //         speed = -0.35;
