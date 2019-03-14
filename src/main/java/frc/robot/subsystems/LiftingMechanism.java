@@ -249,7 +249,9 @@ public class LiftingMechanism extends Subsystem {
             }
     
             speed = armLimitCheck(speed);
-            
+        }
+        else {
+            lastArmPos = RobotMap.rightArm.getPosition();
         }
       
         rightArm1.set(speed * armMult);
