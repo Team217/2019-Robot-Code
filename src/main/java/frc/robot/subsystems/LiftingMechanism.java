@@ -329,10 +329,10 @@ public class LiftingMechanism extends Subsystem {
             target = (isBack) ? 111.14 : 13;
             break;
         case Mid:
-            target = (isBack) ? 73.1 : 58;
+            target = (isBack) ? 73.1 : 53.8;
             break;
         case High:
-            target = (isBack) ? 68.168 : 56.5;
+            target = (isBack) ? 68.168 : 56.6;
             break;
         case RocketAdj:
             switch (lastPresetA) {
@@ -386,10 +386,10 @@ public class LiftingMechanism extends Subsystem {
             target = (isBack) ? -4140 : -773;
             break;
         case Mid:
-            target = (isBack) ? -3950 : -4090;
+            target = (isBack) ? -3950 : -4032;
             break;
         case High:
-            target = (isBack) ? -377 : -4100;
+            target = (isBack) ? -377 : -4161;
             break;
         case RocketAdj:
             switch (lastPresetW) {
@@ -441,10 +441,10 @@ public class LiftingMechanism extends Subsystem {
             target = -6800;
             break;
         case Mid:
-            target = 0;
+            target = -1504;
             break;
         case High:
-            target = -13762;
+            target = -12487;
             break;
         case RocketAdj:
             switch (lastPresetE) {
@@ -455,7 +455,7 @@ public class LiftingMechanism extends Subsystem {
                 target = 0;
                 break;
             case High:
-                target = -11762;
+                target = -12500;
                 break;
             default:
                 presetState = Preset.Manual;
