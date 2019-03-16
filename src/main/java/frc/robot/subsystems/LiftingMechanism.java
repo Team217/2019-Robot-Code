@@ -252,6 +252,7 @@ public class LiftingMechanism extends Subsystem {
         }
         else {
             lastArmPos = RobotMap.rightArm.getPosition();
+            armMult = .65;
         }
       
         rightArm1.set(speed * armMult);
