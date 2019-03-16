@@ -11,7 +11,6 @@ import org.team217.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
-import frc.robot.subsystems.LiftingMechanism.Preset;
 
 /**
  * Runs the elevator in teleop control mode.
@@ -20,7 +19,6 @@ import frc.robot.subsystems.LiftingMechanism.Preset;
  */
 public class TeleopElevator extends Command {
     boolean isPreset = false;
-    Preset presetState = Preset.Manual;
 
     /**
      * Runs the elevator in teleop control mode.
@@ -45,7 +43,6 @@ public class TeleopElevator extends Command {
         }
         else if (!PresetState.getStatus()) {
             isPreset = false;
-            presetState = Preset.Manual;
         }
 
         if (!isPreset) {

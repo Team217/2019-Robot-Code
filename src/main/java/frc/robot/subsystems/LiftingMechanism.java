@@ -59,10 +59,10 @@ public class LiftingMechanism extends Subsystem {
         High,
         RocketAdj
     }
-    Preset lastPresetA = Preset.Manual;
-    Preset lastPresetW = Preset.Manual;
-    Preset lastPresetE = Preset.Manual;
-    Preset lastPresetT = Preset.Manual;
+    public Preset lastPresetA = Preset.Manual;
+    public Preset lastPresetW = Preset.Manual;
+    public Preset lastPresetE = Preset.Manual;
+    public Preset lastPresetT = Preset.Manual;
 
     APID armAPID = RobotMap.armAPID;
     APID wristAPID = RobotMap.wristAPID;
@@ -361,7 +361,7 @@ public class LiftingMechanism extends Subsystem {
                 armAPID.initialize();
             }
             else {
-                speed = Range.inRange(armAPID.getOutput(rightArm1.getPosition(), target), -.45, .45);
+                speed = Range.inRange(armAPID.getOutput(rightArm1.getPosition(), target), -.5, .5);
             }
 
             if (!presetState.equals(Preset.RocketAdj)) {
@@ -418,7 +418,7 @@ public class LiftingMechanism extends Subsystem {
                 wristAPID.initialize();
             }
             else {
-                speed = Range.inRange(-wristAPID.getOutput(wrist1.getEncoder(), target), -1, 1);
+                speed = Range.inRange(-wristAPID.getOutput(wrist1.getEncoder(), target), -2, 2);
             }
 
             if (!presetState.equals(Preset.RocketAdj)) {
@@ -473,7 +473,7 @@ public class LiftingMechanism extends Subsystem {
                 elevatorAPID.initialize();
             }
             else {
-                speed = Range.inRange(elevatorAPID.getOutput(leftElevator1.getEncoder(), target), -.6, .6);
+                speed = Range.inRange(elevatorAPID.getOutput(leftElevator1.getEncoder(), target), -1, 1);
             }
 
             if (!presetState.equals(Preset.RocketAdj)) {

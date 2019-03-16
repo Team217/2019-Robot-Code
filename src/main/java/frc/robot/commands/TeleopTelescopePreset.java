@@ -44,6 +44,7 @@ public class TeleopTelescopePreset extends Command {
         }
         else if (!PresetState.getStatus()) {
             isPreset = false;
+            Robot.kLiftingMechanism.lastPresetT = presetState;
         }
 
         if (isPreset) {

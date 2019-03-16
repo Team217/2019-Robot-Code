@@ -51,6 +51,7 @@ public class TeleopArmPreset extends Command {
             isPreset = false;
             setBack = true;
             presetState = Preset.Manual;
+            Robot.kLiftingMechanism.lastPresetA = presetState;
         }
 
         if (setBack && PresetState.getPOVStatus()) {

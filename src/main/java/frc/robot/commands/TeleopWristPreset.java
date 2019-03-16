@@ -53,6 +53,7 @@ public class TeleopWristPreset extends Command {
             isPreset = false;
             setBack = true;
             presetState = Preset.Manual;
+            Robot.kLiftingMechanism.lastPresetW = presetState;
         }
 
         if (setBack && PresetState.getPOVStatus()) {
