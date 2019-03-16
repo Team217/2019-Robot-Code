@@ -59,10 +59,10 @@ public class LiftingMechanism extends Subsystem {
         High,
         RocketAdj
     }
-    Preset lastPresetA = Preset.Manual;
-    Preset lastPresetW = Preset.Manual;
-    Preset lastPresetE = Preset.Manual;
-    Preset lastPresetT = Preset.Manual;
+    public Preset lastPresetA = Preset.Manual;
+    public Preset lastPresetW = Preset.Manual;
+    public Preset lastPresetE = Preset.Manual;
+    public Preset lastPresetT = Preset.Manual;
 
     APID armAPID = RobotMap.armAPID;
     APID wristAPID = RobotMap.wristAPID;
@@ -249,7 +249,10 @@ public class LiftingMechanism extends Subsystem {
             }
     
             speed = armLimitCheck(speed);
-            
+        }
+        else {
+            lastArmPos = RobotMap.rightArm.getPosition();
+            armMult = .65;
         }
       
         rightArm1.set(speed * armMult);
@@ -293,10 +296,10 @@ public class LiftingMechanism extends Subsystem {
         double armAngle = intakeGyro1.getAngle(); // Might be pitch or yaw, depending on how electical electricities
         double speed = 0;
 
-        if (rightArm1.getPosition() > -70) {
+        if (rightArm1.getPosition() < 60) {
             speed = Range.inRange(-wristGyroPID.getOutput(armAngle, 0), -1.0, 1.0);
         }
-        else if (rightArm1.getPosition() <= -70 && rightArm1.getPosition() >= -85) {
+        else if (rightArm1.getPosition() >= 60 && rightArm1.getPosition() <= 75) {
             if (armAngle < 80) {
                 speed = -.7073;
             }
@@ -327,21 +330,21 @@ public class LiftingMechanism extends Subsystem {
             target = (isBack) ? 111.14 : 13;
             break;
         case Mid:
-            target = (isBack) ? 73.1 : 58;
+            target = (isBack) ? 73.1 : 53.8;
             break;
         case High:
-            target = (isBack) ? 68.168 : 56.5;
+            target = (isBack) ? 68.168 : 56.6;
             break;
         case RocketAdj:
             switch (lastPresetA) {
                 case Low:
-                target = (isBack) ? 111.14 : 6.98;
+                target = (isBack) ? 111.14 : 13;
                 break;
             case Mid:
-                target = (isBack) ? 73.1 : 56.19;
+                target = (isBack) ? 73.1 : 58;
                 break;
             case High:
-                target = (isBack) ? 68.168 : 59.334;
+                target = (isBack) ? 68.168 : 56.5;
                 break;
             default:
                 presetState = Preset.Manual;
@@ -358,7 +361,7 @@ public class LiftingMechanism extends Subsystem {
                 armAPID.initialize();
             }
             else {
-                speed = Range.inRange(armAPID.getOutput(rightArm1.getPosition(), target), -.45, .45);
+                speed = Range.inRange(armAPID.getOutput(rightArm1.getPosition(), target), -.5, .5);
             }
 
             if (!presetState.equals(Preset.RocketAdj)) {
@@ -384,10 +387,10 @@ public class LiftingMechanism extends Subsystem {
             target = (isBack) ? -4140 : -773;
             break;
         case Mid:
-            target = (isBack) ? -3950 : -4090;
+            target = (isBack) ? -3950 : -4032;
             break;
         case High:
-            target = (isBack) ? -377 : -4100;
+            target = (isBack) ? -377 : -4161;
             break;
         case RocketAdj:
             switch (lastPresetW) {
@@ -415,7 +418,7 @@ public class LiftingMechanism extends Subsystem {
                 wristAPID.initialize();
             }
             else {
-                speed = Range.inRange(-wristAPID.getOutput(wrist1.getEncoder(), target), -1, 1);
+                speed = Range.inRange(-wristAPID.getOutput(wrist1.getEncoder(), target), -2, 2);
             }
 
             if (!presetState.equals(Preset.RocketAdj)) {
@@ -439,10 +442,10 @@ public class LiftingMechanism extends Subsystem {
             target = -6800;
             break;
         case Mid:
-            target = 0;
+            target = -1504;
             break;
         case High:
-            target = -13762;
+            target = -12487;
             break;
         case RocketAdj:
             switch (lastPresetE) {
@@ -453,7 +456,7 @@ public class LiftingMechanism extends Subsystem {
                 target = 0;
                 break;
             case High:
-                target = -11762;
+                target = -12500;
                 break;
             default:
                 presetState = Preset.Manual;
@@ -470,7 +473,7 @@ public class LiftingMechanism extends Subsystem {
                 elevatorAPID.initialize();
             }
             else {
-                speed = Range.inRange(elevatorAPID.getOutput(leftElevator1.getEncoder(), target), -.6, .6);
+                speed = Range.inRange(elevatorAPID.getOutput(leftElevator1.getEncoder(), target), -1, 1);
             }
 
             if (!presetState.equals(Preset.RocketAdj)) {

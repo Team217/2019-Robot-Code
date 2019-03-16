@@ -49,6 +49,7 @@ public class TeleopElevatorPreset extends Command {
         else if (!PresetState.getStatus()) {
             isPreset = false;
             presetState = Preset.Manual;
+            Robot.kLiftingMechanism.lastPresetE = presetState;
         }
 
         if (isPreset) {

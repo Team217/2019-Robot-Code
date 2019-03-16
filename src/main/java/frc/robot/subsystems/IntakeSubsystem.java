@@ -9,6 +9,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import org.team217.rev.CANSparkMax;
+
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.*;
@@ -22,8 +24,7 @@ public class IntakeSubsystem extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    WPI_VictorSPX intakeOne = RobotMap.intakeOne; //VictorSPX 
-    WPI_VictorSPX intakeTwo = RobotMap.intakeTwo; // VictorSPX 
+    CANSparkMax intakeOne = RobotMap.intakeOne; //SparkMAX 
     DoubleSolenoid topHatchSolenoid = RobotMap.topHatchSolenoid;
 
     @Override
@@ -40,7 +41,6 @@ public class IntakeSubsystem extends Subsystem {
      */
     public void intake(double speed) {
         intakeOne.set(speed);
-        intakeTwo.set(speed);
     }
 
     /** Extends the velcro panel. */
