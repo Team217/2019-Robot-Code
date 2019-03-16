@@ -13,6 +13,7 @@ import org.team217.rev.*;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.*;
+import frc.robot.PresetState.Preset;
 
 import org.team217.*;
 import org.team217.pid.*;
@@ -50,15 +51,7 @@ public class LiftingMechanism extends Subsystem {
     boolean isBack = false, setBack = true;
     
     PID wristGyroPID = RobotMap.wristGyroPID;
-
-    /** Variable that contains information on the current arm preset state. */
-    public static enum Preset {
-        Manual,
-        Low,
-        Mid,
-        High,
-        RocketAdj
-    }
+    
     public Preset lastPresetA = Preset.Manual;
     public Preset lastPresetW = Preset.Manual;
     public Preset lastPresetE = Preset.Manual;

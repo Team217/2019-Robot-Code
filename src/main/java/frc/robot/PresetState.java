@@ -2,14 +2,21 @@ package frc.robot;
 
 import org.team217.*;
 
-import frc.robot.subsystems.LiftingMechanism.Preset;
-
 /**
  * Checks the state of various controls to determine if the bot should run presets.
  * 
  * @author ThunderChickens 217
  */
 public class PresetState {
+    /** Variable that contains information on the current arm preset state. */
+    public static enum Preset {
+        Manual,
+        Low,
+        Mid,
+        High,
+        RocketAdj
+    }
+
     private static Preset presetState = Preset.Manual;
 
     /** Returns {@code true} if all controls, excluding `oper.getPOV()`, permit presets. */
