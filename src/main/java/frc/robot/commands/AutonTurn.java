@@ -86,19 +86,19 @@ public class AutonTurn extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return Range.isWithinRange(RobotMap.pigeonDrive.getAngle(), target - 2, target + 2) || isTimedOut();
+        return Num.isWithinRange(RobotMap.pigeonDrive.getAngle(), target - 2, target + 2) || isTimedOut();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kDrivingSubsystem.drive(0);
+        Robot.kDrivingSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kDrivingSubsystem.drive(0);
+        Robot.kDrivingSubsystem.set(0);
     }
 }

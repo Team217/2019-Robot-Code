@@ -44,12 +44,12 @@ public class TeleopTelescopePreset extends Command {
         }
         else if (!PresetState.getStatus()) {
             isPreset = false;
-            Robot.kLiftingMechanism.lastPresetT = presetState;
+            Robot.kTelescopeSubsystem.lastPreset = presetState;
         }
 
         if (isPreset) {
             presetState = PresetState.getPresetState();
-            Robot.kLiftingMechanism.telescopePreset(presetState);
+            Robot.kTelescopeSubsystem.preset(presetState);
         }
     }
 
@@ -62,13 +62,13 @@ public class TeleopTelescopePreset extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kLiftingMechanism.telescope(0);
+        Robot.kTelescopeSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kLiftingMechanism.telescope(0);
+        Robot.kTelescopeSubsystem.set(0);
     }
 }

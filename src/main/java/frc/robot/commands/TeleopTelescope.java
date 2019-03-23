@@ -47,13 +47,13 @@ public class TeleopTelescope extends Command {
 
  //       if (!isPreset) {
             if (Robot.m_oi.squareOper.get()) { //out
-                Robot.kLiftingMechanism.telescope(1);
+                Robot.kTelescopeSubsystem.set(1);
             }
             else if (Robot.m_oi.xOper.get()) { //in
-                Robot.kLiftingMechanism.telescope(-1);
+                Robot.kTelescopeSubsystem.set(-1);
             }
             else{
-                Robot.kLiftingMechanism.telescope(0);
+                Robot.kTelescopeSubsystem.set(0);
             }
 
 
@@ -84,13 +84,13 @@ public class TeleopTelescope extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kLiftingMechanism.telescope(0);
+        Robot.kTelescopeSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kLiftingMechanism.telescope(0);
+        Robot.kTelescopeSubsystem.set(0);
     }
 }

@@ -29,7 +29,10 @@ import frc.robot.subsystems.*;
 public class Robot extends TimedRobot {
     public static final DrivingSubsystem kDrivingSubsystem = new DrivingSubsystem();
     public static final IntakeSubsystem kIntakeSubsystem = new IntakeSubsystem();
-    public static final LiftingMechanism kLiftingMechanism = new LiftingMechanism();
+    public static final ArmSubsystem kArmSubsystem = new ArmSubsystem();
+    public static final TelescopeSubsystem kTelescopeSubsystem = new TelescopeSubsystem();
+    public static final WristSubsystem kWristSubsystem = new WristSubsystem();
+    public static final ElevatorSubsystem kElevatorSubsystem = new ElevatorSubsystem();
     public static final ClimbingSubsystem kClimbingSubsystem = new ClimbingSubsystem();
     public static OI m_oi;
 
@@ -99,8 +102,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        kLiftingMechanism.lastArmPos = RobotMap.rightArm.getPosition();
-        kLiftingMechanism.lastElevatorPos = RobotMap.rightElevator.getEncoder();
+        kArmSubsystem.lastArmPos = RobotMap.rightArm.getPosition();
+        kElevatorSubsystem.lastElevatorPos = RobotMap.rightElevator.getEncoder();
         Scheduler.getInstance().run();
     }
 
@@ -240,27 +243,27 @@ public class Robot extends TimedRobot {
     @Override
     public void testPeriodic() {
         //Elevator
-        double elevatorSpeed = Range.deadband(Robot.m_oi.oper.getY(), 0.05);
+        double elevatorSpeed = Num.deadband(Robot.m_oi.oper.getY(), 0.05);
 
-        kLiftingMechanism.elevator(elevatorSpeed);
+        kElevatorSubsystem.set(elevatorSpeed);
 
         //Arm
-        double armSpeed = Range.deadband(-Robot.m_oi.oper.getRawAxis(5), 0.05);
+        double armSpeed = Num.deadband(-Robot.m_oi.oper.getRawAxis(5), 0.05);
         RobotMap.rightArm.set(armSpeed);
         RobotMap.leftArm.set(armSpeed);
 
         //Wrist
-        double upSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05);
-        double downSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(4), 0.05);
+        double upSpeed = 1 + Num.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05);
+        double downSpeed = 1 + Num.deadband(Robot.m_oi.oper.getRawAxis(4), 0.05);
 
         if (Robot.m_oi.leftTriggerOper.get()) { //moving up
-            Robot.kLiftingMechanism.wrist(upSpeed);
+            Robot.kWristSubsystem.set(upSpeed);
         }
         else if (Robot.m_oi.rightTriggerOper.get()) { //moving down
-            Robot.kLiftingMechanism.wrist(-downSpeed);
+            Robot.kWristSubsystem.set(-downSpeed);
         }
         else {
-            Robot.kLiftingMechanism.wrist(0);
+            Robot.kWristSubsystem.set(0);
         }
     }
 

@@ -53,7 +53,7 @@ public class TeleopWristPreset extends Command {
             isPreset = false;
             setBack = true;
             presetState = Preset.Manual;
-            Robot.kLiftingMechanism.lastPresetW = presetState;
+            Robot.kWristSubsystem.lastPreset = presetState;
         }
 
         if (setBack && PresetState.getPOVStatus()) {
@@ -69,7 +69,7 @@ public class TeleopWristPreset extends Command {
 
         if (isPreset) {
             presetState = PresetState.getPresetState();
-            Robot.kLiftingMechanism.wristPreset(presetState, isBack);
+            Robot.kWristSubsystem.preset(presetState, isBack);
         }
     }
 
@@ -82,13 +82,13 @@ public class TeleopWristPreset extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kLiftingMechanism.wrist(0);
+        Robot.kWristSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kLiftingMechanism.wrist(0);
+        Robot.kWristSubsystem.set(0);
     }
 }

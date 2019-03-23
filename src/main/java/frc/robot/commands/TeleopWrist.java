@@ -56,17 +56,17 @@ public class TeleopWrist extends Command {
 
         if (!isPreset && !isAuto) {
             //moving wrist independently
-            double upSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05);
-            double downSpeed = 1 + Range.deadband(Robot.m_oi.oper.getRawAxis(4), 0.05);
+            double upSpeed = 1 + Num.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05);
+            double downSpeed = 1 + Num.deadband(Robot.m_oi.oper.getRawAxis(4), 0.05);
 
             if (Robot.m_oi.leftTriggerOper.get()) { //moving up
-                Robot.kLiftingMechanism.wrist(upSpeed);
+                Robot.kWristSubsystem.set(upSpeed);
             }
             else if (Robot.m_oi.rightTriggerOper.get()) { //moving down
-                Robot.kLiftingMechanism.wrist(-downSpeed);
+                Robot.kWristSubsystem.set(-downSpeed);
             }
             else {
-                Robot.kLiftingMechanism.wrist(0);
+                Robot.kWristSubsystem.set(0);
             }
         }
     }
@@ -80,13 +80,13 @@ public class TeleopWrist extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kLiftingMechanism.wrist(0);
+        Robot.kWristSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kLiftingMechanism.wrist(0);
+        Robot.kWristSubsystem.set(0);
     }
 }

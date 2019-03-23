@@ -46,8 +46,8 @@ public class TeleopElevator extends Command {
         }
 
         if (!isPreset) {
-            double speed = Range.deadband(Robot.m_oi.oper.getY(), 0.08);
-            Robot.kLiftingMechanism.elevator(speed);
+            double speed = Num.deadband(Robot.m_oi.oper.getY(), 0.08);
+            Robot.kElevatorSubsystem.set(speed);
         }
     }
 
@@ -60,13 +60,13 @@ public class TeleopElevator extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kLiftingMechanism.elevator(0);
+        Robot.kElevatorSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kLiftingMechanism.elevator(0);
+        Robot.kElevatorSubsystem.set(0);
     }
 }

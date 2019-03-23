@@ -23,7 +23,9 @@ public class TeleopArmWristCommands extends CommandGroup {
      * @author ThunderChickens 217
      */
     public TeleopArmWristCommands() {
-        requires(Robot.kLiftingMechanism);
+        requires(Robot.kArmSubsystem);
+        requires(Robot.kWristSubsystem);
+        requires(Robot.kTelescopeSubsystem);
 
         addParallel(new TeleopArm());
         addParallel(new TeleopArmPreset());

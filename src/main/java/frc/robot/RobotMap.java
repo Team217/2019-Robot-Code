@@ -12,8 +12,10 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import org.team217.ctre.*;
 import org.team217.pid.*;
 import org.team217.rev.*;
+import org.team217.wpi.*;
 
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into

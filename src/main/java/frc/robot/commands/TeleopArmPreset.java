@@ -51,7 +51,7 @@ public class TeleopArmPreset extends Command {
             isPreset = false;
             setBack = true;
             presetState = Preset.Manual;
-            Robot.kLiftingMechanism.lastPresetA = presetState;
+            Robot.kArmSubsystem.lastPreset = presetState;
         }
 
         if (setBack && PresetState.getPOVStatus()) {
@@ -67,7 +67,7 @@ public class TeleopArmPreset extends Command {
 
         if (isPreset) {
             presetState = PresetState.getPresetState();
-            Robot.kLiftingMechanism.armPreset(presetState, isBack);
+            Robot.kArmSubsystem.preset(presetState, isBack);
         }
     }
 
@@ -80,13 +80,13 @@ public class TeleopArmPreset extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kLiftingMechanism.arm(0);
+        Robot.kArmSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kLiftingMechanism.arm(0);
+        Robot.kArmSubsystem.set(0);
     }
 }

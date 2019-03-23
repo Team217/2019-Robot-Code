@@ -26,7 +26,7 @@ public class PresetState {
 
     /** Returns {@code true} if the arm controls permit presets. */
     public static boolean getArmStatus() {
-        double armSpeed = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.1);
+        double armSpeed = Num.deadband(Robot.m_oi.oper.getRawAxis(5), 0.1);
         return armSpeed == 0;
     }
 
@@ -37,7 +37,7 @@ public class PresetState {
 
     /** Returns {@code true} if the elevator controls permit presets. */
     public static boolean getElevStatus() {
-        double leftAnalog = Range.deadband(Robot.m_oi.oper.getY(), 0.1);
+        double leftAnalog = Num.deadband(Robot.m_oi.oper.getY(), 0.1);
         return leftAnalog == 0;
     }
 
