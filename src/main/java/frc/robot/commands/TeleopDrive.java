@@ -30,17 +30,17 @@ public class TeleopDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        double speed = Range.deadband(Robot.m_oi.driver.getY(), 0.08);
-        double turn = Range.deadband(Robot.m_oi.driver.getZ(), 0.08);
+        double speed = Num.deadband(Robot.m_oi.driver.getY(), 0.08);
+        double turn = Num.deadband(Robot.m_oi.driver.getZ(), 0.08);
 
         if (Robot.kClimbingSubsystem.isClimbing()) {
             turn /= 2;
             speed += Math.abs(turn);
             if (turn == 0) {
-                double tilt = Range.deadband(RobotMap.pigeonDrive.getRoll(), 1.5);
-                turn += Range.inRange(0.05 * tilt, -0.35, 0.35); // Correct the climber automatically to stay level
+                double tilt = Num.deadband(RobotMap.pigeonDrive.getRoll(), 1.5);
+                //turn += Range.inRange(0.03 * tilt, -0.35, 0.35); // Correct the climber automatically to stay level
             }
-            Robot.kDrivingSubsystem.drive(speed, turn);
+            Robot.kDrivingSubsystem.set(speed, turn);
         }
         else {
             if (Robot.m_oi.leftTriggerDriver.get()) {
@@ -58,7 +58,7 @@ public class TeleopDrive extends Command {
             }
             else {
                 Robot.kDrivingSubsystem.resetVisionPID();
-                Robot.kDrivingSubsystem.drive(speed, turn, antiTipOn);
+                Robot.kDrivingSubsystem.set(speed, turn, antiTipOn);
             }
         }
     }
@@ -70,12 +70,12 @@ public class TeleopDrive extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-        Robot.kDrivingSubsystem.drive(0);
+        Robot.kDrivingSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-        Robot.kDrivingSubsystem.drive(0);
+        Robot.kDrivingSubsystem.set(0);
     }
 }

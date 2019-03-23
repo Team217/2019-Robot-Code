@@ -26,7 +26,10 @@ public class TeleopCommands extends CommandGroup {
     public TeleopCommands() {
         requires(Robot.kDrivingSubsystem);
         requires(Robot.kIntakeSubsystem);
-        requires(Robot.kLiftingMechanism);
+        requires(Robot.kArmSubsystem);
+        requires(Robot.kWristSubsystem);
+        requires(Robot.kElevatorSubsystem);
+        requires(Robot.kTelescopeSubsystem);
 
         addParallel(new TeleopDrive());
         addParallel(new TeleopIntake());

@@ -39,7 +39,7 @@ public class DrivingSubsystem extends Subsystem {
     protected MotorSpeed antiTip(double leftSpeed, double rightSpeed) {
         double antiTipAngle = (useAntiTipAngle) ? 6.0 : 12.0;
         double angle = RobotMap.pigeonDrive.getPitch();
-        int tipSign = Range.sign(angle);
+        int tipSign = Num.sign(angle);
         
         if (Math.abs(angle) >= antiTipAngle) {
             useAntiTipAngle = true;
@@ -59,8 +59,8 @@ public class DrivingSubsystem extends Subsystem {
      * @param speed
      *        The forward/backward speed
      */
-    public void drive(double speed) {
-        drive(speed, false);
+    public void set(double speed) {
+        set(speed, false);
     }
 
     /**
@@ -71,7 +71,7 @@ public class DrivingSubsystem extends Subsystem {
      * @param isDriveStraight
      *        {@code true} [default] if the bot should use the {@code PigeonIMU} to drive straight
      */
-    public void drive(double speed, boolean isDriveStraight) {
+    public void set(double speed, boolean isDriveStraight) {
         double turn = 0.0;
 
         if (isDriveStraight) {
@@ -80,7 +80,7 @@ public class DrivingSubsystem extends Subsystem {
             speed *= (1 - Math.abs(correction));
         }
 
-        drive(speed, turn, false);
+        set(speed, turn, false);
     }
 
     /**
@@ -91,8 +91,8 @@ public class DrivingSubsystem extends Subsystem {
      * @param turn
      *        The turn speed
      */
-    public void drive(double speed, double turn) {
-        drive(speed, turn, false);
+    public void set(double speed, double turn) {
+        set(speed, turn, false);
     }
 
     /**
@@ -105,7 +105,7 @@ public class DrivingSubsystem extends Subsystem {
      * @param antiTipOn
      *        {@code true} [not default] if the bot should run antitip code
      */
-    public void drive(double speed, double turn, boolean antiTipOn) {
+    public void set(double speed, double turn, boolean antiTipOn) {
         double leftSpeed = speed + turn;
         double rightSpeed = -speed + turn;
 
@@ -126,7 +126,7 @@ public class DrivingSubsystem extends Subsystem {
      *        The turn speed
      */
     public void autonTurn(double turn) {
-        drive(0.0, turn);
+        set(0.0, turn);
     }
 
     /**
@@ -153,7 +153,7 @@ public class DrivingSubsystem extends Subsystem {
      */
     public void visionDrive(double speed, boolean isCamFront, boolean antiTipOn) {
         double turn = visionTurn(isCamFront);
-        drive(speed, turn, antiTipOn);
+        set(speed, turn, antiTipOn);
     }
 
     /**
@@ -166,12 +166,12 @@ public class DrivingSubsystem extends Subsystem {
         double turn = 0;
         double x = isCamFront ? Robot.getX1Vis() : Robot.getX2Vis();
         double area = isCamFront ? Robot.getArea1Vis() : Robot.getArea2Vis();
-        double kP = Range.inRange(.03 / Math.sqrt(area) - .01, 0.015, 0.025);
+        double kP = Num.inRange(.03 / Math.sqrt(area) - .01, 0.015, 0.025);
 
         visionPID.setP(kP);
 
-        if(!Range.isWithinRange(x, -0.5, 0.5)) {
-            turn = visionPID.getOutput(1.5 * area, x);
+        if(!Num.isWithinRange(x, -0.5, 0.5)) {
+            turn = visionPID.getOutput(2.5 * area, x);
         }
 
         return turn;

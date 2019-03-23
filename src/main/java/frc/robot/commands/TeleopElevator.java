@@ -11,7 +11,6 @@ import org.team217.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
-import frc.robot.subsystems.LiftingMechanism.Preset;
 
 /**
  * Runs the elevator in teleop control mode.
@@ -20,7 +19,6 @@ import frc.robot.subsystems.LiftingMechanism.Preset;
  */
 public class TeleopElevator extends Command {
     boolean isPreset = false;
-    Preset presetState = Preset.Manual;
 
     /**
      * Runs the elevator in teleop control mode.
@@ -45,12 +43,11 @@ public class TeleopElevator extends Command {
         }
         else if (!PresetState.getStatus()) {
             isPreset = false;
-            presetState = Preset.Manual;
         }
 
         if (!isPreset) {
-            double speed = Range.deadband(Robot.m_oi.oper.getY(), 0.08);
-            Robot.kLiftingMechanism.elevator(speed);
+            double speed = Num.deadband(Robot.m_oi.oper.getY(), 0.08);
+            Robot.kElevatorSubsystem.set(speed);
         }
     }
 
@@ -63,13 +60,13 @@ public class TeleopElevator extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kLiftingMechanism.elevator(0);
+        Robot.kElevatorSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kLiftingMechanism.elevator(0);
+        Robot.kElevatorSubsystem.set(0);
     }
 }

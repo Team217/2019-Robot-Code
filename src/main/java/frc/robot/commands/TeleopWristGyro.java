@@ -65,7 +65,7 @@ public class TeleopWristGyro extends Command {
                 RobotMap.intakeGyro.reset();
             }
 
-            Robot.kLiftingMechanism.autoWrist();
+            Robot.kWristSubsystem.auto();
         }
     }
 
@@ -78,13 +78,13 @@ public class TeleopWristGyro extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kLiftingMechanism.wrist(0);
+        Robot.kWristSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kLiftingMechanism.wrist(0);
+        Robot.kWristSubsystem.set(0);
     }
 }

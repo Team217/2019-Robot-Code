@@ -9,7 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
-import frc.robot.subsystems.LiftingMechanism.Preset;
+import frc.robot.PresetState.Preset;
 
 import org.team217.pid.*;
 
@@ -49,11 +49,12 @@ public class TeleopElevatorPreset extends Command {
         else if (!PresetState.getStatus()) {
             isPreset = false;
             presetState = Preset.Manual;
+            Robot.kElevatorSubsystem.lastPreset = presetState;
         }
 
         if (isPreset) {
             presetState = PresetState.getPresetState();
-            Robot.kLiftingMechanism.elevatorPreset(presetState);
+            Robot.kElevatorSubsystem.preset(presetState);
         }
     }
 
@@ -66,13 +67,13 @@ public class TeleopElevatorPreset extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kLiftingMechanism.elevator(0);
+        Robot.kElevatorSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kLiftingMechanism.elevator(0);
+        Robot.kElevatorSubsystem.set(0);
     }
 }

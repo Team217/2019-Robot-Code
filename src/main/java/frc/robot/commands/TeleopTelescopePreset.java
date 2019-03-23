@@ -9,7 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
-import frc.robot.subsystems.LiftingMechanism.Preset;
+import frc.robot.PresetState.Preset;
 
 /**
  * Runs the telescope in teleop control mode.
@@ -44,11 +44,12 @@ public class TeleopTelescopePreset extends Command {
         }
         else if (!PresetState.getStatus()) {
             isPreset = false;
+            Robot.kTelescopeSubsystem.lastPreset = presetState;
         }
 
         if (isPreset) {
             presetState = PresetState.getPresetState();
-            Robot.kLiftingMechanism.telescopePreset(presetState);
+            Robot.kTelescopeSubsystem.preset(presetState);
         }
     }
 
@@ -61,13 +62,13 @@ public class TeleopTelescopePreset extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kLiftingMechanism.telescope(0);
+        Robot.kTelescopeSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kLiftingMechanism.telescope(0);
+        Robot.kTelescopeSubsystem.set(0);
     }
 }

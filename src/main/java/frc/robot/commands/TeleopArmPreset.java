@@ -9,7 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
-import frc.robot.subsystems.LiftingMechanism.Preset;
+import frc.robot.PresetState.Preset;
 import org.team217.rev.*;
 
 /**
@@ -51,12 +51,15 @@ public class TeleopArmPreset extends Command {
             isPreset = false;
             setBack = true;
             presetState = Preset.Manual;
+            Robot.kArmSubsystem.lastPreset = presetState;
         }
 
         if (setBack && PresetState.getPOVStatus()) {
-            isBack = rightArm1.getPosition() < -80;
-            isBack = Robot.m_oi.touchPadOper.get() ? !isBack : isBack;
-            setBack = !Robot.m_oi.touchPadOper.get();
+            //isBack = rightArm1.getPosition() > 65;
+            //isBack = Robot.m_oi.touchPadOper.get() ? !isBack : isBack;
+            //setBack = !Robot.m_oi.touchPadOper.get();
+            isBack = Robot.m_oi.touchPadOper.get();
+            setBack = !isBack;
         }
         else {
             setBack = !PresetState.getPOVStatus();
@@ -64,7 +67,7 @@ public class TeleopArmPreset extends Command {
 
         if (isPreset) {
             presetState = PresetState.getPresetState();
-            Robot.kLiftingMechanism.armPreset(presetState, isBack);
+            Robot.kArmSubsystem.preset(presetState, isBack);
         }
     }
 
@@ -77,13 +80,13 @@ public class TeleopArmPreset extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kLiftingMechanism.arm(0);
+        Robot.kArmSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kLiftingMechanism.arm(0);
+        Robot.kArmSubsystem.set(0);
     }
 }

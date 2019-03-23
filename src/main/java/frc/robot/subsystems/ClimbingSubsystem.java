@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.*;
@@ -18,6 +19,9 @@ import frc.robot.*;
  */
 public class ClimbingSubsystem extends Subsystem {
     Value currentPTO = Value.kForward;
+
+    DoubleSolenoid elevatorLockDoubleSolenoid1 = RobotMap.elevatorLockDoubleSolenoid;
+    DoubleSolenoid spoolLockDoubleSolenoid1 = RobotMap.spoolLockDoubleSolenoid;
 
     @Override
     public void initDefaultCommand() {
@@ -34,12 +38,16 @@ public class ClimbingSubsystem extends Subsystem {
     public void setClimbPTO() {
         currentPTO = Value.kReverse;
         setPTO(currentPTO);
+        elevatorLockDoubleSolenoid1.set(Value.kReverse); // should be extended
+        spoolLockDoubleSolenoid1.set(Value.kForward); // should be retracted
     }
 
     /** Sets the PTO to driving mode. */
     public void setDrivePTO() {
         currentPTO = Value.kForward;
         setPTO(currentPTO);
+        elevatorLockDoubleSolenoid1.set(Value.kForward); //should be retracted
+        spoolLockDoubleSolenoid1.set(Value.kReverse); //should be extended
     }
 
     /**

@@ -12,55 +12,42 @@ import frc.robot.*;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Runs the drivebase in auton control mode using a timer.
+ * Runs the drivebase in auton control mode using vision.
  * 
  * @author ThunderChickens 217
  */
-public class AutonDriveT extends Command {
-    boolean isDriveStraight = false;
+public class AutonDriveVision extends Command {
     double speed;
+    boolean isCamFront;
 
     /**
-     * Runs the drivebase in auton control mode using a timer.
+     * Runs the drivebase in auton control mode using vision.
      * 
      * @param speed
      *        The forward/backward speed
-     * @param time
-     *        The time to drive
-     * @param isDriveStraight
-     *        {@code true} [not default] if the robot should use gyro correction to drive straight
+     * @param isCamFront
+     *        {@code true} if using the front camera
+     * @param timeout
+     *        The time before automatically ending the command, in seconds
      * 
      * @author ThunderChickens 217
      */
-    public AutonDriveT(double speed, double time, boolean isDriveStraight) {
-        this(speed, time);
-        this.isDriveStraight = isDriveStraight;
-    }
-
-    /**
-     * Runs the drivebase in auton control mode using a timer.
-     * 
-     * @param speed
-     *        The forward/backward speed
-     * @param time
-     *        The time to drive
-     * 
-     * @author ThunderChickens 217
-     */
-    public AutonDriveT(double speed, double time) {
+    public AutonDriveVision(double speed, boolean isCamFront, double timeout) {
         this.speed = speed;
-        setTimeout(time);
+        this.isCamFront = isCamFront;
+        setTimeout(timeout);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.kDrivingSubsystem.resetVisionPID();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.kDrivingSubsystem.drive(speed, isDriveStraight);
+        Robot.kDrivingSubsystem.visionDrive(speed, isCamFront);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -72,13 +59,13 @@ public class AutonDriveT extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kDrivingSubsystem.drive(0);
+        Robot.kDrivingSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kDrivingSubsystem.drive(0);
+        Robot.kDrivingSubsystem.set(0);
     }
 }

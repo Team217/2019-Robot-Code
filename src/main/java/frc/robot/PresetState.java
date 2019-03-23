@@ -2,14 +2,21 @@ package frc.robot;
 
 import org.team217.*;
 
-import frc.robot.subsystems.LiftingMechanism.Preset;
-
 /**
  * Checks the state of various controls to determine if the bot should run presets.
  * 
  * @author ThunderChickens 217
  */
 public class PresetState {
+    /** Variable that contains information on the current arm preset state. */
+    public static enum Preset {
+        Manual,
+        Low,
+        Mid,
+        High,
+        RocketAdj
+    }
+
     private static Preset presetState = Preset.Manual;
 
     /** Returns {@code true} if all controls, excluding `oper.getPOV()`, permit presets. */
@@ -19,7 +26,7 @@ public class PresetState {
 
     /** Returns {@code true} if the arm controls permit presets. */
     public static boolean getArmStatus() {
-        double armSpeed = Range.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
+        double armSpeed = Num.deadband(Robot.m_oi.oper.getRawAxis(5), 0.1);
         return armSpeed == 0;
     }
 
@@ -30,7 +37,7 @@ public class PresetState {
 
     /** Returns {@code true} if the elevator controls permit presets. */
     public static boolean getElevStatus() {
-        double leftAnalog = Range.deadband(Robot.m_oi.oper.getY(), 0.08);
+        double leftAnalog = Num.deadband(Robot.m_oi.oper.getY(), 0.1);
         return leftAnalog == 0;
     }
 
