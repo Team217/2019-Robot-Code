@@ -109,6 +109,7 @@ public class ArmSubsystem extends Subsystem {
             break;
         case Ball:
             target = (isBack) ? 16.5: 16.5;
+            //break;
         case RocketAdj:
             switch (lastPreset) {
                 case Low:

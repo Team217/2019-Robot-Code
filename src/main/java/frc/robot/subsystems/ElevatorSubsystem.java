@@ -97,6 +97,7 @@ public class ElevatorSubsystem extends Subsystem {
             break;
         case Ball:
             target = (isBack) ? 1914 : 1914;
+            //break;
         case RocketAdj:
             switch (lastPreset) {
             case Low:

@@ -22,7 +22,6 @@ public class TeleopElevatorPreset extends Command {
     boolean isPreset = false;
     APID elevAPID = RobotMap.elevAPID;
     double target = 0;
-    boolean isAuto = false;
     boolean isBack = false;
     boolean setBack = true;
 
