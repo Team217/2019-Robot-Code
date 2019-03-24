@@ -58,9 +58,6 @@ public class TeleopElevatorPreset extends Command {
         }
         
         if (setBack && PresetState.getPOVStatus()) {
-            //isBack = rightArm1.getPosition() > 65;
-            //isBack = Robot.m_oi.touchPadOper.get() ? !isBack : isBack;
-            //setBack = !Robot.m_oi.touchPadOper.get();
             isBack = Robot.m_oi.touchPadOper.get();
             setBack = !isBack;
             if (isBack != lastBack) {
