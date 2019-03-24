@@ -37,6 +37,7 @@ public class WristSubsystem extends Subsystem {
     public double limitCheck(double speed) {
         if (!wristBackLimit1.get() && speed <= 0.0) { 
             speed = 0;
+            wrist1.resetEncoder();
         }
         else if (!wristFrontLimit1.get() && speed >= 0.0) { 
             speed = 0;
@@ -93,16 +94,16 @@ public class WristSubsystem extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = isBack ? -2918 : -19;
+            target = isBack ? -2909 : -52;
             break;
         case Mid:
-            target = isBack ? -275 : -3608;
+            target = isBack ? -886 : -2708;
             break;
         case High:
             target = isBack ? -264 : -3608;
             break;
         case Ball:
-            target = isBack ? -2080 : -2080;
+            target = isBack ? -1721 : -2080;
             break;
         case RocketAdj:
             switch (lastPreset) {

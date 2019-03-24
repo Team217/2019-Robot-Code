@@ -165,13 +165,13 @@ public class DrivingSubsystem extends Subsystem {
     public double visionTurn(boolean isCamFront) {
         double turn = 0;
         double x = isCamFront ? Robot.getX1Vis() : Robot.getX2Vis();
-        double area = isCamFront ? Robot.getArea1Vis() : Robot.getArea2Vis();
-        double kP = Num.inRange(.03 / Math.sqrt(area) - .01, 0.01, 0.025); // TODO: Fix so this is good
+        double area = 4 * (isCamFront ? Robot.getArea1Vis() : Robot.getArea2Vis());
+        double kP = Num.inRange(.0125 / Math.sqrt(area) - .01, 0.01, 0.025); // TODO: Fix so this is good
 
         visionPID.setP(kP);
 
-        if(!Num.isWithinRange(x, -0.5, 0.5)) {
-            turn = visionPID.getOutput(2.25 * area, x); // TODO: Fix for left target
+        if(!Num.isWithinRange(x, 0.5 / area)) {
+            turn = visionPID.getOutput(-0.5 * Math.sqrt(area), x); // TODO: Fix for left target
         }
 
         return turn;

@@ -99,16 +99,16 @@ public class ArmSubsystem extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = isBack ? 101 : 6.67;
+            target = isBack ? 102 : 9.5;
             break;
         case Mid:
-            target = isBack ? 67.6 : 54.1;
+            target = isBack ? 75.6 : 45.9;
             break;
         case High:
             target = isBack ? 65.4 : 54.1;
             break;
         case Ball:
-            target = isBack ? 16.5: 16.5;
+            target = isBack ? 101: 16.5;
             break;
         case RocketAdj:
             switch (lastPreset) {

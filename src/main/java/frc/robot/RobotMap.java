@@ -127,7 +127,7 @@ public class RobotMap {
     public static final PID visionPID = new PID(0, 0.0000, 0.005, 100).setMinMax(-0.15, 0.15);
     public static final APID armAPID = new APID(new PID(0.08, 0.0006, 0, 100).setMinMax(-0.2, 0.2), 1.5);
     public static final APID wristAPID = new APID(new PID(0.001, 0.00001, 0, 100).setMinMax(-0.2, 0.2), 1.0);
-    public static final APID elevAPID = new APID(new PID(0.0005, 0.000005, 0, 100).setMinMax(-0.2, 0.2), 1.0);
+    public static final APID elevAPID = new APID(new PID(0.0006, 0.000005, 0, 100).setMinMax(-0.2, 0.2), 1.0);
     public static final APID telescopeAPID = new APID(new PID(0.001, 0, 0, 100).setMinMax(-0.1, 0.1), 0.5);
 
     //Joysticks
