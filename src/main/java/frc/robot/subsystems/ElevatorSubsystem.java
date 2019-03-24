@@ -87,27 +87,27 @@ public class ElevatorSubsystem extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = (isBack) ? 5450 : 7890; //back is 3000
+            target = isBack ? 5450 : 7890; //back is 3000
             break;
         case Mid:
-            target = (isBack) ? 1850 : 2208; // 1850
+            target = isBack ? 1850 : 2208; // 1850
             break;
         case High:
-            target = (isBack) ? 11790 : 13050; //11790
+            target = isBack ? 11790 : 13050; //11790
             break;
         case Ball:
-            target = (isBack) ? 1914 : 1914;
+            target = isBack ? 1914 : 1914;
             break;
         case RocketAdj:
             switch (lastPreset) {
             case Low:
-                target = (isBack) ? 3000 : 7890;
+                target = isBack ? 3000 : 7890;
                 break;
             case Mid:
-                target = (isBack) ? 1850 : 2208;
+                target = isBack ? 1850 : 2208;
                 break;
             case High:
-                target = (isBack) ? 11790 : 13050;
+                target = isBack ? 11790 : 13050;
                 break;
             default:
                 presetState = Preset.Manual;
