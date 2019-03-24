@@ -21,7 +21,7 @@ import frc.robot.*;
  */
 public class TeleopWristGyro extends Command {
     CANSparkMax rightArm1 = RobotMap.rightArm;
-    AnalogGyro intakeGyro1 = RobotMap.intakeGyro;
+    //AnalogGyro intakeGyro1 = RobotMap.intakeGyro;
 
     boolean isPreset = false;
     boolean isAuto = false;
@@ -62,10 +62,10 @@ public class TeleopWristGyro extends Command {
 
         if (!isPreset && isAuto) {
             if (Robot.m_oi.psButtonOper.get()) {
-                RobotMap.intakeGyro.reset();
+               // RobotMap.intakeGyro.reset();
             }
 
-            Robot.kWristSubsystem.auto();
+            //Robot.kWristSubsystem.auto();
         }
     }
 

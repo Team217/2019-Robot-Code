@@ -81,8 +81,8 @@ public class ArmSubsystem extends Subsystem {
         rightArm1.set(speed * armMult);
         leftArm1.set(speed * armMult);
 
-        System.out.println("Arm " + rightArm1.getPosition());
-        System.out.println("Arm speed" + speed);
+       // System.out.println("Arm " + rightArm1.getPosition());
+       // System.out.println("Arm speed" + speed);
  //       System.out.println("Wrist Gyro " + intakeGyro1.getAngle());
     }
 
@@ -99,24 +99,26 @@ public class ArmSubsystem extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = (isBack) ? 111.14 : 13;
+            target = (isBack) ? 101 : 6.67;
             break;
         case Mid:
-            target = (isBack) ? 73.1 : 53.8;
+            target = (isBack) ? 67.6 : 54.1;
             break;
         case High:
-            target = (isBack) ? 68.168 : 56.6;
+            target = (isBack) ? 65.4 : 54.1;
             break;
+        case Ball:
+            target = (isBack) ? 16.5: 16.5;
         case RocketAdj:
             switch (lastPreset) {
                 case Low:
-                target = (isBack) ? 111.14 : 13;
+                target = (isBack) ? 101 : 6.67;
                 break;
             case Mid:
-                target = (isBack) ? 73.1 : 58;
+                target = (isBack) ? 67.6 : 54.1;
                 break;
             case High:
-                target = (isBack) ? 68.168 : 56.5;
+                target = (isBack) ? 65.4 : 54.1;
                 break;
             default:
                 presetState = Preset.Manual;

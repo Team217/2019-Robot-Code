@@ -50,29 +50,31 @@ public class ElevatorSubsystem extends Subsystem {
     public void set(double speed) {
         double elevatorMult = 0.65;
         
-        if (leftElevator1.getEncoder() <= -11500 && speed <= 0) { //encoder values are wrong, check the logic
-        	elevatorMult = .35;
+        if (leftElevator1.getEncoder() >= 12500 && speed <= 0) { //encoder values are wrong, check the logic
+        	elevatorMult = .425;
         }
-        else if(leftElevator1.getEncoder() >= -5500 && speed >= 0.0) { //this one too
-        	elevatorMult = .25;
+        else if(leftElevator1.getEncoder() <= 2000 && speed >= 0.0) { //this one too
+        	elevatorMult = .375;
         }
 
-        if (leftElevator1.getEncoder() <= -16180 && speed < 0) { //Check this first so we can still hold it up
+        if (leftElevator1.getEncoder() >= 15500 && speed < 0) { //Check this first so we can still hold it up
             speed = 0;
         }
         
         if (speed != 0) {
             lastElevatorPos = leftElevator1.getEncoder();
         }
-     //   else {
-     //       speed = RobotMap.elevatorHoldPID.getOutput(RobotMap.rightElevator.getEncoder(), lastElevatorPos);
-     //       elevatorMult = 1;
-     //   }  obselete
+       else {
+            speed = -RobotMap.elevatorHoldPID.getOutput(RobotMap.leftElevator.getEncoder(), lastElevatorPos);
+            elevatorMult = 1;
+        } 
         
         speed = limitCheck(speed);
 
+        System.out.println("elevator pos " + leftElevator1.getEncoder());
+        System.out.println("last elevator pos " + lastElevatorPos);
         rightElevator1.set(speed * elevatorMult);
-        leftElevator1.set((speed * elevatorMult));
+        leftElevator1.set(speed * elevatorMult);
     }
     
     /**
@@ -81,28 +83,30 @@ public class ElevatorSubsystem extends Subsystem {
      * @param presetState
      *        The {@code Preset} state
      */
-    public void preset(Preset presetState) {
+    public void preset(Preset presetState, boolean isBack) {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = -6800;
+            target = (isBack) ? 5450 : 7890; //back is 3000
             break;
         case Mid:
-            target = -1504;
+            target = (isBack) ? 1850 : 2208; // 1850
             break;
         case High:
-            target = -12487;
+            target = (isBack) ? 11790 : 13050; //11790
             break;
+        case Ball:
+            target = (isBack) ? 1914 : 1914;
         case RocketAdj:
             switch (lastPreset) {
             case Low:
-                target = -5183;
+                target = (isBack) ? 3000 : 7890;
                 break;
             case Mid:
-                target = 0;
+                target = (isBack) ? 1850 : 2208;
                 break;
             case High:
-                target = -12500;
+                target = (isBack) ? 11790 : 13050;
                 break;
             default:
                 presetState = Preset.Manual;
@@ -119,7 +123,7 @@ public class ElevatorSubsystem extends Subsystem {
                 elevatorAPID.initialize();
             }
             else {
-                speed = Num.inRange(elevatorAPID.getOutput(leftElevator1.getEncoder(), target), 1);
+                speed = -Num.inRange(elevatorAPID.getOutput(leftElevator1.getEncoder(), target), 1);
             }
 
             if (!presetState.equals(Preset.RocketAdj)) {

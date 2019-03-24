@@ -51,7 +51,7 @@ public class TeleopWrist extends Command {
             isAuto = false;
         }
         else if (Robot.m_oi.buttonShareOper.get()) {
-            isAuto = true;
+            //isAuto = true;
         }
 
         if (!isPreset && !isAuto) {

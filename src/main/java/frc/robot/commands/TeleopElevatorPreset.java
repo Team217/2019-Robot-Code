@@ -22,6 +22,10 @@ public class TeleopElevatorPreset extends Command {
     boolean isPreset = false;
     APID elevAPID = RobotMap.elevAPID;
     double target = 0;
+    boolean isAuto = false;
+    boolean isBack = false;
+    boolean setBack = true;
+
 
     Preset presetState = Preset.Manual;
 
@@ -48,13 +52,25 @@ public class TeleopElevatorPreset extends Command {
         }
         else if (!PresetState.getStatus()) {
             isPreset = false;
+            setBack = true;
             presetState = Preset.Manual;
             Robot.kElevatorSubsystem.lastPreset = presetState;
+        }
+        
+        if (setBack && PresetState.getPOVStatus()) {
+            //isBack = rightArm1.getPosition() > 65;
+            //isBack = Robot.m_oi.touchPadOper.get() ? !isBack : isBack;
+            //setBack = !Robot.m_oi.touchPadOper.get();
+            isBack = Robot.m_oi.touchPadOper.get();
+            setBack = !isBack;
+        }
+        else {
+            setBack = !PresetState.getPOVStatus();
         }
 
         if (isPreset) {
             presetState = PresetState.getPresetState();
-            Robot.kElevatorSubsystem.preset(presetState);
+            Robot.kElevatorSubsystem.preset(presetState, isBack);
         }
     }
 
