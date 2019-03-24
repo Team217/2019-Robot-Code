@@ -93,27 +93,27 @@ public class WristSubsystem extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = (isBack) ? -2918 : -19;
+            target = isBack ? -2918 : -19;
             break;
         case Mid:
-            target = (isBack) ? -275 : -3608;
+            target = isBack ? -275 : -3608;
             break;
         case High:
-            target = (isBack) ? -264 : -3608;
+            target = isBack ? -264 : -3608;
             break;
         case Ball:
-            target = (isBack) ? -2080 : -2080;
+            target = isBack ? -2080 : -2080;
             break;
         case RocketAdj:
             switch (lastPreset) {
                 case Low:
-                target = (isBack) ? -2918 : -19;
+                target = isBack ? -2918 : -19;
                 break;
             case Mid:
-                target = (isBack) ? -275 : -3608;
+                target = isBack ? -275 : -3608;
                 break;
             case High:
-                target = (isBack) ? -264 : -3608;
+                target = isBack ? -264 : -3608;
                 break;
             default:
                 presetState = Preset.Manual;
