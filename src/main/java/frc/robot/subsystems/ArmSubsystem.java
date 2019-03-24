@@ -109,7 +109,7 @@ public class ArmSubsystem extends Subsystem {
             break;
         case Ball:
             target = (isBack) ? 16.5: 16.5;
-            //break;
+            break;
         case RocketAdj:
             switch (lastPreset) {
                 case Low:
@@ -136,7 +136,7 @@ public class ArmSubsystem extends Subsystem {
                 armAPID.initialize();
             }
             else {
-                speed = Num.inRange(armAPID.getOutput(rightArm1.getPosition(), target), .5);
+                speed = Num.inRange(armAPID.getOutput(rightArm1.getPosition(), target), .75);
             }
 
             if (!presetState.equals(Preset.RocketAdj)) {

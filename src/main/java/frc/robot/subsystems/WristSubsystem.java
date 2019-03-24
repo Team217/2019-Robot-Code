@@ -103,7 +103,7 @@ public class WristSubsystem extends Subsystem {
             break;
         case Ball:
             target = (isBack) ? -2080 : -2080;
-            //break;
+            break;
         case RocketAdj:
             switch (lastPreset) {
                 case Low:

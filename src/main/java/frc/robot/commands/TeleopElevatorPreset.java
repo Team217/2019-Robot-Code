@@ -24,6 +24,7 @@ public class TeleopElevatorPreset extends Command {
     double target = 0;
     boolean isBack = false;
     boolean setBack = true;
+    boolean lastBack = false;
 
 
     Preset presetState = Preset.Manual;
@@ -62,6 +63,10 @@ public class TeleopElevatorPreset extends Command {
             //setBack = !Robot.m_oi.touchPadOper.get();
             isBack = Robot.m_oi.touchPadOper.get();
             setBack = !isBack;
+            if (isBack != lastBack) {
+                Robot.kArmSubsystem.lastPreset = Preset.Manual;
+            }
+            lastBack = isBack;
         }
         else {
             setBack = !PresetState.getPOVStatus();
