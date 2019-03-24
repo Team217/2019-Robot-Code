@@ -175,7 +175,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        NetworkTable table1 = NetworkTableInstance.getDefault().getTable("limelight-test"); //first limelight (front)
+        NetworkTable table1 = NetworkTableInstance.getDefault().getTable("limelight-front"); //first limelight (front)
         NetworkTableEntry tx1 = table1.getEntry("tx"); //first limelight
         NetworkTableEntry ty1 = table1.getEntry("ty"); //first limelight
         NetworkTableEntry ta1 = table1.getEntry("ta"); //first limelight
