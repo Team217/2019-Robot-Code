@@ -66,7 +66,6 @@ public class Robot extends TimedRobot {
         RobotMap.rightArm.resetEncoder();
         RobotMap.telescope.resetEncoder();
 
-
         RobotMap.rightElevator.resetEncoder();
         RobotMap.leftElevator.resetEncoder();
         RobotMap.leftElevator.setEncoder(3500);
