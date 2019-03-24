@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import org.team217.*;
 import org.team217.ctre.*;
 import org.team217.rev.*;
-import org.team217.wpi.AnalogGyro;
+import org.team217.wpi.*;
 import org.team217.pid.*;
 import frc.robot.*;
 import frc.robot.PresetState.Preset;
@@ -14,7 +14,7 @@ public class WristSubsystem extends Subsystem {
     WPI_TalonSRX wrist1 = RobotMap.wrist;
     CANSparkMax rightArm1 = RobotMap.rightArm;
     
-    AnalogGyro intakeGyro1 = RobotMap.intakeGyro;
+    //AnalogGyro intakeGyro1 = RobotMap.intakeGyro;
 
     DigitalInput wristBackLimit1 = RobotMap.wristBackLimit;
     DigitalInput wristFrontLimit1 = RobotMap.wristFrontLimit;
@@ -55,8 +55,9 @@ public class WristSubsystem extends Subsystem {
         speed = limitCheck(speed);
         wrist1.set(speed * wristMult);
     }
-
+    
     /** Runs the wrist using an {@code AnalogGyro}. */
+/*
     public void auto() {
         double armAngle = intakeGyro1.getAngle(); // Might be pitch or yaw, depending on how electical electricities
         double speed = 0;
@@ -78,6 +79,7 @@ public class WristSubsystem extends Subsystem {
 
         set(speed);
     }
+*/
 
     /**
      * Runs the wrist using {@code APID} to reach a preset.
@@ -91,24 +93,27 @@ public class WristSubsystem extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = (isBack) ? -4140 : -773;
+            target = (isBack) ? -2918 : -19;
             break;
         case Mid:
-            target = (isBack) ? -3950 : -4032;
+            target = (isBack) ? -275 : -3608;
             break;
         case High:
-            target = (isBack) ? -377 : -4161;
+            target = (isBack) ? -264 : -3608;
+            break;
+        case Ball:
+            target = (isBack) ? -2080 : -2080;
             break;
         case RocketAdj:
             switch (lastPreset) {
                 case Low:
-                target = (isBack) ? -4140 : -377;
+                target = (isBack) ? -2918 : -19;
                 break;
             case Mid:
-                target = (isBack) ? -3950 : -3950;
+                target = (isBack) ? -275 : -3608;
                 break;
             case High:
-                target = (isBack) ? -377 : -4140;
+                target = (isBack) ? -264 : -3608;
                 break;
             default:
                 presetState = Preset.Manual;

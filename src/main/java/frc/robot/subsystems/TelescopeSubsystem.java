@@ -106,6 +106,9 @@ public class TelescopeSubsystem extends Subsystem {
         case High:
             setOut();
             break;
+        case Ball:
+            setIn();
+            break;
         case RocketAdj:
             switch (lastPreset) {
             case Low:

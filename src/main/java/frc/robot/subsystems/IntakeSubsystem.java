@@ -23,7 +23,7 @@ public class IntakeSubsystem extends Subsystem {
     // here. Call these from Commands.
 
     CANSparkMax intakeOne = RobotMap.intakeOne; //SparkMAX 
-    DoubleSolenoid topHatchSolenoid = RobotMap.topHatchSolenoid;
+    DoubleSolenoid hatchSolenoid = RobotMap.hatchSolenoid;
 
     @Override
     public void initDefaultCommand() {
@@ -38,16 +38,16 @@ public class IntakeSubsystem extends Subsystem {
      *        The intake speed
      */
     public void intake(double speed) {
-        intakeOne.set(speed);
+        intakeOne.set(-speed);
     }
 
-    /** Extends the velcro panel. */
+    /** Extends the hatch intake. */
     public void extend() {
-        topHatchSolenoid.set(DoubleSolenoid.Value.kForward);
+        hatchSolenoid.set(DoubleSolenoid.Value.kForward);
     }
     
-    /** Retracts the velcro panel. */
+    /** Retracts the hatch intake. */
     public void retract() {
-        topHatchSolenoid.set(DoubleSolenoid.Value.kReverse);
+        hatchSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
 }

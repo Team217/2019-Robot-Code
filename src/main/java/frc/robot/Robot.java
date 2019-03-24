@@ -69,12 +69,13 @@ public class Robot extends TimedRobot {
 
         RobotMap.rightElevator.resetEncoder();
         RobotMap.leftElevator.resetEncoder();
-        RobotMap.leftElevator.setEncoder(-5395);
+        RobotMap.leftElevator.setEncoder(-3500);
+        Robot.kElevatorSubsystem.lastElevatorPos = -3500;
 
         RobotMap.wrist.resetEncoder();
 
         RobotMap.pigeonDrive.reset();
-        RobotMap.intakeGyro.reset();
+       // RobotMap.intakeGyro.reset();
 
         kClimbingSubsystem.setDrivePTO();
     }
@@ -103,7 +104,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledPeriodic() {
         kArmSubsystem.lastArmPos = RobotMap.rightArm.getPosition();
-        kElevatorSubsystem.lastElevatorPos = RobotMap.rightElevator.getEncoder();
+        kElevatorSubsystem.lastElevatorPos = RobotMap.leftElevator.getEncoder();
         Scheduler.getInstance().run();
     }
 
@@ -174,7 +175,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        NetworkTable table1 = NetworkTableInstance.getDefault().getTable("limelight-front"); //first limelight (front)
+        NetworkTable table1 = NetworkTableInstance.getDefault().getTable("limelight-test"); //first limelight (front)
         NetworkTableEntry tx1 = table1.getEntry("tx"); //first limelight
         NetworkTableEntry ty1 = table1.getEntry("ty"); //first limelight
         NetworkTableEntry ta1 = table1.getEntry("ta"); //first limelight
@@ -233,7 +234,7 @@ public class Robot extends TimedRobot {
     @Override
     public void testInit() {
         RobotMap.rightElevator.resetEncoder();
-        RobotMap.intakeGyro.reset();
+      //  RobotMap.intakeGyro.reset();
         RobotMap.rightArm.resetEncoder();
     }
 
@@ -272,7 +273,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Pigeon (drive) Yaw", RobotMap.pigeonDrive.getAngle());
         SmartDashboard.putNumber("Pigeon (drive) Pitch", RobotMap.pigeonDrive.getPitch());
         SmartDashboard.putNumber("Pigeon (drive) Roll", RobotMap.pigeonDrive.getRoll());
-        SmartDashboard.putNumber("Wrist Gyro", RobotMap.intakeGyro.getAngle());
+       // SmartDashboard.putNumber("Wrist Gyro", RobotMap.intakeGyro.getAngle());
 
         //SmartDashboard.putNumber("Left Drive Encoder", RobotMap.leftMaster.getPosition());
         //SmartDashboard.putNumber("Right Drive Encoder", RobotMap.rightMaster.getPosition());

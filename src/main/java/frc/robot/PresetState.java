@@ -14,7 +14,8 @@ public class PresetState {
         Low,
         Mid,
         High,
-        RocketAdj
+        RocketAdj,
+        Ball
     }
 
     private static Preset presetState = Preset.Manual;
@@ -57,7 +58,7 @@ public class PresetState {
             presetState = Preset.High;
         }
         else if (Robot.m_oi.oper.getPOV() == 90) {
-            presetState = Preset.RocketAdj;
+            presetState = Preset.Ball;
         }
         else if (!getStatus()) {
             presetState = Preset.Manual;
