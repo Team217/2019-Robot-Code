@@ -66,11 +66,12 @@ public class Robot extends TimedRobot {
         RobotMap.rightArm.resetEncoder();
         RobotMap.telescope.resetEncoder();
 
-
         RobotMap.rightElevator.resetEncoder();
         RobotMap.leftElevator.resetEncoder();
-        RobotMap.leftElevator.setEncoder(-3500);
-        Robot.kElevatorSubsystem.lastElevatorPos = -3500;
+
+        RobotMap.leftElevator.invertEncoder(true);
+        RobotMap.leftElevator.setEncoder(3500);
+        Robot.kElevatorSubsystem.lastElevatorPos = 3500;
 
         RobotMap.wrist.resetEncoder();
 
