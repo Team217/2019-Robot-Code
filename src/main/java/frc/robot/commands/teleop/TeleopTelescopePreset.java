@@ -5,36 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 import frc.robot.PresetState.Preset;
-import org.team217.rev.*;
 
 /**
- * Runs the wrist in teleop control mode using {@code PID} to reach a preset.
+ * Runs the telescope in teleop control mode.
  * 
  * @author ThunderChickens 217
  */
-public class TeleopWristPreset extends Command {
-    CANSparkMax rightArm1 = RobotMap.rightArm;
+public class TeleopTelescopePreset extends Command {
 
     boolean isPreset = false;
-    boolean isAuto = false;
-    boolean isBack = false;
-    boolean setBack = true;
-    boolean lastBack = false;
-
     Preset presetState = Preset.Manual;
     
-    
     /**
-     * Runs the wrist in teleop control mode using {@code PID} to reach a preset.
+     * Runs the telescope in teleop control mode.
      * 
      * @author ThunderChickens 217
      */
-    public TeleopWristPreset() {
+    public TeleopTelescopePreset() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -52,26 +44,12 @@ public class TeleopWristPreset extends Command {
         }
         else if (!PresetState.getStatus()) {
             isPreset = false;
-            setBack = true;
-            presetState = Preset.Manual;
-            Robot.kWristSubsystem.lastPreset = presetState;
-        }
-
-        if (setBack && PresetState.getPOVStatus()) {
-            isBack = Robot.m_oi.touchPadOper.get();
-            setBack = !isBack;
-            if (isBack != lastBack) {
-                Robot.kArmSubsystem.lastPreset = Preset.Manual;
-            }
-            lastBack = isBack;
-        }
-        else {
-            setBack = !PresetState.getPOVStatus();
+            Robot.kTelescopeSubsystem.lastPreset = presetState;
         }
 
         if (isPreset) {
             presetState = PresetState.getPresetState();
-            Robot.kWristSubsystem.preset(presetState, isBack);
+            Robot.kTelescopeSubsystem.preset(presetState);
         }
     }
 
@@ -84,13 +62,13 @@ public class TeleopWristPreset extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kWristSubsystem.set(0);
+        Robot.kTelescopeSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kWristSubsystem.set(0);
+        Robot.kTelescopeSubsystem.set(0);
     }
 }

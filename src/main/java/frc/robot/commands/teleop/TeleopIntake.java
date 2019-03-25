@@ -5,67 +5,66 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
-
-import frc.robot.*;
+package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.*;
 
 /**
- * Runs the drivebase in auton control mode using vision.
+ * Runs the intake in teleop control mode.
  * 
  * @author ThunderChickens 217
  */
-public class AutonDriveVision extends Command {
-    double speed;
-    boolean isCamFront;
-
+public class TeleopIntake extends Command {
     /**
-     * Runs the drivebase in auton control mode using vision.
-     * 
-     * @param speed
-     *        The forward/backward speed
-     * @param isCamFront
-     *        {@code true} if using the front camera
-     * @param timeout
-     *        The time before automatically ending the command, in seconds
+     * Runs the intake in teleop control mode.
      * 
      * @author ThunderChickens 217
      */
-    public AutonDriveVision(double speed, boolean isCamFront, double timeout) {
-        this.speed = speed;
-        this.isCamFront = isCamFront;
-        setTimeout(timeout);
+    public TeleopIntake() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.kDrivingSubsystem.resetVisionPID();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.kDrivingSubsystem.visionDrive(speed, isCamFront);
+        double speed = 0;
+
+        if (Robot.m_oi.rightBumperOper.get()) { //out
+            speed = Robot.kClimbingSubsystem.isClimbing() ? -.2 : -1.0;
+        }
+        else if(!RobotMap.ballLimit.get()){ //hold in
+            speed = .05;
+        }
+        else if (Robot.m_oi.leftBumperOper.get()) { //in
+            speed = .75;
+        }
+        
+        Robot.kIntakeSubsystem.intake(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return false;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kDrivingSubsystem.set(0);
+        Robot.kIntakeSubsystem.intake(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kDrivingSubsystem.set(0);
+        Robot.kIntakeSubsystem.intake(0);
     }
 }

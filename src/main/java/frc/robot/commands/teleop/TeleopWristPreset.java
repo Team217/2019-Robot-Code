@@ -5,27 +5,36 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
-
-import org.team217.*;
+package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
+import frc.robot.PresetState.Preset;
+import org.team217.rev.*;
 
 /**
- * Runs the elevator in teleop control mode.
+ * Runs the wrist in teleop control mode using {@code PID} to reach a preset.
  * 
  * @author ThunderChickens 217
  */
-public class TeleopElevator extends Command {
-    boolean isPreset = false;
+public class TeleopWristPreset extends Command {
+    CANSparkMax rightArm1 = RobotMap.rightArm;
 
+    boolean isPreset = false;
+    boolean isAuto = false;
+    boolean isBack = false;
+    boolean setBack = true;
+    boolean lastBack = false;
+
+    Preset presetState = Preset.Manual;
+    
+    
     /**
-     * Runs the elevator in teleop control mode.
+     * Runs the wrist in teleop control mode using {@code PID} to reach a preset.
      * 
      * @author ThunderChickens 217
      */
-    public TeleopElevator() {
+    public TeleopWristPreset() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -43,11 +52,26 @@ public class TeleopElevator extends Command {
         }
         else if (!PresetState.getStatus()) {
             isPreset = false;
+            setBack = true;
+            presetState = Preset.Manual;
+            Robot.kWristSubsystem.lastPreset = presetState;
         }
 
-        if (!isPreset) {
-            double speed = Num.deadband(Robot.m_oi.oper.getY(), 0.08);
-            Robot.kElevatorSubsystem.set(speed);
+        if (setBack && PresetState.getPOVStatus()) {
+            isBack = Robot.m_oi.touchPadOper.get();
+            setBack = !isBack;
+            if (isBack != lastBack) {
+                Robot.kArmSubsystem.lastPreset = Preset.Manual;
+            }
+            lastBack = isBack;
+        }
+        else {
+            setBack = !PresetState.getPOVStatus();
+        }
+
+        if (isPreset) {
+            presetState = PresetState.getPresetState();
+            Robot.kWristSubsystem.preset(presetState, isBack);
         }
     }
 
@@ -60,13 +84,13 @@ public class TeleopElevator extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kElevatorSubsystem.set(0);
+        Robot.kWristSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kElevatorSubsystem.set(0);
+        Robot.kWristSubsystem.set(0);
     }
 }
