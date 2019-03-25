@@ -13,21 +13,21 @@ import frc.robot.*;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Runs the drivebase in auton control mode using {@code PID}.
+ * Runs the drivebase in auton control mode using {@code APID}.
  * 
  * @author ThunderChickens 217
  */
 public class AutonDrive extends Command {
-    APID driveAPID;
+    APID apid;
     boolean isDriveStraight = false;
     boolean forward = true;
     double target = 0.0;
 
     /**
-     * Runs the drivebase in auton control mode using {@code PID}.
+     * Runs the drivebase in auton control mode using {@code APID}.
      * 
      * @param target
-     *        The PID taret
+     *        The {@code PID} target
      * @param pid
      *        The {@code PID} variable
      * @param accelTime
@@ -42,14 +42,14 @@ public class AutonDrive extends Command {
         
         this.isDriveStraight = isDriveStraight;
         this.target = target;
-        driveAPID = new APID(pid.setTimeout(100), accelTime);
+        apid = new APID(pid.setTimeout(100), accelTime);
     }
 
     /**
-     * Runs the drivebase in auton control mode using {@code PID}.
+     * Runs the drivebase in auton control mode using {@code APID}.
      * 
      * @param target
-     *        The PID taret
+     *        The {@code PID} target
      * @param pid
      *        The {@code PID} variable
      * @param accelTime
@@ -67,10 +67,10 @@ public class AutonDrive extends Command {
     }
 
     /**
-     * Runs the drivebase in auton control mode using {@code PID}.
+     * Runs the drivebase in auton control mode using {@code APID}.
      * 
      * @param target
-     *        The PID taret
+     *        The {@code PID} target
      * @param pid
      *        The {@code PID} variable
      * @param isDriveStraight
@@ -83,10 +83,10 @@ public class AutonDrive extends Command {
     }
 
     /**
-     * Runs the drivebase in auton control mode using {@code PID}.
+     * Runs the drivebase in auton control mode using {@code APID}.
      * 
      * @param target
-     *        The PID taret
+     *        The {@code PID} target
      * @param pid
      *        The {@code PID} variable
      * @param isDriveStraight
@@ -101,10 +101,10 @@ public class AutonDrive extends Command {
     }
 
     /**
-     * Runs the drivebase in auton control mode using {@code PID}.
+     * Runs the drivebase in auton control mode using {@code APID}.
      * 
      * @param target
-     *        The PID taret
+     *        The {@code PID} target
      * @param pid
      *        The {@code PID} variable
      * 
@@ -115,10 +115,10 @@ public class AutonDrive extends Command {
     }
 
     /**
-     * Runs the drivebase in auton control mode using {@code PID}.
+     * Runs the drivebase in auton control mode using {@code APID}.
      * 
      * @param target
-     *        The PID taret
+     *        The {@code PID} target
      * @param pid
      *        The {@code PID} variable
      * @param timeout
@@ -137,13 +137,13 @@ public class AutonDrive extends Command {
             forward = false;
         }
 
-        driveAPID.initialize();
+        apid.initialize();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double speed = driveAPID.getOutput(RobotMap.rightMaster.getPosition(), target);
+        double speed = apid.getOutput(RobotMap.rightMaster.getPosition(), target);
         Robot.kDrivingSubsystem.set(speed, isDriveStraight);
     }
 

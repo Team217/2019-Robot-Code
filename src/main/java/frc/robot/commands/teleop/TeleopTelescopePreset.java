@@ -12,7 +12,7 @@ import frc.robot.*;
 import frc.robot.PresetState.Preset;
 
 /**
- * Runs the telescope in teleop control mode.
+ * Runs the telescope in teleop control mode using {@code APID} to reach a preset.
  * 
  * @author ThunderChickens 217
  */
@@ -22,7 +22,7 @@ public class TeleopTelescopePreset extends Command {
     Preset presetState = Preset.Manual;
     
     /**
-     * Runs the telescope in teleop control mode.
+     * Runs the telescope in teleop control mode using {@code APID} to reach a preset.
      * 
      * @author ThunderChickens 217
      */

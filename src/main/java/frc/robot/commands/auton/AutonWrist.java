@@ -5,27 +5,73 @@ import org.team217.pid.*;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
+/**
+ * Runs the wrist in auton control mode using {@code APID}.
+ * 
+ * @author ThunderChickens 217
+ */
 public class AutonWrist extends Command {
     double tar = 0;
     APID apid = RobotMap.wristAPID;
 
+    /**
+     * Runs the wrist in auton control mode using {@code APID}.
+     * 
+     * @param target
+     *        The {@code PID} target
+     * 
+     * @author ThunderChickens 217
+     */
     public AutonWrist(double target) {
         requires(Robot.kWristSubsystem);
         tar = target;
     }
 
-    public AutonWrist(double target, double accelTime) {
+    /**
+     * Runs the wrist in auton control mode using {@code APID}.
+     * 
+     * @param target
+     *        The {@code PID} target
+     * @param timeout
+     *        The time before automatically ending the command, in seconds
+     * 
+     * @author ThunderChickens 217
+     */
+    public AutonWrist(double target, double timeout) {
         this(target);
-        apid.setAccelTime(accelTime);
+        setTimeout(timeout);
     }
 
-    public AutonWrist(double target, PID pid, double accelTime) {
-        this(target);
-        apid = new APID(pid.setTimeout(100), accelTime);
-    }
-
+    /**
+     * Runs the wrist in auton control mode using {@code APID}.
+     * 
+     * @param target
+     *        The {@code PID} target
+     * @param pid
+     *        The {@code PID} variable
+     * 
+     * @author ThunderChickens 217
+     */
     public AutonWrist(double target, PID pid) {
-        this(target, pid, 0);
+        this(target);
+        apid.setPID(pid.setTimeout(100));
+    }
+
+    /**
+     * Runs the wrist in auton control mode using {@code APID}.
+     * 
+     * @param target
+     *        The {@code PID} target
+     * @param pid
+     *        The {@code PID} variable
+     * @param timeout
+     *        The time before automatically ending the command, in seconds
+     * 
+     * @author ThunderChickens 217
+     */
+    public AutonWrist(double target, PID pid, double timeout) {
+        this(target, pid);
+        setTimeout(timeout);
     }
 
     @Override
@@ -40,7 +86,7 @@ public class AutonWrist extends Command {
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     @Override

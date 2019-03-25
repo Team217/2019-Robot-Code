@@ -86,7 +86,7 @@ public class WristSubsystem extends Subsystem {
      * Runs the wrist using {@code APID} to reach a preset.
      * 
      * @param presetState
-     *        The {@code Preset} state 
+     *        The {@code Preset} state
      * @param isBack
      *        {@code true} if the preset moves the arm to the back region of the bot
      */

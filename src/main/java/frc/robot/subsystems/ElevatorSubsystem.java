@@ -82,6 +82,8 @@ public class ElevatorSubsystem extends Subsystem {
      * 
      * @param presetState
      *        The {@code Preset} state
+     * @param isBack
+     *        {@code true} if the preset moves the arm to the back region of the bot
      */
     public void preset(Preset presetState, boolean isBack) {
         double target = 0;
