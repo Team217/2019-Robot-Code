@@ -4,24 +4,22 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 import frc.robot.PresetState.Preset;
 
-public class AutonArmPreset extends Command {
-    boolean isBack = false;
+public class AutonTelescopePreset extends Command {
     Preset presetState = Preset.Manual;
 
-    public AutonArmPreset(Preset presetState, boolean isBack) {
-        requires(Robot.kArmSubsystem);
+    public AutonTelescopePreset(Preset presetState) {
+        requires(Robot.kTelescopeSubsystem);
         this.presetState = presetState;
-        this.isBack = isBack;
     }
 
     @Override
     protected void initialize() {
-        Robot.kArmSubsystem.lastPreset = Preset.Manual;
+        Robot.kTelescopeSubsystem.lastPreset = Preset.Manual;
     }
 
     @Override
     protected void execute() {
-        Robot.kArmSubsystem.preset(presetState, isBack);
+        Robot.kTelescopeSubsystem.preset(presetState);
     }
 
     @Override
@@ -31,11 +29,11 @@ public class AutonArmPreset extends Command {
 
     @Override
     protected void end() {
-        Robot.kArmSubsystem.set(0);
+        Robot.kTelescopeSubsystem.set(0);
     }
 
     @Override
     protected void interrupted() {
-        Robot.kArmSubsystem.set(0);
+        Robot.kTelescopeSubsystem.set(0);
     }
 }

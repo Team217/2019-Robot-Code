@@ -37,7 +37,7 @@ public class IntakeSubsystem extends Subsystem {
      * @param speed
      *        The intake speed
      */
-    public void intake(double speed) {
+    public void set(double speed) {
         intakeOne.set(-speed);
     }
 

@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.command.Command;
  * @author ThunderChickens 217
  */
 public class AutonDrive extends Command {
-    PID drivePID = new PID(100);
     APID driveAPID;
     boolean isDriveStraight = false;
     boolean forward = true;
@@ -29,12 +28,8 @@ public class AutonDrive extends Command {
      * 
      * @param target
      *        The PID taret
-     * @param kP
-     *        The kP value for {@code PID}
-     * @param kI
-     *        The kI value for {@code PID}
-     * @param kD
-     *        The kD value for {@code PID}
+     * @param pid
+     *        The {@code PID} variable
      * @param accelTime
      *        The time to accelerate to max speed, in seconds
      * @param isDriveStraight
@@ -42,12 +37,12 @@ public class AutonDrive extends Command {
      * 
      * @author ThunderChickens 217
      */
-    public AutonDrive(double target, double kP, double kI, double kD, double accelTime, boolean isDriveStraight) {
+    public AutonDrive(double target, PID pid, double accelTime, boolean isDriveStraight) {
         requires(Robot.kDrivingSubsystem);
         
         this.isDriveStraight = isDriveStraight;
         this.target = target;
-        driveAPID = new APID(drivePID.setPID(kP, kI, kD), accelTime);
+        driveAPID = new APID(pid.setTimeout(100), accelTime);
     }
 
     /**
@@ -55,12 +50,8 @@ public class AutonDrive extends Command {
      * 
      * @param target
      *        The PID taret
-     * @param kP
-     *        The kP value for {@code PID}
-     * @param kI
-     *        The kI value for {@code PID}
-     * @param kD
-     *        The kD value for {@code PID}
+     * @param pid
+     *        The {@code PID} variable
      * @param accelTime
      *        The time to accelerate to max speed, in seconds
      * @param isDriveStraight
@@ -70,8 +61,8 @@ public class AutonDrive extends Command {
      * 
      * @author ThunderChickens 217
      */
-    public AutonDrive(double target, double kP, double kI, double kD, double accelTime, boolean isDriveStraight, double timeout) {
-        this(target, kP, kI, kD, accelTime, isDriveStraight);
+    public AutonDrive(double target, PID pid, double accelTime, boolean isDriveStraight, double timeout) {
+        this(target, pid, accelTime, isDriveStraight);
         setTimeout(timeout);
     }
 
@@ -80,19 +71,15 @@ public class AutonDrive extends Command {
      * 
      * @param target
      *        The PID taret
-     * @param kP
-     *        The kP value for {@code PID}
-     * @param kI
-     *        The kI value for {@code PID}
-     * @param kD
-     *        The kD value for {@code PID}
+     * @param pid
+     *        The {@code PID} variable
      * @param isDriveStraight
      *        {@code true} [not default] if the robot should use gyro correction to drive straight
      * 
      * @author ThunderChickens 217
      */
-    public AutonDrive(double target, double kP, double kI, double kD, boolean isDriveStraight) {
-        this(target, kP, kI, kD, 0.0, isDriveStraight);
+    public AutonDrive(double target, PID pid, boolean isDriveStraight) {
+        this(target, pid, 0.0, isDriveStraight);
     }
 
     /**
@@ -100,12 +87,8 @@ public class AutonDrive extends Command {
      * 
      * @param target
      *        The PID taret
-     * @param kP
-     *        The kP value for {@code PID}
-     * @param kI
-     *        The kI value for {@code PID}
-     * @param kD
-     *        The kD value for {@code PID}
+     * @param pid
+     *        The {@code PID} variable
      * @param isDriveStraight
      *        {@code true} [not default] if the robot should use gyro correction to drive straight
      * @param timeout
@@ -113,8 +96,8 @@ public class AutonDrive extends Command {
      * 
      * @author ThunderChickens 217
      */
-    public AutonDrive(double target, double kP, double kI, double kD, boolean isDriveStraight, double timeout) {
-        this(target, kP, kI, kD, 0.0, isDriveStraight, timeout);
+    public AutonDrive(double target, PID pid, boolean isDriveStraight, double timeout) {
+        this(target, pid, 0.0, isDriveStraight, timeout);
     }
 
     /**
@@ -122,17 +105,13 @@ public class AutonDrive extends Command {
      * 
      * @param target
      *        The PID taret
-     * @param kP
-     *        The kP value for {@code PID}
-     * @param kI
-     *        The kI value for {@code PID}
-     * @param kD
-     *        The kD value for {@code PID}
+     * @param pid
+     *        The {@code PID} variable
      * 
      * @author ThunderChickens 217
      */
-    public AutonDrive(double target, double kP, double kI, double kD) {
-        this(target, kP, kI, kD, 0.0, false);
+    public AutonDrive(double target, PID pid) {
+        this(target, pid, 0.0, false);
     }
 
     /**
@@ -140,19 +119,15 @@ public class AutonDrive extends Command {
      * 
      * @param target
      *        The PID taret
-     * @param kP
-     *        The kP value for {@code PID}
-     * @param kI
-     *        The kI value for {@code PID}
-     * @param kD
-     *        The kD value for {@code PID}
+     * @param pid
+     *        The {@code PID} variable
      * @param timeout
      *        The time before automatically ending the command, in seconds
      * 
      * @author ThunderChickens 217
      */
-    public AutonDrive(double target, double kP, double kI, double kD, double timeout) {
-        this(target, kP, kI, kD, 0.0, false, timeout);
+    public AutonDrive(double target, PID pid, double timeout) {
+        this(target, pid, 0.0, false, timeout);
     }
 
     // Called just before this Command runs the first time
