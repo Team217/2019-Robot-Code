@@ -8,10 +8,10 @@ public class AutonArmPreset extends Command {
     boolean isBack = false;
     Preset presetState = Preset.Manual;
 
-    public AutonArmPreset(Preset preset, boolean isBack) {
+    public AutonArmPreset(Preset presetState, boolean isBack) {
         requires(Robot.kArmSubsystem);
+        this.presetState = presetState;
         this.isBack = isBack;
-        presetState = preset;
     }
 
     @Override

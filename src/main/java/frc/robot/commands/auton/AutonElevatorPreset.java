@@ -6,11 +6,11 @@ import frc.robot.PresetState.Preset;
 
 public class AutonElevatorPreset extends Command {
     boolean isBack = false;
-    Preset preset = Preset.Manual;
+    Preset presetState = Preset.Manual;
 
-    public AutonElevatorPreset(Preset preset, boolean isBack) {
+    public AutonElevatorPreset(Preset presetState, boolean isBack) {
         requires(Robot.kElevatorSubsystem);
-        this.preset = preset;
+        this.presetState = presetState;
         this.isBack = isBack;
     }
 
@@ -21,7 +21,7 @@ public class AutonElevatorPreset extends Command {
 
     @Override
     protected void execute() {
-        Robot.kElevatorSubsystem.preset(preset, isBack);
+        Robot.kElevatorSubsystem.preset(presetState, isBack);
     }
 
     @Override

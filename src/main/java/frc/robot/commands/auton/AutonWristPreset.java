@@ -8,10 +8,10 @@ public class AutonWristPreset extends Command {
     boolean isBack = false;
     Preset presetState = Preset.Manual;
 
-    public AutonWristPreset(Preset preset, boolean isBack) {
+    public AutonWristPreset(Preset presetState, boolean isBack) {
         requires(Robot.kWristSubsystem);
         this.isBack = isBack;
-        presetState = preset;
+        this.presetState = presetState;
     }
 
     @Override
