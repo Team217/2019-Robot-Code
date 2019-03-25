@@ -13,8 +13,8 @@ public class AutonArm extends Command {
     double tar = 0;
 
     public AutonArm(double target) {
-        tar = target;
         requires(Robot.kArmSubsystem);
+        tar = target;
     }
 
     public AutonArm(double target, double timeout) {
@@ -22,13 +22,13 @@ public class AutonArm extends Command {
         setTimeout(timeout);
     }
 
-    public AutonArm(double target, double kP, double kI, double kD) {
+    public AutonArm(double target, PID pid) {
         this(target);
-        armAPID.setPID(new PID(kP, kI, kD, 100));
+        armAPID.setPID(pid.setTimeout(100));
     }
 
-    public AutonArm(double target, double kP, double kI, double kD, double timeout) {
-        this(target, kP, kI, kD);
+    public AutonArm(double target, PID pid, double timeout) {
+        this(target, pid);
         setTimeout(timeout);
     }
 
