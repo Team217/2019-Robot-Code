@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.teleop;
 
 import frc.robot.*;
 import org.team217.*;

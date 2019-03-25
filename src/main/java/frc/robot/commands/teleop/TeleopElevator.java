@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.teleop;
 
 import org.team217.*;
 
@@ -13,21 +13,19 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
 /**
- * Runs the wrist in teleop control mode.
+ * Runs the elevator in teleop control mode.
  * 
  * @author ThunderChickens 217
  */
-public class TeleopWrist extends Command {
-
+public class TeleopElevator extends Command {
     boolean isPreset = false;
-    boolean isAuto = false;
-    
+
     /**
-     * Runs the wrist in teleop control mode.
+     * Runs the elevator in teleop control mode.
      * 
      * @author ThunderChickens 217
      */
-    public TeleopWrist() {
+    public TeleopElevator() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -47,27 +45,9 @@ public class TeleopWrist extends Command {
             isPreset = false;
         }
 
-        if (Robot.m_oi.rightTriggerOper.get() || Robot.m_oi.leftTriggerOper.get()) {
-            isAuto = false;
-        }
-        else if (Robot.m_oi.buttonShareOper.get()) {
-            //isAuto = true;
-        }
-
-        if (!isPreset && !isAuto) {
-            //moving wrist independently
-            double upSpeed = 1 + Num.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05);
-            double downSpeed = 1 + Num.deadband(Robot.m_oi.oper.getRawAxis(4), 0.05);
-
-            if (Robot.m_oi.leftTriggerOper.get()) { //moving up
-                Robot.kWristSubsystem.set(upSpeed);
-            }
-            else if (Robot.m_oi.rightTriggerOper.get()) { //moving down
-                Robot.kWristSubsystem.set(-downSpeed);
-            }
-            else {
-                Robot.kWristSubsystem.set(0);
-            }
+        if (!isPreset) {
+            double speed = Num.deadband(Robot.m_oi.oper.getY(), 0.08);
+            Robot.kElevatorSubsystem.set(speed);
         }
     }
 
@@ -80,13 +60,13 @@ public class TeleopWrist extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kWristSubsystem.set(0);
+        Robot.kElevatorSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kWristSubsystem.set(0);
+        Robot.kElevatorSubsystem.set(0);
     }
 }

@@ -5,34 +5,27 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.teleop;
+
+import org.team217.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
-import frc.robot.PresetState.Preset;
-import org.team217.rev.*;
 
 /**
- * Runs the arm in teleop control mode using {@code PID} to reach a preset.
+ * Runs the arm in teleop control mode.
  * 
  * @author ThunderChickens
  */
-public class TeleopArmPreset extends Command {
-    CANSparkMax rightArm1 = RobotMap.rightArm;
-
+public class TeleopArm extends Command {
     boolean isPreset = false;
-    boolean isBack = false;
-    boolean setBack = true;
-    boolean lastBack = false;
-
-    Preset presetState = Preset.Manual;
 
     /**
-     * Runs the arm in teleop control mode using {@code PID} to reach a preset.
+     * Runs the arm in teleop control mode.
      * 
      * @author ThunderChickens
      */
-    public TeleopArmPreset() {
+    public TeleopArm() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -50,26 +43,11 @@ public class TeleopArmPreset extends Command {
         }
         else if (!PresetState.getStatus()) {
             isPreset = false;
-            setBack = true;
-            presetState = Preset.Manual;
-            Robot.kArmSubsystem.lastPreset = presetState;
         }
 
-        if (setBack && PresetState.getPOVStatus()) {
-            isBack = Robot.m_oi.touchPadOper.get();
-            setBack = !isBack;
-            if (isBack != lastBack) {
-                Robot.kArmSubsystem.lastPreset = Preset.Manual;
-            }
-            lastBack = isBack;
-        }
-        else {
-            setBack = !PresetState.getPOVStatus();
-        }
-
-        if (isPreset) {
-            presetState = PresetState.getPresetState();
-            Robot.kArmSubsystem.preset(presetState, isBack);
+        if (!isPreset) {
+            double speed = Num.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
+            Robot.kArmSubsystem.set(-speed);
         }
     }
 

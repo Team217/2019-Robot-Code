@@ -5,58 +5,67 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.auton;
 
-import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
+import edu.wpi.first.wpilibj.command.Command;
+
 /**
- * Runs the climber in teleop control mode.
+ * Runs the drivebase in auton control mode using vision.
  * 
  * @author ThunderChickens 217
  */
-public class TeleopClimb extends Command {
+public class AutonDriveVision extends Command {
+    double speed;
+    boolean isCamFront;
+
     /**
-     * Runs the climber in teleop control mode.
+     * Runs the drivebase in auton control mode using vision.
+     * 
+     * @param speed
+     *        The forward/backward speed
+     * @param isCamFront
+     *        {@code true} if using the front camera
+     * @param timeout
+     *        The time before automatically ending the command, in seconds
      * 
      * @author ThunderChickens 217
      */
-    public TeleopClimb() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+    public AutonDriveVision(double speed, boolean isCamFront, double timeout) {
+        this.speed = speed;
+        this.isCamFront = isCamFront;
+        setTimeout(timeout);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.kDrivingSubsystem.resetVisionPID();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (Robot.m_oi.xDriver.get()) {
-            Robot.kClimbingSubsystem.setDrivePTO();
-        }
-        else if (Robot.m_oi.circleDriver.get()) {
-            Robot.kClimbingSubsystem.setClimbPTO();
-        }
+        Robot.kDrivingSubsystem.visionDrive(speed, isCamFront);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.kDrivingSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        Robot.kDrivingSubsystem.set(0);
     }
-
 }

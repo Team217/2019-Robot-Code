@@ -5,23 +5,29 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.teleop;
+
+import org.team217.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
 /**
- * Runs the hatch mechanism in teleop control mode.
+ * Runs the wrist in teleop control mode.
  * 
  * @author ThunderChickens 217
  */
-public class TeleopHatchPickup extends Command {
+public class TeleopWrist extends Command {
+
+    boolean isPreset = false;
+    boolean isAuto = false;
+    
     /**
-     * Runs the hatch mechanism in teleop control mode.
+     * Runs the wrist in teleop control mode.
      * 
      * @author ThunderChickens 217
      */
-    public TeleopHatchPickup() {
+    public TeleopWrist() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -34,11 +40,34 @@ public class TeleopHatchPickup extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (Robot.m_oi.circleOper.get()) {
-            Robot.kIntakeSubsystem.extend();
+        if (PresetState.getPOVStatus()) {
+            isPreset = PresetState.getStatus();
         }
-        else if (Robot.m_oi.triangleOper.get()) {
-            Robot.kIntakeSubsystem.retract();
+        else if (!PresetState.getStatus()) {
+            isPreset = false;
+        }
+
+        if (Robot.m_oi.rightTriggerOper.get() || Robot.m_oi.leftTriggerOper.get()) {
+            isAuto = false;
+        }
+        else if (Robot.m_oi.buttonShareOper.get()) {
+            //isAuto = true;
+        }
+
+        if (!isPreset && !isAuto) {
+            //moving wrist independently
+            double upSpeed = 1 + Num.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05);
+            double downSpeed = 1 + Num.deadband(Robot.m_oi.oper.getRawAxis(4), 0.05);
+
+            if (Robot.m_oi.leftTriggerOper.get()) { //moving up
+                Robot.kWristSubsystem.set(upSpeed);
+            }
+            else if (Robot.m_oi.rightTriggerOper.get()) { //moving down
+                Robot.kWristSubsystem.set(-downSpeed);
+            }
+            else {
+                Robot.kWristSubsystem.set(0);
+            }
         }
     }
 
@@ -51,11 +80,13 @@ public class TeleopHatchPickup extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.kWristSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        Robot.kWristSubsystem.set(0);
     }
 }

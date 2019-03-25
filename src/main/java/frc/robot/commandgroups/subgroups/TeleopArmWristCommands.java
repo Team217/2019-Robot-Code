@@ -9,7 +9,7 @@ package frc.robot.commandgroups.subgroups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.*;
-import frc.robot.commands.*;
+import frc.robot.commands.teleop.*;
 
 /**
  * Command Group that runs the arm and wrist in teleop.

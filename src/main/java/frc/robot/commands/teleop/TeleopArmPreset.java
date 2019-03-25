@@ -5,35 +5,34 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
-
-import org.team217.rev.*;
-import org.team217.pid.*;
-import org.team217.wpi.*;
+package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
+import frc.robot.PresetState.Preset;
+import org.team217.rev.*;
 
 /**
- * Runs the wrist in teleop control mode using an {@code AnalogGyro}.
+ * Runs the arm in teleop control mode using {@code PID} to reach a preset.
  * 
- * @author ThunderChickens 217
+ * @author ThunderChickens
  */
-public class TeleopWristGyro extends Command {
+public class TeleopArmPreset extends Command {
     CANSparkMax rightArm1 = RobotMap.rightArm;
-    //AnalogGyro intakeGyro1 = RobotMap.intakeGyro;
 
     boolean isPreset = false;
-    boolean isAuto = false;
-    
-    PID wristGyroPID = RobotMap.wristGyroPID;
-    
+    boolean isBack = false;
+    boolean setBack = true;
+    boolean lastBack = false;
+
+    Preset presetState = Preset.Manual;
+
     /**
-     * Runs the wrist in teleop control mode using an {@code AnalogGyro}.
+     * Runs the arm in teleop control mode using {@code PID} to reach a preset.
      * 
-     * @author ThunderChickens 217
+     * @author ThunderChickens
      */
-    public TeleopWristGyro() {
+    public TeleopArmPreset() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -51,21 +50,26 @@ public class TeleopWristGyro extends Command {
         }
         else if (!PresetState.getStatus()) {
             isPreset = false;
-        }
-        
-        if (Robot.m_oi.rightTriggerOper.get() || Robot.m_oi.leftTriggerOper.get()) {
-            isAuto = false;
-        }
-        else if (Robot.m_oi.buttonShareOper.get()) {
-            isAuto = true;
+            setBack = true;
+            presetState = Preset.Manual;
+            Robot.kArmSubsystem.lastPreset = presetState;
         }
 
-        if (!isPreset && isAuto) {
-            if (Robot.m_oi.psButtonOper.get()) {
-               // RobotMap.intakeGyro.reset();
+        if (setBack && PresetState.getPOVStatus()) {
+            isBack = Robot.m_oi.touchPadOper.get();
+            setBack = !isBack;
+            if (isBack != lastBack) {
+                Robot.kArmSubsystem.lastPreset = Preset.Manual;
             }
+            lastBack = isBack;
+        }
+        else {
+            setBack = !PresetState.getPOVStatus();
+        }
 
-            //Robot.kWristSubsystem.auto();
+        if (isPreset) {
+            presetState = PresetState.getPresetState();
+            Robot.kArmSubsystem.preset(presetState, isBack);
         }
     }
 
@@ -78,13 +82,13 @@ public class TeleopWristGyro extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kWristSubsystem.set(0);
+        Robot.kArmSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kWristSubsystem.set(0);
+        Robot.kArmSubsystem.set(0);
     }
 }

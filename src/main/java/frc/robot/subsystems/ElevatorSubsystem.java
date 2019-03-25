@@ -50,14 +50,14 @@ public class ElevatorSubsystem extends Subsystem {
     public void set(double speed) {
         double elevatorMult = 0.65;
         
-        if (leftElevator1.getEncoder() <= -12500 && speed <= 0) { //encoder values are wrong, check the logic
+        if (leftElevator1.getEncoder() >= 12500 && speed <= 0) { //encoder values are wrong, check the logic
         	elevatorMult = .425;
         }
-        else if(leftElevator1.getEncoder() >= -2000 && speed >= 0.0) { //this one too
+        else if(leftElevator1.getEncoder() <= 2000 && speed >= 0.0) { //this one too
         	elevatorMult = .375;
         }
 
-        if (leftElevator1.getEncoder() <= -15500 && speed < 0) { //Check this first so we can still hold it up
+        if (leftElevator1.getEncoder() >= 15500 && speed < 0) { //Check this first so we can still hold it up
             speed = 0;
         }
         
@@ -65,7 +65,7 @@ public class ElevatorSubsystem extends Subsystem {
             lastElevatorPos = leftElevator1.getEncoder();
         }
        else {
-            speed = RobotMap.elevatorHoldPID.getOutput(RobotMap.leftElevator.getEncoder(), lastElevatorPos);
+            speed = -RobotMap.elevatorHoldPID.getOutput(RobotMap.leftElevator.getEncoder(), lastElevatorPos);
             elevatorMult = 1;
         } 
         
@@ -124,7 +124,7 @@ public class ElevatorSubsystem extends Subsystem {
                 elevatorAPID.initialize();
             }
             else {
-                speed = Num.inRange(elevatorAPID.getOutput(leftElevator1.getEncoder(), target), 1);
+                speed = -Num.inRange(elevatorAPID.getOutput(leftElevator1.getEncoder(), target), 1);
             }
 
             if (!presetState.equals(Preset.RocketAdj)) {
