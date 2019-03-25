@@ -1,6 +1,5 @@
 package frc.robot.commands.auton;
 
-import org.team217.*;
 import org.team217.pid.*;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -41,7 +40,7 @@ public class AutonWrist extends Command {
 
     @Override
     protected boolean isFinished() {
-        return Num.isWithinRange(RobotMap.wrist.getEncoder(), tar - 20, tar + 20);
+        return false;
     }
 
     @Override

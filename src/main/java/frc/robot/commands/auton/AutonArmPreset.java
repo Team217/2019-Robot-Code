@@ -6,12 +6,12 @@ import frc.robot.PresetState.Preset;
 
 public class AutonArmPreset extends Command {
     boolean isBack = false;
-    Preset preset = Preset.Manual;
+    Preset presetState = Preset.Manual;
 
     public AutonArmPreset(Preset preset, boolean isBack) {
         requires(Robot.kArmSubsystem);
-        this.preset = preset;
         this.isBack = isBack;
+        presetState = preset;
     }
 
     @Override
@@ -21,7 +21,7 @@ public class AutonArmPreset extends Command {
 
     @Override
     protected void execute() {
-        Robot.kArmSubsystem.preset(preset, isBack);
+        Robot.kArmSubsystem.preset(presetState, isBack);
     }
 
     @Override
