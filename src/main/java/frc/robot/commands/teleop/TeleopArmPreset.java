@@ -13,7 +13,7 @@ import frc.robot.PresetState.Preset;
 import org.team217.rev.*;
 
 /**
- * Runs the arm in teleop control mode using {@code PID} to reach a preset.
+ * Runs the arm in teleop control mode using {@code APID} to reach a preset.
  * 
  * @author ThunderChickens
  */
@@ -28,7 +28,7 @@ public class TeleopArmPreset extends Command {
     Preset presetState = Preset.Manual;
 
     /**
-     * Runs the arm in teleop control mode using {@code PID} to reach a preset.
+     * Runs the arm in teleop control mode using {@code APID} to reach a preset.
      * 
      * @author ThunderChickens
      */

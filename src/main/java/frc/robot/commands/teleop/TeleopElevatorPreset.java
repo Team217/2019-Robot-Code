@@ -14,7 +14,7 @@ import frc.robot.PresetState.Preset;
 import org.team217.pid.*;
 
 /**
- * Runs the elevator in teleop control mode using {@code PID} to reach a preset.
+ * Runs the elevator in teleop control mode using {@code APID} to reach a preset.
  * 
  * @author ThunderChickens 217
  */

@@ -6,45 +6,58 @@ import org.team217.rev.*;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
+/**
+ * Runs the arm in auton control mode using {@code APID}.
+ * 
+ * @author ThunderChickens 217
+ */
 public class AutonArm extends Command {
     CANSparkMax rightArm1 = RobotMap.rightArm;
-    APID armAPID = RobotMap.armAPID;
+    APID apid = RobotMap.armAPID;
 
     double tar = 0;
 
+    /**
+     * Runs the arm in auton control mode using {@code APID}.
+     * 
+     * @param target
+     *        The {@code PID} target
+     * 
+     * @author ThunderChickens 217
+     */
     public AutonArm(double target) {
         requires(Robot.kArmSubsystem);
         tar = target;
     }
 
-    public AutonArm(double target, double timeout) {
-        this(target);
-        setTimeout(timeout);
-    }
-
+    /**
+     * Runs the arm in auton control mode using {@code APID}.
+     * 
+     * @param target
+     *        The {@code PID} target
+     * @param pid
+     *        The {@code PID} variable
+     * 
+     * @author ThunderChickens 217
+     */
     public AutonArm(double target, PID pid) {
         this(target);
-        armAPID.setPID(pid.setTimeout(100));
-    }
-
-    public AutonArm(double target, PID pid, double timeout) {
-        this(target, pid);
-        setTimeout(timeout);
+        apid.setPID(pid.setTimeout(100));
     }
 
     @Override
     protected void initialize() {
-        armAPID.initialize();
+        apid.initialize();
     }
 
     @Override
     protected void execute() {
-        Robot.kArmSubsystem.set(armAPID.getOutput(rightArm1.getPosition(), tar));
+        Robot.kArmSubsystem.set(apid.getOutput(rightArm1.getPosition(), tar));
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     @Override
