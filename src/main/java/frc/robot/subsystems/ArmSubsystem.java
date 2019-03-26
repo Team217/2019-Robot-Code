@@ -110,21 +110,9 @@ public class ArmSubsystem extends Subsystem {
         case Ball:
             target = isBack ? 101: 16.5;
             break;
-        case RocketAdj:
-            switch (lastPreset) {
-                case Low:
-                target = isBack ? 101 : 6.67;
-                break;
-            case Mid:
-                target = isBack ? 67.6 : 54.1;
-                break;
-            case High:
-                target = isBack ? 65.4 : 54.1;
-                break;
-            default:
-                presetState = Preset.Manual;
-                break;
-            }
+        case Climb:
+            target = 75;
+            break;
         default:
             break;
         }
@@ -138,11 +126,9 @@ public class ArmSubsystem extends Subsystem {
             else {
                 speed = Num.inRange(armAPID.getOutput(rightArm1.getPosition(), target), .75);
             }
-
-            if (!presetState.equals(Preset.RocketAdj)) {
-                lastPreset = presetState;
-            }
         }
+        
+        lastPreset = presetState;
 
         set(speed);
     }

@@ -14,8 +14,8 @@ public class PresetState {
         Low,
         Mid,
         High,
-        RocketAdj,
-        Ball
+        Ball,
+        Climb
     }
 
     private static Preset presetState = Preset.Manual;
@@ -44,7 +44,7 @@ public class PresetState {
 
     /** Returns {@code true} if `oper.getPOV()` permits presets. */
     public static boolean getPOVStatus() {
-        return Robot.m_oi.oper.getPOV() != -1 && Robot.m_oi.oper.getButtonCount() != 0;
+        return (Robot.m_oi.oper.getPOV() != -1 || Robot.m_oi.triangleDriver.get()) && Robot.m_oi.oper.getButtonCount() != 0;
     }
 
     public static Preset getPresetState() {
@@ -59,6 +59,9 @@ public class PresetState {
         }
         else if (Robot.m_oi.oper.getPOV() == 90) {
             presetState = Preset.Ball;
+        }
+        else if (Robot.m_oi.triangleDriver.get()) {
+            presetState = Preset.Climb;
         }
         else if (!getStatus()) {
             presetState = Preset.Manual;
