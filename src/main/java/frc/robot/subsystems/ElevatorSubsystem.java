@@ -30,7 +30,9 @@ public class ElevatorSubsystem extends Subsystem {
     public double limitCheck(double speed) {
         if (!RobotMap.elevatorBottomLimit.get()) {
             leftElevator1.resetEncoder();
-            if (speed > 0){
+            lastElevatorPos = 0;
+
+            if (speed > 0) {
                 speed = 0;
             }
         }
@@ -64,7 +66,7 @@ public class ElevatorSubsystem extends Subsystem {
         if (speed != 0) {
             lastElevatorPos = leftElevator1.getEncoder();
         }
-       else {
+        else {
             speed = -RobotMap.elevatorHoldPID.getOutput(RobotMap.leftElevator.getEncoder(), lastElevatorPos);
             elevatorMult = 1;
         } 
