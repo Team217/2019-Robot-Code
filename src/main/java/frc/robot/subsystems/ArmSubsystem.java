@@ -111,7 +111,7 @@ public class ArmSubsystem extends Subsystem {
             target = isBack ? 101: 16.5;
             break;
         case Climb:
-            target = 75;
+            target = 82;
             break;
         default:
             break;

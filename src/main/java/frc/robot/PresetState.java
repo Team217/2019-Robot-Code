@@ -44,7 +44,7 @@ public class PresetState {
 
     /** Returns {@code true} if `oper.getPOV()` permits presets. */
     public static boolean getPOVStatus() {
-        return (Robot.m_oi.oper.getPOV() != -1 || Robot.m_oi.triangleDriver.get()) && Robot.m_oi.oper.getButtonCount() != 0;
+        return (Robot.m_oi.oper.getPOV() != -1 && Robot.m_oi.oper.getButtonCount() != 0) || Robot.m_oi.triangleDriver.get();
     }
 
     public static Preset getPresetState() {
