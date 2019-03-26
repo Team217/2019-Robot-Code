@@ -79,7 +79,7 @@ public class TelescopeSubsystem extends Subsystem {
             telescopeState = 1;
         }
 
-        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 28000); //TODO: Get correct value
+        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 28300); //TODO: Get correct value
         set(speed);
     }
 
@@ -89,7 +89,7 @@ public class TelescopeSubsystem extends Subsystem {
             telescopeState = 2;
         }
 
-        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 10000);
+        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 13400);
         set(speed);
     }
 
