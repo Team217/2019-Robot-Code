@@ -16,7 +16,7 @@ public class TelescopeSubsystem extends Subsystem {
     public Preset lastPreset = Preset.Manual;
     APID telescopeAPID = RobotMap.telescopeAPID;
 
-    boolean isTelescopeOut = false;
+    int telescopeState = 0;
 
     @Override
     protected void initDefaultCommand() {
@@ -61,32 +61,41 @@ public class TelescopeSubsystem extends Subsystem {
         telescope1.set(speed * telescopeMult);
     }
 
-
-    /** Moves the telescope to the out position. */
-    public void setOut() {
-        if (!isTelescopeOut) {
-            telescopeAPID.initialize();
-            isTelescopeOut = true;
-        }
-
-        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 28000); //TODO: Get correct value
-        set(speed);
-    }
-
     /** Moves the telescope to the in position. */
     public void setIn() {
-        if (isTelescopeOut) {
+        if (telescopeState != 0) {
             telescopeAPID.initialize();
-            isTelescopeOut = false;
+            telescopeState = 0;
         }
 
         double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 0);
         set(speed);
     }
 
-    /** Returns {@code true} if the telescope is out. */
-    public boolean getTelescopeOut() {
-        return isTelescopeOut;
+    /** Moves the telescope to the out position. */
+    public void setOut() {
+        if (telescopeState != 1) {
+            telescopeAPID.initialize();
+            telescopeState = 1;
+        }
+
+        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 28000); //TODO: Get correct value
+        set(speed);
+    }
+
+    public void setClimb() {
+        if (telescopeState != 2) {
+            telescopeAPID.initialize();
+            telescopeState = 2;
+        }
+
+        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 10000);
+        set(speed);
+    }
+
+    /** Returns {@code 1} if the telescope is out, {@code 0} if in, {@code 2} if climbing position. */
+    public int getTelescopeState() {
+        return telescopeState;
     }
     
     /**
@@ -109,27 +118,13 @@ public class TelescopeSubsystem extends Subsystem {
         case Ball:
             setIn();
             break;
-        case RocketAdj:
-            switch (lastPreset) {
-            case Low:
-                setIn();
-                break;
-            case Mid:
-                setIn();
-                break;
-            case High:
-                setOut();
-                break;
-            default:
-                presetState = Preset.Manual;
-                break;
-            }
+        case Climb:
+            setClimb();
+            break;
         default:
             break;
         }
-        
-        if (!presetState.equals(Preset.Manual) && !presetState.equals(Preset.RocketAdj)) {
-            lastPreset = presetState;
-        }
+
+        lastPreset = presetState;
     }
 }

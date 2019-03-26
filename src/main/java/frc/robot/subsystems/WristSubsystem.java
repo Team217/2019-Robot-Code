@@ -105,21 +105,9 @@ public class WristSubsystem extends Subsystem {
         case Ball:
             target = isBack ? -1721 : -2080;
             break;
-        case RocketAdj:
-            switch (lastPreset) {
-                case Low:
-                target = isBack ? -2918 : -19;
-                break;
-            case Mid:
-                target = isBack ? -275 : -3608;
-                break;
-            case High:
-                target = isBack ? -264 : -3608;
-                break;
-            default:
-                presetState = Preset.Manual;
-                break;
-            }
+        case Climb:
+            target = -1500;
+            break;
         default:
             break;
         }
@@ -133,11 +121,9 @@ public class WristSubsystem extends Subsystem {
             else {
                 speed = Num.inRange(-wristAPID.getOutput(wrist1.getEncoder(), target), 2);
             }
-
-            if (!presetState.equals(Preset.RocketAdj)) {
-                lastPreset = presetState;
-            }
         }
+
+        lastPreset = presetState;
 
         set(speed);
     }

@@ -102,21 +102,9 @@ public class ElevatorSubsystem extends Subsystem {
         case Ball:
             target = isBack ? 1752 : 1914;
             break;
-        case RocketAdj:
-            switch (lastPreset) {
-            case Low:
-                target = isBack ? 3000 : 7890;
-                break;
-            case Mid:
-                target = isBack ? 1850 : 2208;
-                break;
-            case High:
-                target = isBack ? 11790 : 13050;
-                break;
-            default:
-                presetState = Preset.Manual;
-                break;
-            }
+        case Climb:
+            target = 0;
+            break;
         default:
             break;
         }
@@ -130,11 +118,9 @@ public class ElevatorSubsystem extends Subsystem {
             else {
                 speed = -Num.inRange(elevatorAPID.getOutput(leftElevator1.getEncoder(), target), 1);
             }
-
-            if (!presetState.equals(Preset.RocketAdj)) {
-                lastPreset = presetState;
-            }
         }
+        
+        lastPreset = presetState;
 
         set(speed);
     }
