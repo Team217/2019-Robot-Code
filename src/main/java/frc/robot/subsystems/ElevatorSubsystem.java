@@ -67,8 +67,8 @@ public class ElevatorSubsystem extends Subsystem {
             lastElevatorPos = leftElevator1.getEncoder();
         }
         else {
-            speed = -RobotMap.elevatorHoldPID.getOutput(RobotMap.leftElevator.getEncoder(), lastElevatorPos);
-            elevatorMult = 1;
+            //speed = -RobotMap.elevatorHoldPID.getOutput(RobotMap.leftElevator.getEncoder(), lastElevatorPos);
+            //elevatorMult = 1;
         } 
         
         speed = limitCheck(speed);
