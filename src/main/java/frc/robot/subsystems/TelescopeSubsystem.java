@@ -16,6 +16,8 @@ public class TelescopeSubsystem extends Subsystem {
     public Preset lastPreset = Preset.Manual;
     APID telescopeAPID = RobotMap.telescopeAPID;
 
+    double lastTelescopePos = 0;
+
     int telescopeState = 0;
 
     @Override
@@ -34,6 +36,8 @@ public class TelescopeSubsystem extends Subsystem {
         }
         else if (!telescopeInLimit1.get()){
             telescope1.resetEncoder();
+            lastTelescopePos = 0;
+
             if(speed <= 0){
                 speed = 0;
             }
@@ -50,11 +54,15 @@ public class TelescopeSubsystem extends Subsystem {
     public void set(double speed) {
         double telescopeMult = 1;
 
-        if(telescope1.getEncoder() <= 5000){
-            telescopeMult = .75;
+        if (speed != 0) {
+            lastTelescopePos = telescope1.getEncoder();
         }
-        else if(telescope1.getEncoder() >= 15000){
-            telescopeMult = .75;
+        else {
+            if (Math.abs(lastTelescopePos - telescope1.getEncoder()) > 500) {
+                lastTelescopePos = telescope1.getEncoder();
+            }
+            speed = RobotMap.telescopeHoldPID.getOutput(telescope1.getEncoder(), lastTelescopePos);
+            telescopeMult = 1;
         }
 
         speed = limitCheck(speed);
@@ -79,7 +87,7 @@ public class TelescopeSubsystem extends Subsystem {
             telescopeState = 1;
         }
 
-        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 28300); //TODO: Get correct value
+        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 13900); //TODO: Get correct value
         set(speed);
     }
 
@@ -89,7 +97,7 @@ public class TelescopeSubsystem extends Subsystem {
             telescopeState = 2;
         }
 
-        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 13400);
+        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 6640);
         set(speed);
     }
 

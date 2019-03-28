@@ -69,8 +69,8 @@ public class Robot extends TimedRobot {
         RobotMap.leftElevator.resetEncoder();
 
         RobotMap.leftElevator.invertEncoder(true); // TODO: true for comp bot, false for practice
-        RobotMap.leftElevator.setEncoder(3500);
-        Robot.kElevatorSubsystem.lastElevatorPos = 3500;
+        RobotMap.leftElevator.setEncoder(2938);
+        Robot.kElevatorSubsystem.lastElevatorPos = 2938;
 
         RobotMap.wrist.resetEncoder();
 
@@ -188,7 +188,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("LimelightY1", y1); //first limelight
         SmartDashboard.putNumber("LimelightA1", area1); //first limelight
 
-        NetworkTable table2 = NetworkTableInstance.getDefault().getTable("limelight-back"); //second limelight (back)
+        NetworkTable table2 = NetworkTableInstance.getDefault().getTable("limelight-bacc"); //second limelight (back)
         NetworkTableEntry tx2 = table2.getEntry("tx"); //second limelight
         NetworkTableEntry ty2 = table2.getEntry("ty"); //second limelight
         NetworkTableEntry ta2 = table2.getEntry("ta"); //second limelight
@@ -266,6 +266,18 @@ public class Robot extends TimedRobot {
         else {
             Robot.kWristSubsystem.set(0);
         }
+
+        //Telescope
+        double telescopeSpeed = 0;
+
+        if (Robot.m_oi.squareOper.get()) { //out
+            telescopeSpeed = 1;
+        }
+        else if (Robot.m_oi.xOper.get()) { //in
+            telescopeSpeed = -1;
+        }
+        
+        Robot.kTelescopeSubsystem.set(telescopeSpeed);
     }
 
     /** Sends data to SmartDashboard. */
