@@ -46,16 +46,16 @@ public class TeleopTelescope extends Command {
         }
 
         if (!isPreset) {
-            double telescopeSpeed = 0;
+            double speed = 0;
     
             if (Robot.m_oi.squareOper.get()) { //out
-                telescopeSpeed = 1;
+                speed = 1;
             }
             else if (Robot.m_oi.xOper.get()) { //in
-                telescopeSpeed = -1;
+                speed = -1;
             }
             
-            Robot.kTelescopeSubsystem.set(telescopeSpeed);
+            Robot.kTelescopeSubsystem.set(speed);
         }
     }
 
