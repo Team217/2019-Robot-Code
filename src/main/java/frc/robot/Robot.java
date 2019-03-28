@@ -266,6 +266,18 @@ public class Robot extends TimedRobot {
         else {
             Robot.kWristSubsystem.set(0);
         }
+
+        //Telescope
+        double telescopeSpeed = 0;
+
+        if (Robot.m_oi.squareOper.get()) { //out
+            telescopeSpeed = 1;
+        }
+        else if (Robot.m_oi.xOper.get()) { //in
+            telescopeSpeed = -1;
+        }
+        
+        Robot.kTelescopeSubsystem.set(telescopeSpeed);
     }
 
     /** Sends data to SmartDashboard. */
