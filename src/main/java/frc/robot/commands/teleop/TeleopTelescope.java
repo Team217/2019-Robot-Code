@@ -47,7 +47,7 @@ public class TeleopTelescope extends Command {
 
         if (!isPreset) {
             double speed = 0;
-    
+
             if (Robot.m_oi.squareOper.get()) { //out
                 speed = 1;
             }

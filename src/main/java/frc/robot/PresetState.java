@@ -22,7 +22,7 @@ public class PresetState {
 
     /** Returns {@code true} if all controls, excluding `oper.getPOV()`, permit presets. */
     public static boolean getStatus() {
-        return getArmStatus() && getWristStatus() && getElevStatus();
+        return getArmStatus() && getWristStatus() && getElevStatus() && getTelescopeStatus();
     }
 
     /** Returns {@code true} if the arm controls permit presets. */
@@ -40,6 +40,11 @@ public class PresetState {
     public static boolean getElevStatus() {
         double leftAnalog = Num.deadband(Robot.m_oi.oper.getY(), 0.1);
         return leftAnalog == 0;
+    }
+
+    /** Returns {@code true} if the telescope controls permit presets. */
+    public static boolean getTelescopeStatus() {
+        return !(Robot.m_oi.squareOper.get() || Robot.m_oi.xOper.get());
     }
 
     /** Returns {@code true} if `oper.getPOV()` permits presets. */

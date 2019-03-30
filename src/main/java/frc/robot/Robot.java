@@ -65,6 +65,8 @@ public class Robot extends TimedRobot {
         RobotMap.rightArm.resetEncoder();
         RobotMap.telescope.resetEncoder();
 
+        RobotMap.telescope.invertEncoder(false); // TODO: true for comp bot, false for practice
+
         RobotMap.rightElevator.resetEncoder();
         RobotMap.leftElevator.resetEncoder();
 
