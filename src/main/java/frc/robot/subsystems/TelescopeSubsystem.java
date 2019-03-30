@@ -52,7 +52,7 @@ public class TelescopeSubsystem extends Subsystem {
      *        The telescope speed
      */
     public void set(double speed) {
-        double telescopeMult = 1;
+        double telescopeMult = 0.8;
 
         if (speed != 0) {
             lastTelescopePos = telescope1.getEncoder();
@@ -87,7 +87,7 @@ public class TelescopeSubsystem extends Subsystem {
             telescopeState = 1;
         }
 
-        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 13900); //TODO: Get correct value
+        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 14300); //TODO: Get correct value
         set(speed);
     }
 
@@ -97,7 +97,7 @@ public class TelescopeSubsystem extends Subsystem {
             telescopeState = 2;
         }
 
-        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 6640);
+        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 13000);
         set(speed);
     }
 

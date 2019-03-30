@@ -99,7 +99,7 @@ public class ArmSubsystem extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = isBack ? 103.2 : 12.1;
+            target = isBack ? 103.2 : 11.2;
             break;
         case Mid:
             target = isBack ? 75.3 : 50;
