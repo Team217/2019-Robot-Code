@@ -14,14 +14,15 @@ public class PresetState {
         Low,
         Mid,
         High,
-        RocketAdj
+        Ball,
+        Climb
     }
 
     private static Preset presetState = Preset.Manual;
 
     /** Returns {@code true} if all controls, excluding `oper.getPOV()`, permit presets. */
     public static boolean getStatus() {
-        return getArmStatus() && getWristStatus() && getElevStatus();
+        return getArmStatus() && getWristStatus() && getElevStatus() && getTelescopeStatus();
     }
 
     /** Returns {@code true} if the arm controls permit presets. */
@@ -41,9 +42,14 @@ public class PresetState {
         return leftAnalog == 0;
     }
 
+    /** Returns {@code true} if the telescope controls permit presets. */
+    public static boolean getTelescopeStatus() {
+        return !(Robot.m_oi.squareOper.get() || Robot.m_oi.xOper.get());
+    }
+
     /** Returns {@code true} if `oper.getPOV()` permits presets. */
     public static boolean getPOVStatus() {
-        return Robot.m_oi.oper.getPOV() != -1;
+        return (Robot.m_oi.oper.getPOV() != -1 && Robot.m_oi.oper.getButtonCount() != 0) || Robot.m_oi.triangleDriver.get();
     }
 
     public static Preset getPresetState() {
@@ -57,7 +63,10 @@ public class PresetState {
             presetState = Preset.High;
         }
         else if (Robot.m_oi.oper.getPOV() == 90) {
-            presetState = Preset.RocketAdj;
+            presetState = Preset.Ball;
+        }
+        else if (Robot.m_oi.triangleDriver.get()) {
+            presetState = Preset.Climb;
         }
         else if (!getStatus()) {
             presetState = Preset.Manual;

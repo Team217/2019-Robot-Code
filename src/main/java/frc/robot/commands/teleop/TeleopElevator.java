@@ -5,23 +5,27 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.teleop;
+
+import org.team217.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
 /**
- * Runs the intake in teleop control mode.
+ * Runs the elevator in teleop control mode.
  * 
  * @author ThunderChickens 217
  */
-public class TeleopIntake extends Command {
+public class TeleopElevator extends Command {
+    boolean isPreset = false;
+
     /**
-     * Runs the intake in teleop control mode.
+     * Runs the elevator in teleop control mode.
      * 
      * @author ThunderChickens 217
      */
-    public TeleopIntake() {
+    public TeleopElevator() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -34,19 +38,17 @@ public class TeleopIntake extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double speed = 0;
+        if (PresetState.getPOVStatus()) {
+            isPreset = PresetState.getStatus();
+        }
+        else if (!PresetState.getStatus()) {
+            isPreset = false;
+        }
 
-        if (Robot.m_oi.rightBumperOper.get()) { //out
-            speed = -1.0;
+        if (!isPreset) {
+            double speed = Num.deadband(Robot.m_oi.oper.getY(), 0.08);
+            Robot.kElevatorSubsystem.set(speed);
         }
-        else if(!RobotMap.ballLimit.get()){ //hold in
-            speed = .05;
-        }
-        else if (Robot.m_oi.leftBumperOper.get()) { //in
-            speed = .75;
-        }
-        
-        Robot.kIntakeSubsystem.intake(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -58,13 +60,13 @@ public class TeleopIntake extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kIntakeSubsystem.intake(0);
+        Robot.kElevatorSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kIntakeSubsystem.intake(0);
+        Robot.kElevatorSubsystem.set(0);
     }
 }

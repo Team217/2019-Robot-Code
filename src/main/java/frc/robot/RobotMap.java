@@ -64,8 +64,8 @@ public class RobotMap {
     //Intake _IDs
     public static final int intake_ID1 = 5; //SparkMAX 5 
 
-    public static final int topHatchSolenoid_ID1 = 1; //Double Solenoid
-    public static final int topHatchSolenoid_ID2 = 2; //Double Solenoid
+    public static final int hatchSolenoid_ID1 = 1; //Double Solenoid
+    public static final int hatchSolenoid_ID2 = 2; //Double Solenoid
 
     public static final int intakeGyro_ID = 0; //AnalogGyro
 
@@ -98,7 +98,7 @@ public class RobotMap {
     public static WPI_TalonSRX rightElevator = new WPI_TalonSRX(rightElevator_ID); //WPI_TalonSRX
     public static WPI_TalonSRX wrist = new WPI_TalonSRX(wrist_ID); //WPI_TalonSRX
 
-    public static AnalogGyro intakeGyro = new AnalogGyro(intakeGyro_ID);
+//    public static AnalogGyro intakeGyro = new AnalogGyro(intakeGyro_ID);
 
     public static DigitalInput elevatorBottomLimit = new DigitalInput(elevatorBottomLimit_ID);
     public static DigitalInput elevatorTopLimit = new DigitalInput(elevatorTopLimit_ID);
@@ -113,7 +113,7 @@ public class RobotMap {
     //Intake Controllers/Solenoids
     public static CANSparkMax intakeOne = new CANSparkMax(intake_ID1); //SparkMAX, Brushless
 
-    public static DoubleSolenoid topHatchSolenoid = new DoubleSolenoid(topHatchSolenoid_ID1, topHatchSolenoid_ID2);
+    public static DoubleSolenoid hatchSolenoid = new DoubleSolenoid(hatchSolenoid_ID1, hatchSolenoid_ID2);
 
     //Climber PTOs
     public static DoubleSolenoid climbPTOSolenoid = new DoubleSolenoid(climbPTOSolenoid_ID1, climbPTOSolenoid_ID2);
@@ -123,12 +123,13 @@ public class RobotMap {
     //PID
     public static final PID elevatorHoldPID = new PID(0.0005, 0.000005, 0, 100).setMinMax(-0.1, 0.1);
     public static final PID armHoldPID = new PID(0.05, 0.0002, 0, 100).setMinMax(-0.1, 0.1);
+    public static final PID telescopeHoldPID = new PID(0.0004, 0.000003, 0, 100).setMinMax(-0.1, 0.1);
     public static final PID wristGyroPID = new PID(0.05, 0.005, 0, 100).setMinMax(-0.2, 0.2);
-    public static final PID visionPID = new PID(0, 0.002, 0, 100).setMinMax(-0.2, 0.2);
-    public static final APID armAPID = new APID(new PID(0.08, 0.0003, 0, 100).setMinMax(-0.2, 0.2), 2.0);
+    public static final PID visionPID = new PID(0, 0.0000, 0.005, 100).setMinMax(-0.15, 0.15);
+    public static final APID armAPID = new APID(new PID(0.08, 0.0006, 0, 100).setMinMax(-0.2, 0.2), 1.5);
     public static final APID wristAPID = new APID(new PID(0.001, 0.00001, 0, 100).setMinMax(-0.2, 0.2), 1.0);
-    public static final APID elevAPID = new APID(new PID(0.0005, 0.000005, 0, 100).setMinMax(-0.2, 0.2), 1.0);
-    public static final APID telescopeAPID = new APID(new PID(0.001, 0, 0, 100).setMinMax(-0.1, 0.1), 0.5);
+    public static final APID elevAPID = new APID(new PID(0.0007, 0.000005, 0, 100).setMinMax(-0.2, 0.2), 1.0);
+    public static final APID telescopeAPID = new APID(new PID(0.0004, 0.000003, 0, 100).setMinMax(-0.1, 0.1), 0.5);
 
     //Joysticks
     public static final int driverPort = 0;

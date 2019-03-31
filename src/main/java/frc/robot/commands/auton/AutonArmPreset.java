@@ -1,16 +1,31 @@
-package frc.robot.commands;
+package frc.robot.commands.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 import frc.robot.PresetState.Preset;
 
+/**
+ * Runs the arm in auton control mode using {@code APID} to reach a preset.
+ * 
+ * @author ThunderChickens 217
+ */
 public class AutonArmPreset extends Command {
     boolean isBack = false;
-    Preset preset = Preset.Manual;
+    Preset presetState = Preset.Manual;
 
-    public AutonArmPreset(Preset preset, boolean isBack) {
+    /**
+     * Runs the arm in auton control mode using {@code APID} to reach a preset.
+     * 
+     * @param presetState
+     *        The {@code Preset} state
+     * @param isBack
+     *        {@code true} if the preset moves the arm to the back region of the bot
+     * 
+     * @author ThunderChickens 217
+     */
+    public AutonArmPreset(Preset presetState, boolean isBack) {
         requires(Robot.kArmSubsystem);
-        this.preset = preset;
+        this.presetState = presetState;
         this.isBack = isBack;
     }
 
@@ -21,7 +36,7 @@ public class AutonArmPreset extends Command {
 
     @Override
     protected void execute() {
-        Robot.kArmSubsystem.preset(preset, isBack);
+        Robot.kArmSubsystem.preset(presetState, isBack);
     }
 
     @Override

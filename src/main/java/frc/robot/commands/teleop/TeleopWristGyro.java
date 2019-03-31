@@ -5,27 +5,35 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.teleop;
 
-import org.team217.*;
+import org.team217.rev.*;
+import org.team217.pid.*;
+import org.team217.wpi.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
 /**
- * Runs the elevator in teleop control mode.
+ * Runs the wrist in teleop control mode using an {@code AnalogGyro}.
  * 
  * @author ThunderChickens 217
  */
-public class TeleopElevator extends Command {
-    boolean isPreset = false;
+public class TeleopWristGyro extends Command {
+    CANSparkMax rightArm1 = RobotMap.rightArm;
+    //AnalogGyro intakeGyro1 = RobotMap.intakeGyro;
 
+    boolean isPreset = false;
+    boolean isAuto = false;
+    
+    PID wristGyroPID = RobotMap.wristGyroPID;
+    
     /**
-     * Runs the elevator in teleop control mode.
+     * Runs the wrist in teleop control mode using an {@code AnalogGyro}.
      * 
      * @author ThunderChickens 217
      */
-    public TeleopElevator() {
+    public TeleopWristGyro() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -44,10 +52,20 @@ public class TeleopElevator extends Command {
         else if (!PresetState.getStatus()) {
             isPreset = false;
         }
+        
+        if (Robot.m_oi.rightTriggerOper.get() || Robot.m_oi.leftTriggerOper.get()) {
+            isAuto = false;
+        }
+        else if (Robot.m_oi.buttonShareOper.get()) {
+            isAuto = true;
+        }
 
-        if (!isPreset) {
-            double speed = Num.deadband(Robot.m_oi.oper.getY(), 0.08);
-            Robot.kElevatorSubsystem.set(speed);
+        if (!isPreset && isAuto) {
+            if (Robot.m_oi.psButtonOper.get()) {
+               // RobotMap.intakeGyro.reset();
+            }
+
+            //Robot.kWristSubsystem.auto();
         }
     }
 
@@ -60,13 +78,13 @@ public class TeleopElevator extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kElevatorSubsystem.set(0);
+        Robot.kWristSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kElevatorSubsystem.set(0);
+        Robot.kWristSubsystem.set(0);
     }
 }

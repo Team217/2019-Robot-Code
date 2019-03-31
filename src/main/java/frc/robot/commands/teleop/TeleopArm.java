@@ -5,27 +5,27 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.teleop;
+
+import org.team217.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
 /**
- * Runs the telescope in teleop control mode.
+ * Runs the arm in teleop control mode.
  * 
- * @author ThunderChickens 217
+ * @author ThunderChickens
  */
-public class TeleopTelescope extends Command {
-
+public class TeleopArm extends Command {
     boolean isPreset = false;
-    int direction = 0;
-    
+
     /**
-     * Runs the telescope in teleop control mode.
+     * Runs the arm in teleop control mode.
      * 
-     * @author ThunderChickens 217
+     * @author ThunderChickens
      */
-    public TeleopTelescope() {
+    public TeleopArm() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -38,41 +38,17 @@ public class TeleopTelescope extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
- //       if (PresetState.getPOVStatus()) {
- //           isPreset = PresetState.getStatus();
- //       }
- //       else if (!PresetState.getStatus()) {
- //           isPreset = false;
- //       }
-
- //       if (!isPreset) {
-            if (Robot.m_oi.squareOper.get()) { //out
-                Robot.kTelescopeSubsystem.set(1);
-            }
-            else if (Robot.m_oi.xOper.get()) { //in
-                Robot.kTelescopeSubsystem.set(-1);
-            }
-            else{
-                Robot.kTelescopeSubsystem.set(0);
-            }
-
-
-/*
-            switch (direction) {
-            case 1:
-                Robot.kLiftingMechanism.telescopeOut();
-                break;
-            case -1:
-                Robot.kLiftingMechanism.telescopeIn();
-                break;
-            default:
-                Robot.kLiftingMechanism.telescope(0);
-            }
+        if (PresetState.getPOVStatus()) {
+            isPreset = PresetState.getStatus();
         }
-        else {
-            direction = 0;
-        }*/
- //   }
+        else if (!PresetState.getStatus()) {
+            isPreset = false;
+        }
+
+        if (!isPreset) {
+            double speed = Num.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
+            Robot.kArmSubsystem.set(-speed);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -84,13 +60,13 @@ public class TeleopTelescope extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kTelescopeSubsystem.set(0);
+        Robot.kArmSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kTelescopeSubsystem.set(0);
+        Robot.kArmSubsystem.set(0);
     }
 }

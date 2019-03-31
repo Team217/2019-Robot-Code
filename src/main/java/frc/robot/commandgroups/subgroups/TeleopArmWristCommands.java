@@ -9,7 +9,7 @@ package frc.robot.commandgroups.subgroups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.*;
-import frc.robot.commands.*;
+import frc.robot.commands.teleop.*;
 
 /**
  * Command Group that runs the arm and wrist in teleop.
@@ -30,7 +30,7 @@ public class TeleopArmWristCommands extends CommandGroup {
         addParallel(new TeleopArm());
         addParallel(new TeleopArmPreset());
         addParallel(new TeleopWrist());
-        addParallel(new TeleopWristGyro());
+        //addParallel(new TeleopWristGyro());
         addParallel(new TeleopWristPreset());
         addParallel(new TeleopTelescope());
         addParallel(new TeleopTelescopePreset());

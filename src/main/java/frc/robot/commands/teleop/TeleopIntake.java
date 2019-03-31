@@ -5,23 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
 /**
- * Runs the climber in teleop control mode.
+ * Runs the intake in teleop control mode.
  * 
  * @author ThunderChickens 217
  */
-public class TeleopClimb extends Command {
+public class TeleopIntake extends Command {
     /**
-     * Runs the climber in teleop control mode.
+     * Runs the intake in teleop control mode.
      * 
      * @author ThunderChickens 217
      */
-    public TeleopClimb() {
+    public TeleopIntake() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -34,12 +34,19 @@ public class TeleopClimb extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (Robot.m_oi.xDriver.get()) {
-            Robot.kClimbingSubsystem.setDrivePTO();
+        double speed = 0;
+
+        if (Robot.m_oi.rightBumperOper.get()) { //out
+            speed = Robot.kClimbingSubsystem.isClimbing() ? -.2 : -1.0;
         }
-        else if (Robot.m_oi.circleDriver.get()) {
-            Robot.kClimbingSubsystem.setClimbPTO();
+        else if(!RobotMap.ballLimit.get()){ //hold in
+            speed = .05;
         }
+        else if (Robot.m_oi.leftBumperOper.get()) { //in
+            speed = .75;
+        }
+        
+        Robot.kIntakeSubsystem.set(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -51,12 +58,13 @@ public class TeleopClimb extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.kIntakeSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        Robot.kIntakeSubsystem.set(0);
     }
-
 }

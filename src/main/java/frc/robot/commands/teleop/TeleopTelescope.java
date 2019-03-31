@@ -5,28 +5,27 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
-import frc.robot.PresetState.Preset;
 
 /**
  * Runs the telescope in teleop control mode.
  * 
  * @author ThunderChickens 217
  */
-public class TeleopTelescopePreset extends Command {
+public class TeleopTelescope extends Command {
 
     boolean isPreset = false;
-    Preset presetState = Preset.Manual;
+    int direction = 0;
     
     /**
      * Runs the telescope in teleop control mode.
      * 
      * @author ThunderChickens 217
      */
-    public TeleopTelescopePreset() {
+    public TeleopTelescope() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -44,12 +43,19 @@ public class TeleopTelescopePreset extends Command {
         }
         else if (!PresetState.getStatus()) {
             isPreset = false;
-            Robot.kTelescopeSubsystem.lastPreset = presetState;
         }
 
-        if (isPreset) {
-            presetState = PresetState.getPresetState();
-            Robot.kTelescopeSubsystem.preset(presetState);
+        if (!isPreset) {
+            double speed = 0;
+
+            if (Robot.m_oi.squareOper.get()) { //out
+                speed = 1;
+            }
+            else if (Robot.m_oi.xOper.get()) { //in
+                speed = -1;
+            }
+
+            Robot.kTelescopeSubsystem.set(speed);
         }
     }
 

@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.teleop;
 
 import frc.robot.*;
 import org.team217.*;
@@ -35,11 +35,11 @@ public class TeleopDrive extends Command {
 
         if (Robot.kClimbingSubsystem.isClimbing()) {
             turn /= 2;
-            speed += Math.abs(turn);
             if (turn == 0) {
-                double tilt = Num.deadband(RobotMap.pigeonDrive.getRoll(), 1.5);
-                //turn += Range.inRange(0.03 * tilt, -0.35, 0.35); // Correct the climber automatically to stay level
+                double tilt = Num.deadband(RobotMap.pigeonDrive.getRoll(), 2.5);
+                //turn = Num.inRange(0.01 * tilt, 0.1); // Correct the climber automatically to stay level
             }
+            speed += Math.abs(turn);
             Robot.kDrivingSubsystem.set(speed, turn);
         }
         else {

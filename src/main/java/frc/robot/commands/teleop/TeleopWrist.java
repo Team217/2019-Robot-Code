@@ -5,35 +5,29 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.teleop;
+
+import org.team217.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
-import frc.robot.PresetState.Preset;
-import org.team217.rev.*;
 
 /**
- * Runs the wrist in teleop control mode using {@code PID} to reach a preset.
+ * Runs the wrist in teleop control mode.
  * 
  * @author ThunderChickens 217
  */
-public class TeleopWristPreset extends Command {
-    CANSparkMax rightArm1 = RobotMap.rightArm;
+public class TeleopWrist extends Command {
 
     boolean isPreset = false;
     boolean isAuto = false;
-    boolean isBack = false;
-    boolean setBack = true;
-
-    Preset presetState = Preset.Manual;
-    
     
     /**
-     * Runs the wrist in teleop control mode using {@code PID} to reach a preset.
+     * Runs the wrist in teleop control mode.
      * 
      * @author ThunderChickens 217
      */
-    public TeleopWristPreset() {
+    public TeleopWrist() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -51,25 +45,29 @@ public class TeleopWristPreset extends Command {
         }
         else if (!PresetState.getStatus()) {
             isPreset = false;
-            setBack = true;
-            presetState = Preset.Manual;
-            Robot.kWristSubsystem.lastPreset = presetState;
         }
 
-        if (setBack && PresetState.getPOVStatus()) {
-            //isBack = rightArm1.getPosition() > 65;
-            //isBack = Robot.m_oi.touchPadOper.get() ? !isBack : isBack;
-            //setBack = !Robot.m_oi.touchPadOper.get();
-            isBack = Robot.m_oi.touchPadOper.get();
-            setBack = !isBack;
+        if (Robot.m_oi.rightTriggerOper.get() || Robot.m_oi.leftTriggerOper.get()) {
+            isAuto = false;
         }
-        else {
-            setBack = !PresetState.getPOVStatus();
+        else if (Robot.m_oi.buttonShareOper.get()) {
+            //isAuto = true;
         }
 
-        if (isPreset) {
-            presetState = PresetState.getPresetState();
-            Robot.kWristSubsystem.preset(presetState, isBack);
+        if (!isPreset && !isAuto) {
+            //moving wrist independently
+            double upSpeed = 1 + Num.deadband(Robot.m_oi.oper.getRawAxis(3), 0.05);
+            double downSpeed = 1 + Num.deadband(Robot.m_oi.oper.getRawAxis(4), 0.05);
+
+            if (Robot.m_oi.leftTriggerOper.get()) { //moving up
+                Robot.kWristSubsystem.set(upSpeed);
+            }
+            else if (Robot.m_oi.rightTriggerOper.get()) { //moving down
+                Robot.kWristSubsystem.set(-downSpeed);
+            }
+            else {
+                Robot.kWristSubsystem.set(0);
+            }
         }
     }
 

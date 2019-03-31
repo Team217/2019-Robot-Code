@@ -9,7 +9,7 @@ package frc.robot.commandgroups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.*;
-import frc.robot.commands.*;
+import frc.robot.commands.teleop.*;
 import frc.robot.commandgroups.subgroups.*;
 
 /**

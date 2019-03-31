@@ -5,67 +5,70 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
-
-import frc.robot.*;
+package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.*;
+import frc.robot.PresetState.Preset;
 
 /**
- * Runs the drivebase in auton control mode using vision.
+ * Runs the telescope in teleop control mode using {@code APID} to reach a preset.
  * 
  * @author ThunderChickens 217
  */
-public class AutonDriveVision extends Command {
-    double speed;
-    boolean isCamFront;
+public class TeleopTelescopePreset extends Command {
 
+    boolean isPreset = false;
+    Preset presetState = Preset.Manual;
+    
     /**
-     * Runs the drivebase in auton control mode using vision.
-     * 
-     * @param speed
-     *        The forward/backward speed
-     * @param isCamFront
-     *        {@code true} if using the front camera
-     * @param timeout
-     *        The time before automatically ending the command, in seconds
+     * Runs the telescope in teleop control mode using {@code APID} to reach a preset.
      * 
      * @author ThunderChickens 217
      */
-    public AutonDriveVision(double speed, boolean isCamFront, double timeout) {
-        this.speed = speed;
-        this.isCamFront = isCamFront;
-        setTimeout(timeout);
+    public TeleopTelescopePreset() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.kDrivingSubsystem.resetVisionPID();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.kDrivingSubsystem.visionDrive(speed, isCamFront);
+        if (PresetState.getPOVStatus()) {
+            isPreset = PresetState.getStatus();
+        }
+        else if (!PresetState.getStatus()) {
+            isPreset = false;
+            Robot.kTelescopeSubsystem.lastPreset = presetState;
+        }
+
+        if (isPreset) {
+            presetState = PresetState.getPresetState();
+            Robot.kTelescopeSubsystem.preset(presetState);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return false;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kDrivingSubsystem.set(0);
+        Robot.kTelescopeSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kDrivingSubsystem.set(0);
+        Robot.kTelescopeSubsystem.set(0);
     }
 }

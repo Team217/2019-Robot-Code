@@ -16,7 +16,9 @@ public class TelescopeSubsystem extends Subsystem {
     public Preset lastPreset = Preset.Manual;
     APID telescopeAPID = RobotMap.telescopeAPID;
 
-    boolean isTelescopeOut = false;
+    double lastTelescopePos = 0;
+
+    int telescopeState = 0;
 
     @Override
     protected void initDefaultCommand() {
@@ -34,6 +36,8 @@ public class TelescopeSubsystem extends Subsystem {
         }
         else if (!telescopeInLimit1.get()){
             telescope1.resetEncoder();
+            lastTelescopePos = 0;
+
             if(speed <= 0){
                 speed = 0;
             }
@@ -48,45 +52,58 @@ public class TelescopeSubsystem extends Subsystem {
      *        The telescope speed
      */
     public void set(double speed) {
-        double telescopeMult = 1;
+        double telescopeMult = 0.8;
 
-        if(telescope1.getEncoder() <= 5000){
-            telescopeMult = .75;
+        if (speed != 0) {
+            lastTelescopePos = telescope1.getEncoder();
         }
-        else if(telescope1.getEncoder() >= 15000){
-            telescopeMult = .75;
+        else {
+            if (Math.abs(lastTelescopePos - telescope1.getEncoder()) > 500) {
+                lastTelescopePos = telescope1.getEncoder();
+            }
+            speed = RobotMap.telescopeHoldPID.getOutput(telescope1.getEncoder(), lastTelescopePos);
+            telescopeMult = 1;
         }
 
         speed = limitCheck(speed);
         telescope1.set(speed * telescopeMult);
     }
 
-
-    /** Moves the telescope to the out position. */
-    public void setOut() {
-        if (!isTelescopeOut) {
-            telescopeAPID.initialize();
-            isTelescopeOut = true;
-        }
-
-        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 28000); //TODO: Get correct value
-        set(speed);
-    }
-
     /** Moves the telescope to the in position. */
     public void setIn() {
-        if (isTelescopeOut) {
+        if (telescopeState != 0) {
             telescopeAPID.initialize();
-            isTelescopeOut = false;
+            telescopeState = 0;
         }
 
         double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 0);
         set(speed);
     }
 
-    /** Returns {@code true} if the telescope is out. */
-    public boolean getTelescopeOut() {
-        return isTelescopeOut;
+    /** Moves the telescope to the out position. */
+    public void setOut() {
+        if (telescopeState != 1) {
+            telescopeAPID.initialize();
+            telescopeState = 1;
+        }
+
+        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 14300); //TODO: Get correct value
+        set(speed);
+    }
+
+    public void setClimb() {
+        if (telescopeState != 2) {
+            telescopeAPID.initialize();
+            telescopeState = 2;
+        }
+
+        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 13000);
+        set(speed);
+    }
+
+    /** Returns {@code 1} if the telescope is out, {@code 0} if in, {@code 2} if climbing position. */
+    public int getTelescopeState() {
+        return telescopeState;
     }
     
     /**
@@ -106,27 +123,16 @@ public class TelescopeSubsystem extends Subsystem {
         case High:
             setOut();
             break;
-        case RocketAdj:
-            switch (lastPreset) {
-            case Low:
-                setIn();
-                break;
-            case Mid:
-                setIn();
-                break;
-            case High:
-                setOut();
-                break;
-            default:
-                presetState = Preset.Manual;
-                break;
-            }
+        case Ball:
+            setIn();
+            break;
+        case Climb:
+            setClimb();
+            break;
         default:
             break;
         }
-        
-        if (!presetState.equals(Preset.Manual) && !presetState.equals(Preset.RocketAdj)) {
-            lastPreset = presetState;
-        }
+
+        lastPreset = presetState;
     }
 }

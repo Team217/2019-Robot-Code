@@ -15,7 +15,6 @@ import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.*;
 import edu.wpi.first.wpilibj.smartdashboard.*;
-import frc.robot.commands.*;
 import frc.robot.commandgroups.*;
 import frc.robot.subsystems.*;
 
@@ -66,15 +65,19 @@ public class Robot extends TimedRobot {
         RobotMap.rightArm.resetEncoder();
         RobotMap.telescope.resetEncoder();
 
+        RobotMap.telescope.invertEncoder(true); // TODO: true for comp bot, false for practice
 
         RobotMap.rightElevator.resetEncoder();
         RobotMap.leftElevator.resetEncoder();
-        RobotMap.leftElevator.setEncoder(-5395);
+
+        RobotMap.leftElevator.invertEncoder(true); // TODO: true for comp bot, false for practice
+        RobotMap.leftElevator.setEncoder(3046);
+        Robot.kElevatorSubsystem.lastElevatorPos = 3046;
 
         RobotMap.wrist.resetEncoder();
 
         RobotMap.pigeonDrive.reset();
-        RobotMap.intakeGyro.reset();
+       // RobotMap.intakeGyro.reset();
 
         kClimbingSubsystem.setDrivePTO();
     }
@@ -103,7 +106,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledPeriodic() {
         kArmSubsystem.lastArmPos = RobotMap.rightArm.getPosition();
-        kElevatorSubsystem.lastElevatorPos = RobotMap.rightElevator.getEncoder();
+        kElevatorSubsystem.lastElevatorPos = RobotMap.leftElevator.getEncoder();
         Scheduler.getInstance().run();
     }
 
@@ -187,7 +190,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("LimelightY1", y1); //first limelight
         SmartDashboard.putNumber("LimelightA1", area1); //first limelight
 
-        NetworkTable table2 = NetworkTableInstance.getDefault().getTable("limelight-back"); //second limelight (back)
+        NetworkTable table2 = NetworkTableInstance.getDefault().getTable("limelight-bacc"); //second limelight (back)
         NetworkTableEntry tx2 = table2.getEntry("tx"); //second limelight
         NetworkTableEntry ty2 = table2.getEntry("ty"); //second limelight
         NetworkTableEntry ta2 = table2.getEntry("ta"); //second limelight
@@ -233,7 +236,7 @@ public class Robot extends TimedRobot {
     @Override
     public void testInit() {
         RobotMap.rightElevator.resetEncoder();
-        RobotMap.intakeGyro.reset();
+      //  RobotMap.intakeGyro.reset();
         RobotMap.rightArm.resetEncoder();
     }
 
@@ -265,6 +268,18 @@ public class Robot extends TimedRobot {
         else {
             Robot.kWristSubsystem.set(0);
         }
+
+        //Telescope
+        double telescopeSpeed = 0;
+
+        if (Robot.m_oi.squareOper.get()) { //out
+            telescopeSpeed = 1;
+        }
+        else if (Robot.m_oi.xOper.get()) { //in
+            telescopeSpeed = -1;
+        }
+        
+        Robot.kTelescopeSubsystem.set(telescopeSpeed);
     }
 
     /** Sends data to SmartDashboard. */
@@ -272,7 +287,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Pigeon (drive) Yaw", RobotMap.pigeonDrive.getAngle());
         SmartDashboard.putNumber("Pigeon (drive) Pitch", RobotMap.pigeonDrive.getPitch());
         SmartDashboard.putNumber("Pigeon (drive) Roll", RobotMap.pigeonDrive.getRoll());
-        SmartDashboard.putNumber("Wrist Gyro", RobotMap.intakeGyro.getAngle());
+       // SmartDashboard.putNumber("Wrist Gyro", RobotMap.intakeGyro.getAngle());
 
         //SmartDashboard.putNumber("Left Drive Encoder", RobotMap.leftMaster.getPosition());
         //SmartDashboard.putNumber("Right Drive Encoder", RobotMap.rightMaster.getPosition());

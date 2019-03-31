@@ -81,8 +81,8 @@ public class ArmSubsystem extends Subsystem {
         rightArm1.set(speed * armMult);
         leftArm1.set(speed * armMult);
 
-        System.out.println("Arm " + rightArm1.getPosition());
-        System.out.println("Arm speed" + speed);
+       // System.out.println("Arm " + rightArm1.getPosition());
+       // System.out.println("Arm speed" + speed);
  //       System.out.println("Wrist Gyro " + intakeGyro1.getAngle());
     }
 
@@ -90,7 +90,7 @@ public class ArmSubsystem extends Subsystem {
      * Runs the arm using {@code APID} to reach a preset.
      * 
      * @param presetState
-     *        The {@code Preset} state 
+     *        The {@code Preset} state
      * @param isBack
      *        {@code true} if the preset moves the arm to the back region of the bot
      */
@@ -99,29 +99,20 @@ public class ArmSubsystem extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = (isBack) ? 111.14 : 13;
+            target = isBack ? 103.2 : 11.2;
             break;
         case Mid:
-            target = (isBack) ? 73.1 : 53.8;
+            target = isBack ? 75.3 : 50;
             break;
         case High:
-            target = (isBack) ? 68.168 : 56.6;
+            target = isBack ? 70.7 : 55.7;
             break;
-        case RocketAdj:
-            switch (lastPreset) {
-                case Low:
-                target = (isBack) ? 111.14 : 13;
-                break;
-            case Mid:
-                target = (isBack) ? 73.1 : 58;
-                break;
-            case High:
-                target = (isBack) ? 68.168 : 56.5;
-                break;
-            default:
-                presetState = Preset.Manual;
-                break;
-            }
+        case Ball:
+            target = isBack ? 107.7 : 20.8;
+            break;
+        case Climb:
+            target = 80;
+            break;
         default:
             break;
         }
@@ -133,13 +124,11 @@ public class ArmSubsystem extends Subsystem {
                 armAPID.initialize();
             }
             else {
-                speed = Num.inRange(armAPID.getOutput(rightArm1.getPosition(), target), .5);
-            }
-
-            if (!presetState.equals(Preset.RocketAdj)) {
-                lastPreset = presetState;
+                speed = Num.inRange(armAPID.getOutput(rightArm1.getPosition(), target), .75);
             }
         }
+        
+        lastPreset = presetState;
 
         set(speed);
     }

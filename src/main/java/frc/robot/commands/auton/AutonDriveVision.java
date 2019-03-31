@@ -5,68 +5,67 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.auton;
 
-import org.team217.*;
-
-import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
+import edu.wpi.first.wpilibj.command.Command;
+
 /**
- * Runs the arm in teleop control mode.
+ * Runs the drivebase in auton control mode using vision.
  * 
- * @author ThunderChickens
+ * @author ThunderChickens 217
  */
-public class TeleopArm extends Command {
-    boolean isPreset = false;
+public class AutonDriveVision extends Command {
+    double speed;
+    boolean isCamFront;
 
     /**
-     * Runs the arm in teleop control mode.
+     * Runs the drivebase in auton control mode using vision.
      * 
-     * @author ThunderChickens
+     * @param speed
+     *        The forward/backward speed
+     * @param isCamFront
+     *        {@code true} if using the front camera
+     * @param timeout
+     *        The time before automatically ending the command, in seconds
+     * 
+     * @author ThunderChickens 217
      */
-    public TeleopArm() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+    public AutonDriveVision(double speed, boolean isCamFront, double timeout) {
+        this.speed = speed;
+        this.isCamFront = isCamFront;
+        setTimeout(timeout);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.kDrivingSubsystem.resetVisionPID();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (PresetState.getPOVStatus()) {
-            isPreset = PresetState.getStatus();
-        }
-        else if (!PresetState.getStatus()) {
-            isPreset = false;
-        }
-
-        if (!isPreset) {
-            double speed = Num.deadband(Robot.m_oi.oper.getRawAxis(5), 0.08);
-            Robot.kArmSubsystem.set(-speed);
-        }
+        Robot.kDrivingSubsystem.visionDrive(speed, isCamFront);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kArmSubsystem.set(0);
+        Robot.kDrivingSubsystem.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kArmSubsystem.set(0);
+        Robot.kDrivingSubsystem.set(0);
     }
 }
