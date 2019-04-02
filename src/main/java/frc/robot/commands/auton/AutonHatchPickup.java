@@ -14,14 +14,14 @@ public class AutonHatchPickup extends Command {
     /**
      * Runs the hatch pickup in auton control mode.
      * 
-     * @param extend
+     * @param shouldExtend
      *        {@code true} if the hatch intake should be extended
      * 
      * @author ThunderChickens 217
      */
-    public AutonHatchPickup(boolean extend) {
+    public AutonHatchPickup(boolean shouldExtend) {
         requires(Robot.kIntakeSubsystem);
-        this.extend = extend;
+        extend = shouldExtend;
     }
 
     @Override

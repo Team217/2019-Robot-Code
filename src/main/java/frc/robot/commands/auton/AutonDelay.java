@@ -1,7 +1,6 @@
 package frc.robot.commands.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.*;
 
 /**
  * Delays an action in auton control mode.

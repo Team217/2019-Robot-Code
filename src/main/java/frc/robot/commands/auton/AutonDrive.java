@@ -42,7 +42,7 @@ public class AutonDrive extends Command {
         
         this.isDriveStraight = isDriveStraight;
         this.target = target;
-        apid = new APID(pid.setTimeout(100), accelTime);
+        apid = new APID(pid.setTimeout(100, false), accelTime);
     }
 
     /**
