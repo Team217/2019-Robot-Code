@@ -42,38 +42,6 @@ public class AutonWrist extends Command {
         setTimeout(timeout);
     }
 
-    /**
-     * Runs the wrist in auton control mode using {@code APID}.
-     * 
-     * @param target
-     *        The {@code PID} target
-     * @param pid
-     *        The {@code PID} variable
-     * 
-     * @author ThunderChickens 217
-     */
-    public AutonWrist(double target, PID pid) {
-        this(target);
-        apid.setPID(pid.setTimeout(100));
-    }
-
-    /**
-     * Runs the wrist in auton control mode using {@code APID}.
-     * 
-     * @param target
-     *        The {@code PID} target
-     * @param pid
-     *        The {@code PID} variable
-     * @param timeout
-     *        The time before automatically ending the command, in seconds
-     * 
-     * @author ThunderChickens 217
-     */
-    public AutonWrist(double target, PID pid, double timeout) {
-        this(target, pid);
-        setTimeout(timeout);
-    }
-
     @Override
     protected void initialize() {
         apid.initialize();
