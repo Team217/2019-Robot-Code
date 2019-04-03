@@ -124,4 +124,9 @@ public class ElevatorSubsystem extends Subsystem {
 
         set(speed);
     }
+
+    public void reset() {
+        leftElevator1.set(0);
+        rightElevator1.set(0);
+    }
 }

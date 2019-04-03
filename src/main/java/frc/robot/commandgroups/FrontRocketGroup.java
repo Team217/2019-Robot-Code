@@ -10,8 +10,8 @@ import frc.robot.commands.auton.*;
 public class FrontRocketGroup extends CommandGroup {
     public FrontRocketGroup() {
         // Pick up the hatch panel
-        addSequential(new HatchPickupGroup());
-        addParallel(new StartToPresetGroup(Preset.Low, false));
+        addSequential(new HatchStartGroup());
+        addParallel(new StartToPresetGroup(Preset.Mid, false));
 
         // Drive off platform
         addSequential(new AutonDriveTimed(0.5, 2.0));

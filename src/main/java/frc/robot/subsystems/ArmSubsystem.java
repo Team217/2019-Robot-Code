@@ -132,4 +132,9 @@ public class ArmSubsystem extends Subsystem {
 
         set(speed);
     }
+
+    public void reset() {
+        rightArm1.set(0);
+        leftArm1.set(0);
+    }
 }

@@ -47,11 +47,11 @@ public class AutonElevator extends Command {
 
     @Override
     protected void end() {
-        Robot.kElevatorSubsystem.set(0);
+        Robot.kElevatorSubsystem.reset();
     }
 
     @Override
     protected void interrupted() {
-        Robot.kElevatorSubsystem.set(0);
+        Robot.kElevatorSubsystem.reset();
     }
 }

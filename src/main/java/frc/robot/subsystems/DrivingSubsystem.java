@@ -181,6 +181,11 @@ public class DrivingSubsystem extends Subsystem {
     public void resetVisionPID() {
         visionPID.resetErrors();
     }
+
+    public void reset() {
+        RobotMap.leftMaster.set(0);
+        RobotMap.rightMaster.set(0);
+    }
 }
 
 /**

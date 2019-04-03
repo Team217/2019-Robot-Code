@@ -42,11 +42,11 @@ public class AutonTelescopePreset extends Command {
 
     @Override
     protected void end() {
-        Robot.kTelescopeSubsystem.set(0);
+        Robot.kTelescopeSubsystem.reset();
     }
 
     @Override
     protected void interrupted() {
-        Robot.kTelescopeSubsystem.set(0);
+        Robot.kTelescopeSubsystem.reset();
     }
 }

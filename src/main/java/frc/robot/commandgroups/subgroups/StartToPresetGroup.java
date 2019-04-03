@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class StartToPresetGroup extends CommandGroup {
 
     public StartToPresetGroup(Preset presetState, boolean isBack, double delay) {
-        addSequential(new AutonElevator(5000));
+        addSequential(new AutonElevator(7000));
         addSequential(new AutonDelay(delay));
         addSequential(new PresetGroup(presetState, isBack));
     }

@@ -50,4 +50,8 @@ public class IntakeSubsystem extends Subsystem {
     public void retract() {
         hatchSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
+
+    public void reset() {
+        intakeOne.set(0);
+    }
 }

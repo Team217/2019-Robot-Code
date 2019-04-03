@@ -127,4 +127,8 @@ public class WristSubsystem extends Subsystem {
 
         set(speed);
     }
+
+    public void reset() {
+        wrist1.set(0);
+    }
 }

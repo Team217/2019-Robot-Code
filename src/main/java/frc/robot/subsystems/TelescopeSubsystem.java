@@ -135,4 +135,8 @@ public class TelescopeSubsystem extends Subsystem {
 
         lastPreset = presetState;
     }
+
+    public void reset() {
+        telescope1.set(0);
+    }
 }

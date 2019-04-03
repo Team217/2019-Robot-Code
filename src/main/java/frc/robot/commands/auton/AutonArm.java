@@ -47,11 +47,11 @@ public class AutonArm extends Command {
 
     @Override
     protected void end() {
-        Robot.kArmSubsystem.set(0);
+        Robot.kArmSubsystem.reset();
     }
 
     @Override
     protected void interrupted() {
-        Robot.kArmSubsystem.set(0);
+        Robot.kArmSubsystem.reset();
     }
 }

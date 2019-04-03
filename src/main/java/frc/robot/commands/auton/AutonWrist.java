@@ -59,11 +59,11 @@ public class AutonWrist extends Command {
 
     @Override
     protected void end() {
-        Robot.kWristSubsystem.set(0);
+        Robot.kWristSubsystem.reset();
     }
 
     @Override
     protected void interrupted() {
-        Robot.kWristSubsystem.set(0);
+        Robot.kWristSubsystem.reset();
     }
 }

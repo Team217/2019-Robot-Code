@@ -43,11 +43,11 @@ public class AutonIntake extends Command {
 
     @Override
     protected void end() {
-        Robot.kIntakeSubsystem.set(0);
+        Robot.kIntakeSubsystem.reset();
     }
 
     @Override
     protected void interrupted() {
-        Robot.kIntakeSubsystem.set(0);
+        Robot.kIntakeSubsystem.reset();
     }
 }
