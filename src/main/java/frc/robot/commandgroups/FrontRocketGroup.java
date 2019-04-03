@@ -17,7 +17,7 @@ public class FrontRocketGroup extends CommandGroup {
 
         // Face the rocket somewhat head-on
         addSequential(new AutonTurn(90, new PID(0.03, 0.001, 0), 0.25, 1.5));
-        addParallel(new PresetGroup(Preset.Manual, false)); // Go to the mid preset
+        addParallel(new PresetGroup(Preset.Mid, false)); // Go to the mid preset
         addSequential(new AutonDriveTimed(0.5, 0.75));
         addSequential(new AutonTurn(30, new PID(0.03, 0.001, 0), 0.25, 1.25));
     }
