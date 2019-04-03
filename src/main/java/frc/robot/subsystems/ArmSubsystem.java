@@ -18,6 +18,8 @@ public class ArmSubsystem extends Subsystem {
 
     boolean isTelescopeOut = false;
 
+    public boolean atPreset = false;
+
     @Override
     protected void initDefaultCommand() {
     }
@@ -129,6 +131,8 @@ public class ArmSubsystem extends Subsystem {
         }
         
         lastPreset = presetState;
+
+        atPreset = Num.isWithinRange(rightArm1.getPosition(), target + 0.5, target - 0.5);
 
         set(speed);
     }

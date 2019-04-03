@@ -1,5 +1,6 @@
 package frc.robot.commands.auton;
 
+import org.team217.*;
 import org.team217.pid.*;
 import org.team217.rev.*;
 
@@ -22,12 +23,15 @@ public class AutonArm extends Command {
      * 
      * @param target
      *        The {@code PID} target
+     * @param timeout
+     *        The time before automatically ending the command, in seconds
      * 
      * @author ThunderChickens 217
      */
-    public AutonArm(double target) {
+    public AutonArm(double target, double timeout) {
         requires(Robot.kArmSubsystem);
         tar = target;
+        setTimeout(timeout);
     }
 
     @Override
@@ -42,7 +46,7 @@ public class AutonArm extends Command {
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return isTimedOut() || Num.isWithinRange(RobotMap.rightArm.getPosition(), tar - 1, tar + 1);
     }
 
     @Override

@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+
+import org.team217.*;
 import org.team217.ctre.*;
 import org.team217.pid.*;
 import frc.robot.*;
@@ -19,6 +21,8 @@ public class TelescopeSubsystem extends Subsystem {
     double lastTelescopePos = 0;
 
     int telescopeState = 0;
+
+    public boolean atPreset = false;
 
     @Override
     protected void initDefaultCommand() {
@@ -76,6 +80,8 @@ public class TelescopeSubsystem extends Subsystem {
             telescopeState = 0;
         }
 
+        atPreset = Num.isWithinRange(telescope1.getEncoder(), 0, 500);
+
         double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 0);
         set(speed);
     }
@@ -87,6 +93,8 @@ public class TelescopeSubsystem extends Subsystem {
             telescopeState = 1;
         }
 
+        atPreset = Num.isWithinRange(telescope1.getEncoder(), 13800, 14800);
+
         double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 14300); //TODO: Get correct value
         set(speed);
     }
@@ -96,6 +104,8 @@ public class TelescopeSubsystem extends Subsystem {
             telescopeAPID.initialize();
             telescopeState = 2;
         }
+
+        atPreset = Num.isWithinRange(telescope1.getEncoder(), 12500, 13500);
 
         double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 13000);
         set(speed);

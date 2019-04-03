@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class PresetGroup extends CommandGroup {
 
-    public PresetGroup(Preset presetState, boolean isBack) {
-        addParallel(new AutonArmPreset(presetState, isBack));
-        addParallel(new AutonElevatorPreset(presetState, isBack));
-        addParallel(new AutonWristPreset(presetState, isBack));
-        addParallel(new AutonTelescopePreset(presetState));
+    public PresetGroup(Preset presetState, boolean isBack, double timeout) {
+        addParallel(new AutonArmPreset(presetState, isBack, timeout));
+        addParallel(new AutonElevatorPreset(presetState, isBack, timeout));
+        addParallel(new AutonWristPreset(presetState, isBack, timeout));
+        addParallel(new AutonTelescopePreset(presetState, timeout));
     }
 }

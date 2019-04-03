@@ -1,5 +1,6 @@
 package frc.robot.commands.auton;
 
+import org.team217.*;
 import org.team217.pid.*;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -19,26 +20,14 @@ public class AutonWrist extends Command {
      * 
      * @param target
      *        The {@code PID} target
-     * 
-     * @author ThunderChickens 217
-     */
-    public AutonWrist(double target) {
-        requires(Robot.kWristSubsystem);
-        tar = target;
-    }
-
-    /**
-     * Runs the wrist in auton control mode using {@code APID}.
-     * 
-     * @param target
-     *        The {@code PID} target
      * @param timeout
      *        The time before automatically ending the command, in seconds
      * 
      * @author ThunderChickens 217
      */
     public AutonWrist(double target, double timeout) {
-        this(target);
+        requires(Robot.kWristSubsystem);
+        tar = target;
         setTimeout(timeout);
     }
 
@@ -54,7 +43,7 @@ public class AutonWrist extends Command {
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return isTimedOut() || Num.isWithinRange(RobotMap.wrist.getEncoder(), tar - 50, tar + 50);
     }
 
     @Override

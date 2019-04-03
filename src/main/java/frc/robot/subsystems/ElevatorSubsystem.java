@@ -16,6 +16,8 @@ public class ElevatorSubsystem extends Subsystem {
     public double lastElevatorPos = 0;
     public Preset lastPreset = Preset.Manual;
 
+    public boolean atPreset = false;
+
     @Override
     protected void initDefaultCommand() {
         leftElevator1.follow(rightElevator1);
@@ -121,6 +123,8 @@ public class ElevatorSubsystem extends Subsystem {
         }
         
         lastPreset = presetState;
+
+        atPreset = Num.isWithinRange(leftElevator1.getEncoder(), target - 50, target + 50);
 
         set(speed);
     }

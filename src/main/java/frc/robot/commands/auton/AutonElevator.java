@@ -1,5 +1,6 @@
 package frc.robot.commands.auton;
 
+import org.team217.*;
 import org.team217.pid.*;
 import org.team217.ctre.*;
 
@@ -22,12 +23,15 @@ public class AutonElevator extends Command {
      * 
      * @param target
      *        The {@code PID} target
+     * @param timeout
+     *        The time before automatically ending the command, in seconds
      * 
      * @author ThunderChickens 217
      */
-    public AutonElevator(double target) {
+    public AutonElevator(double target, double timeout) {
         requires(Robot.kElevatorSubsystem);
         tar = target;
+        setTimeout(timeout);
     }
 
     @Override
@@ -42,7 +46,7 @@ public class AutonElevator extends Command {
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return isTimedOut() || Num.isWithinRange(RobotMap.leftElevator.getEncoder(), tar - 50, tar + 50);
     }
 
     @Override
