@@ -61,8 +61,8 @@ public class TelescopeSubsystem extends Subsystem {
             if (Math.abs(lastTelescopePos - telescope1.getEncoder()) > 500) {
                 lastTelescopePos = telescope1.getEncoder();
             }
-            //speed = RobotMap.telescopeHoldPID.getOutput(telescope1.getEncoder(), lastTelescopePos);
-            //telescopeMult = 1;
+            speed = RobotMap.telescopeHoldPID.getOutput(telescope1.getEncoder(), lastTelescopePos);
+            telescopeMult = 1;
         }
 
         speed = limitCheck(speed);
