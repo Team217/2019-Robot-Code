@@ -69,6 +69,9 @@ public class ElevatorSubsystem extends Subsystem {
             lastElevatorPos = leftElevator1.getEncoder();
         }
         else {
+            if (Math.abs(lastElevatorPos - leftElevator1.getEncoder()) > 500) {
+                lastElevatorPos = leftElevator1.getEncoder();
+            }
             speed = -RobotMap.elevatorHoldPID.getOutput(RobotMap.leftElevator.getEncoder(), lastElevatorPos);
             elevatorMult = 1;
         } 
@@ -93,19 +96,19 @@ public class ElevatorSubsystem extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = isBack ? 4744 : 7668; 
+            target = isBack ? 4744 : 9649; //comp is 4744 : 7668
             break;
         case Mid:
-            target = isBack ? 4939 : 4850; // 1850
+            target = isBack ? 4939 : 6647; //comp is 4939 : 4850
             break;
         case High:
-            target = isBack ? 11790 : 13050; //11790
+            target = isBack ? 11790 : 15037; //comp is 11790 : 13050
             break;
         case Ball:
-            target = isBack ? 1752 : 1914;
+            target = isBack ? 1752 : 1914; //comp is 1752 : 1914
             break;
         case Climb:
-            target = 0;
+            target = 0; //comp is 0
             break;
         default:
             break;

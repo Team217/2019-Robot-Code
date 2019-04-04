@@ -18,7 +18,7 @@ public class TelescopeSubsystem extends Subsystem {
     public Preset lastPreset = Preset.Manual;
     APID telescopeAPID = RobotMap.telescopeAPID;
 
-    double lastTelescopePos = 0;
+    public double lastTelescopePos = 0;
 
     int telescopeState = 0;
 
@@ -95,7 +95,7 @@ public class TelescopeSubsystem extends Subsystem {
 
         atPreset = Num.isWithinRange(telescope1.getEncoder(), 13800, 14800);
 
-        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 14300); //TODO: Get correct value
+        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 28925); //TODO: Get correct value //comp is 14300
         set(speed);
     }
 

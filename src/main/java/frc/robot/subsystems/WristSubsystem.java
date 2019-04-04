@@ -99,7 +99,7 @@ public class WristSubsystem extends Subsystem {
             target = isBack ? -2909 : -52;
             break;
         case Mid:
-            target = isBack ? -886 : -2708;
+            target = isBack ? -886 : -3697; //comp is -886 : -2708
             break;
         case High:
             target = isBack ? -264 : -3608;

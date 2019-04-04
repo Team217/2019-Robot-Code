@@ -66,13 +66,15 @@ public class Robot extends TimedRobot {
         RobotMap.telescope.resetEncoder();
 
         RobotMap.telescope.invertEncoder(true);
+        RobotMap.telescope.setEncoder(24827); //comp is ?
+        Robot.kTelescopeSubsystem.lastTelescopePos = 24827; //comp is ?
 
         RobotMap.rightElevator.resetEncoder();
         RobotMap.leftElevator.resetEncoder();
 
         RobotMap.leftElevator.invertEncoder(false); // TODO: true for comp bot, false for practice
-        RobotMap.leftElevator.setEncoder(3500);
-        Robot.kElevatorSubsystem.lastElevatorPos = 3500;
+        RobotMap.leftElevator.setEncoder(8530); //comp is 3500 (will change)
+        Robot.kElevatorSubsystem.lastElevatorPos = 8530; //comp is 3500 (will change)
 
         RobotMap.wrist.resetEncoder();
 
@@ -123,20 +125,20 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        autonomousCommand = new TeleopCommands(); // TODO: idk what we're doing yet chief
+        autonomousCommand = new FrontRocketGroup(); // TODO: idk what we're doing yet chief
         /*
          * String autoSelected = SmartDashboard.getString("Auto Selector",
-         * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
+         * "Default"); switch(autoSelected) { case "My Auto": autonomousComman\
          * = new MyAutoCommand(); break; case "Default Auto": default:
          * autonomousCommand = new ExampleCommand(); break; }
          */
 
         // schedule the autonomous command (example)
+        kClimbingSubsystem.setDrivePTO();
         if (autonomousCommand != null) {
             autonomousCommand.start();
         }
 
-        kClimbingSubsystem.setDrivePTO();
     }
 
     /**

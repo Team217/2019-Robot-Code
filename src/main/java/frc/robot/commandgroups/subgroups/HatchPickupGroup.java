@@ -5,12 +5,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class HatchPickupGroup extends CommandGroup {
     public HatchPickupGroup(double delay) {
-        addSequential(new AutonHatchPickup(true));
-        addSequential(new AutonDelay(delay));
-        addSequential(new AutonHatchPickup(false));
+        addSequential(new AutonHatchPickup(true, delay));
+        addSequential(new AutonHatchPickup(false, 0.1));
     }
 
     public HatchPickupGroup() {
-        this(1);
+        this(0.5);
     }
 }

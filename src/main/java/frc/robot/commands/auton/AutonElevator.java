@@ -37,7 +37,7 @@ public class AutonElevator extends Command {
 
     @Override
     protected void execute() {
-        Robot.kElevatorSubsystem.set(apid.getOutput(leftElevator1.getEncoder(), tar));
+        Robot.kElevatorSubsystem.set(-apid.getOutput(leftElevator1.getEncoder(), tar));
     }
 
     @Override
