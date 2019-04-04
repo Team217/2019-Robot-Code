@@ -60,7 +60,7 @@ public class AutonDriveTimed extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.kDrivingSubsystem.set(speed, isDriveStraight);
+        Robot.kDrivingSubsystem.set(-speed, isDriveStraight);
     }
 
     // Make this return true when this Command no longer needs to run execute()
