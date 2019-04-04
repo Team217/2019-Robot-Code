@@ -1,6 +1,5 @@
 package frc.robot.commands.auton;
 
-import org.team217.*;
 import org.team217.pid.*;
 
 import edu.wpi.first.wpilibj.command.Command;
