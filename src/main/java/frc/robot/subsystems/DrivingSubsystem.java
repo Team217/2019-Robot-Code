@@ -23,7 +23,7 @@ public class DrivingSubsystem extends Subsystem {
         RobotMap.rightBackSlave.follow(RobotMap.rightMaster);
     }
 
-    PID driveStraightPID = new PID(0.01, 0, 0);
+    PID driveStraightPID = new PID(0.005, 0, 0);
     PID visionPID = RobotMap.visionPID;
     public double targetAngle = 0.0;
     private boolean useAntiTipAngle = false;
@@ -75,9 +75,9 @@ public class DrivingSubsystem extends Subsystem {
         double turn = 0.0;
 
         if (isDriveStraight) {
-            double correction = 0.5 * driveStraightPID.getOutput(RobotMap.pigeonDrive.getAngle(), targetAngle);
+            double correction = driveStraightPID.getOutput(RobotMap.pigeonDrive.getAngle(), targetAngle);
             turn = correction * speed;
-            speed *= (1 - Math.abs(correction));
+            speed *= 1 - Math.abs(correction);
         }
 
         set(speed, turn, false);
