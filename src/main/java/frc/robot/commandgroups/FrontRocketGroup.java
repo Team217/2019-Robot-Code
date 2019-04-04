@@ -10,7 +10,7 @@ import frc.robot.commands.auton.*;
 public class FrontRocketGroup extends CommandGroup {
     public FrontRocketGroup() {
         // pick up the hatch panel
-        addParallel(new AutonElevator(13000)); //change elev value higher than 8530
+        addParallel(new AutonElevator(13000));
         addParallel(new HatchPickupGroup(0.45));
         addSequential(new AutonElevatorTarget(13000), 1.5);
         addParallel(new AutonArm(10));
