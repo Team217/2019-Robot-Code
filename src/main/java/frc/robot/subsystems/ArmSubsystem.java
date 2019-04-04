@@ -132,7 +132,7 @@ public class ArmSubsystem extends Subsystem {
         
         lastPreset = presetState;
 
-        atPreset = Num.isWithinRange(rightArm1.getPosition(), target + 0.5, target - 0.5);
+        atPreset = Num.isWithinRange(rightArm1.getPosition(), target - 0.5, target + 0.5);
 
         set(speed);
     }

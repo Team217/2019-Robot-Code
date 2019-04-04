@@ -1,5 +1,7 @@
 package frc.robot.commands.auton;
 
+import org.team217.*;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
@@ -8,15 +10,29 @@ import frc.robot.*;
  * 
  * @author ThunderChickens 217
  */
-public class AutonElevatorHold extends Command {
+public class AutonWristTarget extends Command {
+    boolean isPreset = true;
+    double tar = 0;
 
     /**
-     * Holds the elevator in place in auton control mode.
+     * Checks if the wrist has reached a target value.
      * 
      * @author ThunderChickens 217
      */
-    public AutonElevatorHold() {
-        requires(Robot.kElevatorSubsystem);
+    public AutonWristTarget() {
+    }
+
+    /**
+     * Checks if the wrist has reached a target value.
+     * 
+     * @param target
+     *        The target value
+     * 
+     * @author ThunderChickens 217
+     */
+    public AutonWristTarget(double target) {
+        tar = target;
+        isPreset = false;
     }
 
     @Override
@@ -25,12 +41,11 @@ public class AutonElevatorHold extends Command {
 
     @Override
     protected void execute() {
-        Robot.kElevatorSubsystem.set(0);
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return isPreset ? Robot.kWristSubsystem.atPreset : Num.isWithinRange(RobotMap.wrist.getEncoder(), tar - 50, tar + 50);
     }
 
     @Override

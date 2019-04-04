@@ -1,55 +1,58 @@
 package frc.robot.commands.auton;
 
 import org.team217.*;
-import org.team217.pid.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
 /**
- * Runs the wrist in auton control mode using {@code APID}.
+ * Holds the arm in place in auton control mode.
  * 
  * @author ThunderChickens 217
  */
-public class AutonWrist extends Command {
+public class AutonArmTarget extends Command {
+    boolean isPreset = true;
     double tar = 0;
-    APID apid = RobotMap.wristAPID;
 
     /**
-     * Runs the wrist in auton control mode using {@code APID}.
-     * 
-     * @param target
-     *        The {@code PID} target
+     * Checks if the arm has reached a target value.
      * 
      * @author ThunderChickens 217
      */
-    public AutonWrist(double target) {
-        requires(Robot.kWristSubsystem);
+    public AutonArmTarget() {
+    }
+
+    /**
+     * Checks if the arm has reached a target value.
+     * 
+     * @param target
+     *        The target value
+     * 
+     * @author ThunderChickens 217
+     */
+    public AutonArmTarget(double target) {
         tar = target;
+        isPreset = false;
     }
 
     @Override
     protected void initialize() {
-        apid.initialize();
     }
 
     @Override
     protected void execute() {
-        Robot.kWristSubsystem.set(apid.getOutput(RobotMap.wrist.getEncoder(), tar));
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return isPreset ? Robot.kArmSubsystem.atPreset : Num.isWithinRange(RobotMap.rightArm.getPosition(), tar - 1, tar + 1);
     }
 
     @Override
     protected void end() {
-        Robot.kWristSubsystem.reset();
     }
 
     @Override
     protected void interrupted() {
-        Robot.kWristSubsystem.reset();
     }
 }

@@ -17,15 +17,12 @@ public class AutonTelescopePreset extends Command {
      * 
      * @param presetState
      *        The {@code Preset} state
-     * @param timeout
-     *        The time before automatically ending the command, in seconds
      * 
      * @author ThunderChickens 217
      */
-    public AutonTelescopePreset(Preset presetState, double timeout) {
+    public AutonTelescopePreset(Preset presetState) {
         requires(Robot.kTelescopeSubsystem);
         this.presetState = presetState;
-        setTimeout(timeout);
     }
 
     @Override
@@ -41,7 +38,7 @@ public class AutonTelescopePreset extends Command {
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut() || Robot.kTelescopeSubsystem.atPreset;
+        return false;
     }
 
     @Override

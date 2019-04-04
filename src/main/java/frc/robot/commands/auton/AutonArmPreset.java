@@ -20,16 +20,13 @@ public class AutonArmPreset extends Command {
      *        The {@code Preset} state
      * @param isBack
      *        {@code true} if the preset moves the arm to the back region of the bot
-     * @param timeout
-     *        The time before automatically ending the command, in seconds
      * 
      * @author ThunderChickens 217
      */
-    public AutonArmPreset(Preset presetState, boolean isBack, double timeout) {
+    public AutonArmPreset(Preset presetState, boolean isBack) {
         requires(Robot.kArmSubsystem);
         this.presetState = presetState;
         this.isBack = isBack;
-        setTimeout(timeout);
     }
 
     @Override
@@ -45,7 +42,7 @@ public class AutonArmPreset extends Command {
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut() || Robot.kArmSubsystem.atPreset;
+        return false;
     }
 
     @Override

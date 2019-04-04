@@ -20,15 +20,12 @@ public class AutonTelescope extends Command {
      * 
      * @param target
      *        The {@code PID} target
-     * @param timeout
-     *        The time before automatically ending the command, in seconds
      * 
      * @author ThunderChickens 217
      */
-    public AutonTelescope(double target, double timeout) {
+    public AutonTelescope(double target) {
         requires(Robot.kTelescopeSubsystem);
         tar = target;
-        setTimeout(timeout);
     }
 
     @Override
@@ -43,7 +40,7 @@ public class AutonTelescope extends Command {
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut() || Num.isWithinRange(RobotMap.telescope.getEncoder(), tar - 500, tar + 500);
+        return false;
     }
 
     @Override

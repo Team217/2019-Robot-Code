@@ -20,16 +20,13 @@ public class AutonWristPreset extends Command {
      *        The {@code Preset} state
      * @param isBack
      *        {@code true} if the preset moves the arm to the back region of the bot
-     * @param timeout
-     *        The time before automatically ending the command, in seconds
      * 
      * @author ThunderChickens 217
      */
-    public AutonWristPreset(Preset presetState, boolean isBack, double timeout) {
+    public AutonWristPreset(Preset presetState, boolean isBack) {
         requires(Robot.kWristSubsystem);
         this.isBack = isBack;
         this.presetState = presetState;
-        setTimeout(timeout);
     }
 
     @Override
@@ -45,7 +42,7 @@ public class AutonWristPreset extends Command {
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut() || Robot.kWristSubsystem.atPreset;
+        return false;
     }
 
     @Override
