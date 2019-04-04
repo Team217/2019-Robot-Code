@@ -73,8 +73,8 @@ public class Robot extends TimedRobot {
         RobotMap.leftElevator.resetEncoder();
 
         RobotMap.leftElevator.invertEncoder(false); // TODO: true for comp bot, false for practice
-        RobotMap.leftElevator.setEncoder(8530); //comp is 3500 (will change)
-        Robot.kElevatorSubsystem.lastElevatorPos = 8530; //comp is 3500 (will change)
+        RobotMap.leftElevator.setEncoder(8580); //comp is 3500 (will change)
+        Robot.kElevatorSubsystem.lastElevatorPos = 8580; //comp is 3500 (will change)
 
         RobotMap.wrist.resetEncoder();
 
@@ -139,6 +139,7 @@ public class Robot extends TimedRobot {
             autonomousCommand.start();
         }
 
+        RobotMap.pigeonDrive.setYaw(32);
     }
 
     /**
@@ -146,6 +147,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
+        cams();
         if (!isValidPigeon()) {
             RobotMap.pigeonDrive.resetPitch();
             RobotMap.pigeonDrive.resetRoll();
@@ -179,32 +181,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        NetworkTable table1 = NetworkTableInstance.getDefault().getTable("limelight-test"); //first limelight (front)
-        NetworkTableEntry tx1 = table1.getEntry("tx"); //first limelight
-        NetworkTableEntry ty1 = table1.getEntry("ty"); //first limelight
-        NetworkTableEntry ta1 = table1.getEntry("ta"); //first limelight
-
-        x1 = tx1.getDouble(0.0); //first limelight
-        y1 = ty1.getDouble(0.0); //first limelight
-        area1 = ta1.getDouble(0.0); //first limelight
-
-        SmartDashboard.putNumber("LimelightX1", x1); //first limelight
-        SmartDashboard.putNumber("LimelightY1", y1); //first limelight
-        SmartDashboard.putNumber("LimelightA1", area1); //first limelight
-
-        NetworkTable table2 = NetworkTableInstance.getDefault().getTable("limelight-back"); //second limelight (back)
-        NetworkTableEntry tx2 = table2.getEntry("tx"); //second limelight
-        NetworkTableEntry ty2 = table2.getEntry("ty"); //second limelight
-        NetworkTableEntry ta2 = table2.getEntry("ta"); //second limelight
-
-        x2 = tx2.getDouble(0.0); //second limelight
-        y2 = ty2.getDouble(0.0); //second limelight
-        area2 = ta2.getDouble(0.0); //second limelight
-
-        SmartDashboard.putNumber("LimelightX2", x2); //second limelight
-        SmartDashboard.putNumber("LimelightX2", y2); //second limelight
-        SmartDashboard.putNumber("LimelightA2", area2); //second limelight
-
+        cams();
         smartDashboard();
 
         if (!isValidPigeon()) {
@@ -282,6 +259,34 @@ public class Robot extends TimedRobot {
         }
         
         Robot.kTelescopeSubsystem.set(telescopeSpeed);
+    }
+
+    public void cams() {
+        NetworkTable table1 = NetworkTableInstance.getDefault().getTable("limelight-test"); //first limelight (front)
+        NetworkTableEntry tx1 = table1.getEntry("tx"); //first limelight
+        NetworkTableEntry ty1 = table1.getEntry("ty"); //first limelight
+        NetworkTableEntry ta1 = table1.getEntry("ta"); //first limelight
+
+        x1 = tx1.getDouble(0.0); //first limelight
+        y1 = ty1.getDouble(0.0); //first limelight
+        area1 = ta1.getDouble(0.0); //first limelight
+
+        SmartDashboard.putNumber("LimelightX1", x1); //first limelight
+        SmartDashboard.putNumber("LimelightY1", y1); //first limelight
+        SmartDashboard.putNumber("LimelightA1", area1); //first limelight
+
+        NetworkTable table2 = NetworkTableInstance.getDefault().getTable("limelight-back"); //second limelight (back)
+        NetworkTableEntry tx2 = table2.getEntry("tx"); //second limelight
+        NetworkTableEntry ty2 = table2.getEntry("ty"); //second limelight
+        NetworkTableEntry ta2 = table2.getEntry("ta"); //second limelight
+
+        x2 = tx2.getDouble(0.0); //second limelight
+        y2 = ty2.getDouble(0.0); //second limelight
+        area2 = ta2.getDouble(0.0); //second limelight
+
+        SmartDashboard.putNumber("LimelightX2", x2); //second limelight
+        SmartDashboard.putNumber("LimelightX2", y2); //second limelight
+        SmartDashboard.putNumber("LimelightA2", area2); //second limelight
     }
 
     /** Sends data to SmartDashboard. */

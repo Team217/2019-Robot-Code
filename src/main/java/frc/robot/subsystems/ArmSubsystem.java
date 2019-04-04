@@ -97,14 +97,13 @@ public class ArmSubsystem extends Subsystem {
      *        {@code true} if the preset moves the arm to the back region of the bot
      */
     public void preset(Preset presetState, boolean isBack) {
-        System.out.println("Here");
         double target = 0;
         switch (presetState) {
         case Low:
-            target = isBack ? 102 : 9.5;
+            target = isBack ? 102.5 : 8.6;
             break;
         case Mid:
-            target = isBack ? 75.6 : 45.9;
+            target = isBack ? 75.6 : 47;
             break;
         case High:
             target = isBack ? 65.4 : 54.1;
@@ -126,12 +125,11 @@ public class ArmSubsystem extends Subsystem {
                 armAPID.initialize();
             }
             else {
-                speed = Num.inRange(armAPID.getOutput(rightArm1.getPosition(), target), .75);
+                speed = Num.inRange(armAPID.getOutput(rightArm1.getPosition(), target), .8);
             }
         }
         
         lastPreset = presetState;
-
         atPreset = Num.isWithinRange(rightArm1.getPosition(), target - 0.5, target + 0.5);
 
         set(speed);

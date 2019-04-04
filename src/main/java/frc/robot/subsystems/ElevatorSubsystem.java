@@ -78,8 +78,6 @@ public class ElevatorSubsystem extends Subsystem {
         
         speed = limitCheck(speed);
 
-        System.out.println("elevator pos " + leftElevator1.getEncoder());
-        System.out.println("last elevator pos " + lastElevatorPos);
         rightElevator1.set(speed * elevatorMult);
         leftElevator1.set(speed * elevatorMult);
     }
@@ -96,10 +94,10 @@ public class ElevatorSubsystem extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = isBack ? 4744 : 9649; //comp is 4744 : 7668
+            target = isBack ? 2998 : 10169; //comp is 4744 : 7668
             break;
         case Mid:
-            target = isBack ? 4939 : 6647; //comp is 4939 : 4850
+            target = isBack ? 4939 : 8100; //comp is 4939 : 4850
             break;
         case High:
             target = isBack ? 11790 : 15037; //comp is 11790 : 13050
@@ -126,7 +124,6 @@ public class ElevatorSubsystem extends Subsystem {
         }
         
         lastPreset = presetState;
-
         atPreset = Num.isWithinRange(leftElevator1.getEncoder(), target - 50, target + 50);
 
         set(speed);

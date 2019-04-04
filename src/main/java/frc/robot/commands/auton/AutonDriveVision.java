@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class AutonDriveVision extends Command {
     double speed;
     boolean isCamFront;
+    double targetArea = 1;
 
     /**
      * Runs the drivebase in auton control mode using vision.
@@ -32,9 +33,10 @@ public class AutonDriveVision extends Command {
      * 
      * @author ThunderChickens 217
      */
-    public AutonDriveVision(double speed, boolean isCamFront, double timeout) {
+    public AutonDriveVision(double speed, boolean isCamFront, double targetArea, double timeout) {
         this.speed = speed;
         this.isCamFront = isCamFront;
+        this.targetArea = targetArea;
         setTimeout(timeout);
     }
 
@@ -53,7 +55,8 @@ public class AutonDriveVision extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        double area = isCamFront ? Robot.getArea1Vis() : Robot.getArea2Vis();
+        return area < 0.2 ? isTimedOut() : area >= targetArea;
     }
 
     // Called once after isFinished returns true

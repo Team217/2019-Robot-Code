@@ -21,7 +21,6 @@ public class WristSubsystem extends Subsystem {
 
     public Preset lastPreset = Preset.Manual;
     
-    PID wristGyroPID = RobotMap.wristGyroPID;
     APID wristAPID = RobotMap.wristAPID;
 
     public boolean atPreset = false;
@@ -96,10 +95,10 @@ public class WristSubsystem extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = isBack ? -2909 : -52;
+            target = isBack ? -3497 : -518;
             break;
         case Mid:
-            target = isBack ? -886 : -3697; //comp is -886 : -2708
+            target = isBack ? -886 : -3250; //comp is -886 : -2708
             break;
         case High:
             target = isBack ? -264 : -3608;
@@ -126,7 +125,6 @@ public class WristSubsystem extends Subsystem {
         }
 
         lastPreset = presetState;
-
         atPreset = Num.isWithinRange(wrist1.getEncoder(), target - 50, target + 50);
 
         set(speed);

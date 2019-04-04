@@ -48,11 +48,9 @@ public class AutonHatchPickup extends Command {
 
     @Override
     protected void end() {
-        Robot.kIntakeSubsystem.retract();
     }
 
     @Override
     protected void interrupted() {
-        Robot.kIntakeSubsystem.retract();
     }
 }
