@@ -15,8 +15,8 @@ import frc.robot.PresetState.Preset;
 import frc.robot.commandgroups.subgroups.*;
 import frc.robot.commands.auton.*;
 
-public class SideCargoship extends CommandGroup {
-    public SideCargoship() {
+public class SideCargoshipGroup extends CommandGroup {
+    public SideCargoshipGroup() {
         // pick up the hatch panel
         addParallel(new AutonElevator(13000));
         addParallel(new HatchPickupGroup(0.45));

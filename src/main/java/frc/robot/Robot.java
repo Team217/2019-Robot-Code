@@ -125,13 +125,11 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        if (teleopCommand != null) {
+            teleopCommand.cancel();
+        }
+
         autonomousCommand = new FrontRocketGroup(); // TODO: idk what we're doing yet chief
-        /*
-         * String autoSelected = SmartDashboard.getString("Auto Selector",
-         * "Default"); switch(autoSelected) { case "My Auto": autonomousComman\
-         * = new MyAutoCommand(); break; case "Default Auto": default:
-         * autonomousCommand = new ExampleCommand(); break; }
-         */
 
         // schedule the autonomous command (example)
         kClimbingSubsystem.setDrivePTO();
