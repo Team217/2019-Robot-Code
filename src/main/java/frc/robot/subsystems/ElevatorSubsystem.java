@@ -69,7 +69,7 @@ public class ElevatorSubsystem extends Subsystem {
             lastElevatorPos = leftElevator1.getEncoder();
         }
         else {
-            if (Math.abs(lastElevatorPos - leftElevator1.getEncoder()) > 500) {
+            if (Math.abs(lastElevatorPos - leftElevator1.getEncoder()) > 250) {
                 lastElevatorPos = leftElevator1.getEncoder();
             }
             speed = -RobotMap.elevatorHoldPID.getOutput(RobotMap.leftElevator.getEncoder(), lastElevatorPos);

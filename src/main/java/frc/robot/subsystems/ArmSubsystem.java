@@ -125,7 +125,7 @@ public class ArmSubsystem extends Subsystem {
                 armAPID.initialize();
             }
             else {
-                speed = Num.inRange(armAPID.getOutput(rightArm1.getPosition(), target), .8);
+                speed = Num.inRange(armAPID.getOutput(rightArm1.getPosition(), target), .85);
             }
         }
         

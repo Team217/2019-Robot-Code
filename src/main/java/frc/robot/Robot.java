@@ -138,8 +138,10 @@ public class Robot extends TimedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.start();
         }
-
+        
+        // TODO: This should only be enabled on rocket autons
         RobotMap.pigeonDrive.setYaw(32);
+        Robot.kDrivingSubsystem.targetAngle = 32;
     }
 
     /**
@@ -259,10 +261,17 @@ public class Robot extends TimedRobot {
         }
         
         Robot.kTelescopeSubsystem.set(telescopeSpeed);
+        
+        if (Robot.m_oi.circleOper.get()) {
+            Robot.kIntakeSubsystem.extend();
+        }
+        else if (Robot.m_oi.triangleOper.get()) {
+            Robot.kIntakeSubsystem.retract();
+        }
     }
 
     public void cams() {
-        NetworkTable table1 = NetworkTableInstance.getDefault().getTable("limelight-test"); //first limelight (front)
+        NetworkTable table1 = NetworkTableInstance.getDefault().getTable("limelight-front"); //first limelight (front)
         NetworkTableEntry tx1 = table1.getEntry("tx"); //first limelight
         NetworkTableEntry ty1 = table1.getEntry("ty"); //first limelight
         NetworkTableEntry ta1 = table1.getEntry("ta"); //first limelight
@@ -275,7 +284,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("LimelightY1", y1); //first limelight
         SmartDashboard.putNumber("LimelightA1", area1); //first limelight
 
-        NetworkTable table2 = NetworkTableInstance.getDefault().getTable("limelight-back"); //second limelight (back)
+        NetworkTable table2 = NetworkTableInstance.getDefault().getTable("limelight-bacc"); //second limelight (back)
         NetworkTableEntry tx2 = table2.getEntry("tx"); //second limelight
         NetworkTableEntry ty2 = table2.getEntry("ty"); //second limelight
         NetworkTableEntry ta2 = table2.getEntry("ta"); //second limelight
