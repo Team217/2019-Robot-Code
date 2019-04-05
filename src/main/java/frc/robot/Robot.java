@@ -51,6 +51,20 @@ public class Robot extends TimedRobot {
     long pigeonValidStart = 0;
     double lastRoll = 0, lastPitch = 0;
 
+    // Auton stuff
+    SendableChooser<String> auton = new SendableChooser<String>();
+    static final String manual = "Manual Control";
+    static final String frontRocket = "Front Rocket";
+    static final String backRocket = "Back Rocket";
+    static final String frontCargo = "Front Cargoship";
+    static final String sideCargo = "Side Cargoship";
+
+    SendableChooser<String> position = new SendableChooser<String>();
+    static final String left = "Left";
+    static final String right = "Right";
+
+    boolean isAuton = true;
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -82,6 +96,8 @@ public class Robot extends TimedRobot {
        // RobotMap.intakeGyro.reset();
 
         kClimbingSubsystem.setDrivePTO();
+
+        putAuton();
     }
 
     /**
@@ -129,17 +145,13 @@ public class Robot extends TimedRobot {
             teleopCommand.cancel();
         }
 
-        autonomousCommand = new FrontRocketGroup(); // TODO: idk what we're doing yet chief
+        autonomousCommand = autonSelector();
 
         // schedule the autonomous command (example)
         kClimbingSubsystem.setDrivePTO();
         if (autonomousCommand != null) {
             autonomousCommand.start();
         }
-        
-        // TODO: This should only be enabled on rocket autons
-        RobotMap.pigeonDrive.setYaw(32);
-        Robot.kDrivingSubsystem.targetAngle = 32;
     }
 
     /**
@@ -152,6 +164,14 @@ public class Robot extends TimedRobot {
             RobotMap.pigeonDrive.resetPitch();
             RobotMap.pigeonDrive.resetRoll();
         }
+
+        if (isAuton && m_oi.touchPadDriver.get()) {
+            autonomousCommand.cancel();
+            autonomousCommand = new TeleopCommands();
+            autonomousCommand.start();
+        }
+
+        smartDashboard();
 
         Scheduler.getInstance().run();
     }
@@ -327,6 +347,50 @@ public class Robot extends TimedRobot {
 
         SmartDashboard.putBoolean("Elevator Bottom Limit", RobotMap.elevatorBottomLimit.get());
         SmartDashboard.putBoolean("Elevator Top Limit", RobotMap.elevatorTopLimit.get());
+    }
+
+    public void putAuton() {
+        auton.getSelected();
+        SmartDashboard.putData("Auton Selection", auton);
+        auton.addOption(manual, manual);
+        auton.addOption(frontRocket, frontRocket);
+        auton.addOption(backRocket, backRocket);
+        auton.addOption(frontCargo, frontCargo);
+        auton.addOption(sideCargo, sideCargo);
+
+        position.getSelected();
+        SmartDashboard.putData("Side Selection", position);
+        position.addOption(right, right);
+        position.addOption(left, left);
+    }
+
+    public Command autonSelector() {
+        String autonSelected = auton.getSelected();
+        String positionSelected = position.getSelected();
+
+        RobotMap.pigeonDrive.reset();
+        kDrivingSubsystem.targetAngle = 0;
+        isAuton = true;
+
+        // TODO: Pass in positionSelected as a parameter
+        switch (autonSelected) {
+        case frontRocket:
+            RobotMap.pigeonDrive.setYaw(32);
+            kDrivingSubsystem.targetAngle = 32;
+            return new FrontRocketGroup();
+        case backRocket:
+            RobotMap.pigeonDrive.setYaw(200);
+            kDrivingSubsystem.targetAngle = 200;
+            return new BackRocketGroup();
+        case frontCargo:
+            return new FrontCargoshipGroup();
+        case sideCargo:
+            return new SideCargoshipGroup();
+        case manual:
+        default:
+            isAuton = false;
+            return new TeleopCommands();
+        }
     }
 
     public boolean isValidPigeon() {

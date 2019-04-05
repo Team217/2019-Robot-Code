@@ -21,12 +21,9 @@ public class FrontCargoshipGroup extends CommandGroup {
         addParallel(new AutonElevator(13000)); //change elev value higher than 8530
         addParallel(new HatchPickupGroup(0.5));
         addSequential(new AutonElevatorTarget(13000), 1.5);
-        addParallel(new AutonArm(10));
-        addParallel(new AutonTelescope(20000));
-        addSequential(new AutonTelescopeTarget(20000), 0.5);
+        addParallel(new OutToPresetGroup(Preset.Low, false));
 
         // places Hatch on cargoship
-        addParallel(new PresetGroup(Preset.Low, false));
         addSequential(new AutonDriveTimed(.4, 1.5));
         addSequential(new AutonDriveVision(.25, true, 2.0, 5));
         addSequential(new AutonDriveTimed(.25, 0.5));
@@ -34,7 +31,8 @@ public class FrontCargoshipGroup extends CommandGroup {
 
         // lines up to the other cargo location
         addSequential(new AutonDriveTimed(-.35, 1.5));
-        addSequential(new AutonTurn(15, new PID(0.015, 0.0001, 0), 1.0, 0.75));
+        addParallel(new AutonHatchPickup(false, 0.1));
+        addSequential(new AutonTurn(12, new PID(0.015, 0.0001, 0), 1.0, 0.75));
         addSequential(new TeleopCommands());
     }
 }

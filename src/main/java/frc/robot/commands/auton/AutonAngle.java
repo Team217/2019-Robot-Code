@@ -32,11 +32,13 @@ public class AutonAngle extends Command {
 
     @Override
     protected void execute() {
-        Robot.kDrivingSubsystem.targetAngle = angle;
     }
 
     @Override
     protected boolean isFinished() {
+        if (isTimedOut()) {
+            Robot.kDrivingSubsystem.targetAngle = angle;
+        }
         return isTimedOut();
     }
 

@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class AutonTurn extends Command {
     APID apid;
     double target = 0.0;
+    double maxSpeed = 1;
 
     /**
      * Runs the drivebase in auton control mode using a {@code PigeonIMU}.
@@ -51,13 +52,18 @@ public class AutonTurn extends Command {
      *        The target angle, in degrees
      * @param pid
      *        The {@code PID} variable
+     * @param accelTime
+     *        The time to accelerate to max speed, in seconds
+     * @param maxSpeed
+     *        The max speed of the turn
      * @param timeout
      *        The time before automatically ending the command, in seconds
      * 
      * @author ThunderChickens 217
      */
-    public AutonTurn(double target, PID pid, double timeout) {
-        this(target, pid, 0.0, timeout);
+    public AutonTurn(double target, PID pid, double accelTime, double maxSpeed, double timeout) {
+        this(target, pid, accelTime, timeout);
+        this.maxSpeed = maxSpeed;
     }
 
     // Called just before this Command runs the first time
@@ -70,7 +76,8 @@ public class AutonTurn extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.kDrivingSubsystem.autonTurn(apid.getOutput(RobotMap.pigeonDrive.getAngle(), target));
+        double turn = apid.getOutput(RobotMap.pigeonDrive.getAngle(), target);
+        Robot.kDrivingSubsystem.autonTurn(Num.inRange(turn, maxSpeed));
     }
 
     // Make this return true when this Command no longer needs to run execute()
