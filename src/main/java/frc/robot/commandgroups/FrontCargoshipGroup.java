@@ -25,8 +25,8 @@ public class FrontCargoshipGroup extends CommandGroup {
 
         // places Hatch on cargoship
         addSequential(new AutonDriveTimed(.4, 1.5));
-        addSequential(new AutonDriveVision(.25, true, 1.4, 5));
-        addSequential(new AutonDriveTimed(.25, 1));
+        addSequential(new AutonDriveVision(.25, true, 2.0, 5));
+        addSequential(new AutonDriveTimed(.25, 0.25));
         addSequential(new AutonHatchPickup(true, .25));
 
         // lines up to the other cargo location

@@ -172,7 +172,8 @@ public class DrivingSubsystem extends Subsystem {
         visionPID.setP(kP);
 
         if(!Num.isWithinRange(x, 0.5 / area)) {
-            turn = visionPID.getOutput((isCamFront ? -0.35 : -0.55) * Math.sqrt(area), x);
+            //turn = visionPID.getOutput((isCamFront ? -0.2 : -0.55) * Math.sqrt(area), x);
+            turn = visionPID.getOutput((isCamFront ? -7 : -10) + area, x);
         }
 
         return turn;

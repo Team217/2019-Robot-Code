@@ -286,6 +286,8 @@ public class Robot extends TimedRobot {
         else if (Robot.m_oi.triangleOper.get()) {
             Robot.kIntakeSubsystem.retract();
         }
+
+        smartDashboard();
     }
 
     public void cams() {
@@ -381,8 +383,8 @@ public class Robot extends TimedRobot {
             kDrivingSubsystem.targetAngle = 32;
             return new FrontRocketGroup();
         case backRocket:
-            RobotMap.pigeonDrive.setYaw(200);
-            kDrivingSubsystem.targetAngle = 200;
+            RobotMap.pigeonDrive.setYaw(180);
+            kDrivingSubsystem.targetAngle = 180;
             return new BackRocketGroup();
         case frontCargo:
             return new FrontCargoshipGroup();

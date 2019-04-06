@@ -17,18 +17,25 @@ public class BackRocketGroup extends CommandGroup {
         addParallel(new OutToPresetGroup(Preset.Mid, false));
 
         // drive to rocket
-        addSequential(new AutonDriveTimed(-0.45, 5.25, true));
-        addSequential(new AutonTurn(170, new PID(0.015, 0.0001, 0), 1.0, 0.75));
-        addSequential(new AutonDriveVision(0.25, true, 1.7, 7.0)); //to pick up the vision target
+        addParallel(new AutonAngle(206, 1.0));
+        addSequential(new AutonDriveTimed(-0.4, 1.0));
+        addSequential(new AutonDriveTimed(-0.65, 2.5, true));
+        addSequential(new AutonDriveTimed(-0.4, 0.75, true));
+        addSequential(new AutonTurn(162, new PID(0.015, 0.0001, 0), 1.0, 0.75));
+        addSequential(new AutonDriveTimed(-0.2, 1));
+        addSequential(new AutonDriveVision(0.2, true, 1.7, 7.0)); //to pick up the vision target
+        addSequential(new AutonDriveTimed(0.2, 0.25));
 
         // release and back up
         addSequential(new AutonHatchPickup(true, 0.25));
-        addSequential(new AutonDriveTimed(-0.25, 1.0));
+        addSequential(new AutonDriveTimed(-0.2, 1.0));
         addParallel(new PresetGroup(Preset.Low, false));
-        addSequential(new AutonTurn(180, new PID(0.015, 0.0001, 0), 1.0, 0.75));
+        addSequential(new AutonTurn(185, new PID(0.015, 0.0001, 0), 1.0, 0.75));
 
         // pick up another hatch panel
-        addSequential(new AutonDriveTimed(0.65, 2.25));
+        addSequential(new AutonAngle());
+        addParallel(new AutonAngle(170, 1.25));
+        addSequential(new AutonDriveTimed(0.65, 2.25, true));
         addSequential(new TeleopCommands());
     }
 }
