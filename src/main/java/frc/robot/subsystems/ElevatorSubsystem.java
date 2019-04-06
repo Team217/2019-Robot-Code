@@ -103,7 +103,7 @@ public class ElevatorSubsystem extends Subsystem {
             target = isBack ? 11790 : 15037; //comp is 11790 : 13050
             break;
         case Ball:
-            target = isBack ? 1752 : 1914; //comp is 1752 : 1914
+            target = isBack ? 1752 : 4116; //comp is 1752 : 1914
             break;
         case Climb:
             target = 0; //comp is 0

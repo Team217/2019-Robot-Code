@@ -53,15 +53,16 @@ public class Robot extends TimedRobot {
 
     // Auton stuff
     SendableChooser<String> auton = new SendableChooser<String>();
-    static final String manual = "Manual Control";
+    static final String manualHatch = "Manual Hatch";
+    static final String manualCargo = "Manual Cargo";
     static final String frontRocket = "Front Rocket";
     static final String backRocket = "Back Rocket";
     static final String frontCargo = "Front Cargoship";
     static final String sideCargo = "Side Cargoship";
 
     SendableChooser<String> position = new SendableChooser<String>();
-    static final String left = "Left";
-    static final String right = "Right";
+    public static final String left = "Left";
+    public static final String right = "Right";
 
     public static boolean isAuton = true;
 
@@ -159,7 +160,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
-        cams();
         if (!isValidPigeon()) {
             RobotMap.pigeonDrive.resetPitch();
             RobotMap.pigeonDrive.resetRoll();
@@ -172,6 +172,7 @@ public class Robot extends TimedRobot {
         }
 
         smartDashboard();
+        cams();
 
         Scheduler.getInstance().run();
     }
@@ -356,7 +357,8 @@ public class Robot extends TimedRobot {
     public void putAuton() {
         auton.getSelected();
         SmartDashboard.putData("Auton Selection", auton);
-        auton.addOption(manual, manual);
+        auton.addOption(manualHatch, manualHatch);
+        auton.addOption(manualCargo, manualCargo);
         auton.addOption(frontRocket, frontRocket);
         auton.addOption(backRocket, backRocket);
         auton.addOption(frontCargo, frontCargo);
@@ -376,21 +378,26 @@ public class Robot extends TimedRobot {
         kDrivingSubsystem.targetAngle = 0;
         isAuton = true;
 
-        // TODO: Pass in positionSelected as a parameter
+        int mult = positionSelected.equals(right) ? 1 : -1;
+
         switch (autonSelected) {
         case frontRocket:
-            RobotMap.pigeonDrive.setYaw(32);
-            kDrivingSubsystem.targetAngle = 32;
-            return new FrontRocketGroup();
+            RobotMap.pigeonDrive.setYaw(32 * mult);
+            kDrivingSubsystem.targetAngle = 32 * mult;
+
+            return new FrontRocketGroup(positionSelected);
         case backRocket:
-            RobotMap.pigeonDrive.setYaw(180);
-            kDrivingSubsystem.targetAngle = 180;
-            return new BackRocketGroup();
+            RobotMap.pigeonDrive.setYaw(180 * mult);
+            kDrivingSubsystem.targetAngle = 180 * mult;
+
+            return new BackRocketGroup(positionSelected);
         case frontCargo:
-            return new FrontCargoshipGroup();
+            return new FrontCargoshipGroup(positionSelected);
         case sideCargo:
-            return new SideCargoshipGroup();
-        case manual:
+            return new SideCargoshipGroup(positionSelected);
+        case manualHatch:
+            return new ManualHatchGroup();
+        case manualCargo:
         default:
             return new TeleopCommands();
         }
