@@ -10,6 +10,7 @@ import frc.robot.*;
  */
 public class AutonAngle extends Command {
     double angle = 0;
+    boolean isCustom = true;
 
     /**
      * Changes the target angle for driving.
@@ -26,6 +27,15 @@ public class AutonAngle extends Command {
         setTimeout(timeout);
     }
 
+    /**
+     * Changes the target angle for driving to the current angle.
+     * 
+     * @author ThunderChickens 217
+     */
+    public AutonAngle() {
+        isCustom = false;
+    }
+
     @Override
     protected void initialize() {
     }
@@ -36,10 +46,15 @@ public class AutonAngle extends Command {
 
     @Override
     protected boolean isFinished() {
-        if (isTimedOut()) {
-            Robot.kDrivingSubsystem.targetAngle = angle;
+        if (isCustom) {
+            if (isTimedOut()) {
+                Robot.kDrivingSubsystem.targetAngle = angle;
+            }
+            return isTimedOut();
         }
-        return isTimedOut();
+        
+        Robot.kDrivingSubsystem.targetAngle = RobotMap.pigeonDrive.getAngle();
+        return true;
     }
 
     @Override

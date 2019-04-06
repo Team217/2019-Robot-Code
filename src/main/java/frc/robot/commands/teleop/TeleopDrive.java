@@ -26,6 +26,7 @@ public class TeleopDrive extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
         Robot.kDrivingSubsystem.resetVisionPID();
+        Robot.isAuton = false;
     }
 
     // Called repeatedly when this Command is scheduled to run

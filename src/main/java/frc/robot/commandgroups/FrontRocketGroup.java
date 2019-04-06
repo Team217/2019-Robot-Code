@@ -18,19 +18,20 @@ public class FrontRocketGroup extends CommandGroup {
 
         // drive to rocket
         addSequential(new AutonDriveTimed(0.5, 2.0));
-        addSequential(new AutonDriveVision(0.25, true, 1.7, 7.0)); //to pick up the vision target
+        addSequential(new AutonDriveVision(0.25, true, 1.7, 7.0));
 
         // release and back up
         addSequential(new AutonHatchPickup(true, 0.25));
-        addSequential(new AutonDriveTimed(-0.25, 1.0));
-        addParallel(new PresetGroup(Preset.Low, true));
-        addSequential(new AutonTurn(0, new PID(0.015, 0.0001, 0), 1.0, 0.75));
+        addSequential(new AutonAngle());
+        addParallel(new AutonAngle(-7, 0.35));
+        addSequential(new AutonDriveTimed(-0.35, 0.5, true));
 
         // pick up another hatch panel
-        addSequential(new AutonDriveTimed(-0.65, 1.5, true));
+        addParallel(new PresetGroup(Preset.Low, true));
+        addSequential(new AutonDriveTimed(-0.7, 1.5, true));
         addSequential(new AutonDriveVision(-0.25, false, 1.8, 7.0));
         addSequential(new HatchPickupGroup());
-        addSequential(new AutonDriveTimed(0.4, 1.0));
+        addSequential(new AutonDriveTimed(0.4, 0.5));
         addSequential(new TeleopCommands());
     }
 }

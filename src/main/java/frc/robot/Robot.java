@@ -63,7 +63,7 @@ public class Robot extends TimedRobot {
     static final String left = "Left";
     static final String right = "Right";
 
-    boolean isAuton = true;
+    public static boolean isAuton = true;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -347,6 +347,8 @@ public class Robot extends TimedRobot {
 
         SmartDashboard.putBoolean("Elevator Bottom Limit", RobotMap.elevatorBottomLimit.get());
         SmartDashboard.putBoolean("Elevator Top Limit", RobotMap.elevatorTopLimit.get());
+
+        SmartDashboard.putBoolean("Driver Controlled", !isAuton);
     }
 
     public void putAuton() {
@@ -388,7 +390,6 @@ public class Robot extends TimedRobot {
             return new SideCargoshipGroup();
         case manual:
         default:
-            isAuton = false;
             return new TeleopCommands();
         }
     }
