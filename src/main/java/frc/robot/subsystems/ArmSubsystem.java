@@ -63,7 +63,7 @@ public class ArmSubsystem extends Subsystem {
      *        The arm speed
      */
     public void set(double speed) {
-        double armMult = .50;
+        double armMult = .7;
        
         if (!Robot.kClimbingSubsystem.isClimbing()) {
             if (speed != 0) {
@@ -77,7 +77,6 @@ public class ArmSubsystem extends Subsystem {
         }
         else {
             lastArmPos = RobotMap.rightArm.getPosition();
-            armMult = .65;
         }
       
         rightArm1.set(speed * armMult);
