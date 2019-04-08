@@ -34,7 +34,6 @@ public class BackRocketGroup extends CommandGroup {
             addSequential(new AutonTurn(185, new PID(0.015, 0.0001, 0), 1.0, 0.75));
     
             // pick up another hatch panel
-            addSequential(new AutonAngle());
             addParallel(new AutonAngle(170, 1.25));
             addSequential(new AutonDriveTimed(0.65, 2.25, true));
             addSequential(new TeleopCommands());
@@ -57,7 +56,6 @@ public class BackRocketGroup extends CommandGroup {
             addSequential(new AutonTurn(-185, new PID(0.015, 0.0001, 0), 1.0, 0.75));
     
             // pick up another hatch panel
-            addSequential(new AutonAngle());
             addParallel(new AutonAngle(-170, 1.25));
             addSequential(new AutonDriveTimed(0.65, 2.25, true));
             addSequential(new TeleopCommands());
