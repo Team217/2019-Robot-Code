@@ -8,7 +8,6 @@
 package frc.robot.commands.teleop;
 
 import org.team217.rev.*;
-import org.team217.pid.*;
 import org.team217.wpi.*;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -25,8 +24,6 @@ public class TeleopWristGyro extends Command {
 
     boolean isPreset = false;
     boolean isAuto = false;
-    
-    PID wristGyroPID = RobotMap.wristGyroPID;
     
     /**
      * Runs the wrist in teleop control mode using an {@code AnalogGyro}.
@@ -78,13 +75,13 @@ public class TeleopWristGyro extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kWristSubsystem.set(0);
+        Robot.kWristSubsystem.reset();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kWristSubsystem.set(0);
+        Robot.kWristSubsystem.reset();
     }
 }

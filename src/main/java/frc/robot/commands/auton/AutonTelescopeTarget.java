@@ -1,48 +1,51 @@
 package frc.robot.commands.auton;
 
-import org.team217.pid.*;
-import org.team217.ctre.*;
+import org.team217.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
 
 /**
- * Runs the elevator in auton control mode using {@code APID}.
+ * Holds the elevator in place in auton control mode.
  * 
  * @author ThunderChickens 217
  */
-public class AutonElevator extends Command {
-    WPI_TalonSRX leftElevator1 = RobotMap.leftElevator;
-    APID apid = RobotMap.elevAPID;
-
+public class AutonTelescopeTarget extends Command {
+    boolean isPreset = true;
     double tar = 0;
 
     /**
-     * Runs the elevator in auton control mode using {@code APID}.
-     * 
-     * @param target
-     *        The {@code PID} target
+     * Checks if the telescope has reached a target value.
      * 
      * @author ThunderChickens 217
      */
-    public AutonElevator(double target) {
-        requires(Robot.kElevatorSubsystem);
+    public AutonTelescopeTarget() {
+    }
+
+    /**
+     * Checks if the telescope has reached a target value.
+     * 
+     * @param target
+     *        The target value
+     * 
+     * @author ThunderChickens 217
+     */
+    public AutonTelescopeTarget(double target) {
         tar = target;
+        isPreset = false;
     }
 
     @Override
     protected void initialize() {
-        apid.initialize();
     }
 
     @Override
     protected void execute() {
-        Robot.kElevatorSubsystem.set(-apid.getOutput(leftElevator1.getEncoder(), tar));
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return isPreset ? Robot.kTelescopeSubsystem.atPreset : Num.isWithinRange(RobotMap.telescope.getEncoder(), tar - 50, tar + 50);
     }
 
     @Override

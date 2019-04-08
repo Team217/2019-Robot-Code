@@ -19,21 +19,17 @@ import edu.wpi.first.wpilibj.command.Command;
  * @author ThunderChickens 217
  */
 public class AutonTurn extends Command {
-    PID turnPID = new PID(100);
-    APID turnAPID;
+    APID apid;
     double target = 0.0;
+    double maxSpeed = 1;
 
     /**
      * Runs the drivebase in auton control mode using a {@code PigeonIMU}.
      * 
      * @param target
      *        The target angle, in degrees
-     * @param kP
-     *        The kP value for {@code PID}
-     * @param kI
-     *        The kI value for {@code PID}
-     * @param kD
-     *        The kD value for {@code PID}
+     * @param pid
+     *        The {@code PID} variable
      * @param accelTime
      *        The time to accelerate to max speed, in seconds
      * @param timeout
@@ -41,12 +37,12 @@ public class AutonTurn extends Command {
      * 
      * @author ThunderChickens 217
      */
-    public AutonTurn(double target, double kP, double kI, double kD, double accelTime, double timeout) {
+    public AutonTurn(double target, PID pid, double accelTime, double timeout) {
         requires(Robot.kDrivingSubsystem);
         setTimeout(timeout);
         
         this.target = target;
-        turnAPID = new APID(turnPID.setPID(kP, kI, kD), accelTime);
+        apid = new APID(pid.setTimeout(100, false), accelTime);
     }
 
     /**
@@ -54,33 +50,34 @@ public class AutonTurn extends Command {
      * 
      * @param target
      *        The target angle, in degrees
-     * @param kP
-     *        The kP value for {@code PID}
-     * @param kI
-     *        The kI value for {@code PID}
-     * @param kD
-     *        The kD value for {@code PID}
+     * @param pid
+     *        The {@code PID} variable
      * @param accelTime
+     *        The time to accelerate to max speed, in seconds
+     * @param maxSpeed
+     *        The max speed of the turn
      * @param timeout
      *        The time before automatically ending the command, in seconds
      * 
      * @author ThunderChickens 217
      */
-    public AutonTurn(double target, double kP, double kI, double kD, double timeout) {
-        this(target, kP, kI, kD, 0.0, timeout);
+    public AutonTurn(double target, PID pid, double accelTime, double maxSpeed, double timeout) {
+        this(target, pid, accelTime, timeout);
+        this.maxSpeed = maxSpeed;
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        turnAPID.initialize();
+        apid.initialize();
         Robot.kDrivingSubsystem.targetAngle = target;
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.kDrivingSubsystem.autonTurn(turnAPID.getOutput(RobotMap.pigeonDrive.getAngle(), target));
+        double turn = apid.getOutput(RobotMap.pigeonDrive.getAngle(), target);
+        Robot.kDrivingSubsystem.autonTurn(Num.inRange(turn, maxSpeed));
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -92,13 +89,13 @@ public class AutonTurn extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kDrivingSubsystem.set(0);
+        Robot.kDrivingSubsystem.reset();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kDrivingSubsystem.set(0);
+        Robot.kDrivingSubsystem.reset();
     }
 }

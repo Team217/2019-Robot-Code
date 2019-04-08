@@ -84,13 +84,13 @@ public class TeleopWristPreset extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kWristSubsystem.set(0);
+        Robot.kWristSubsystem.reset();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kWristSubsystem.set(0);
+        Robot.kWristSubsystem.reset();
     }
 }

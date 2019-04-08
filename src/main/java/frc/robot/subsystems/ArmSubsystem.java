@@ -18,6 +18,8 @@ public class ArmSubsystem extends Subsystem {
 
     boolean isTelescopeOut = false;
 
+    public boolean atPreset = false;
+
     @Override
     protected void initDefaultCommand() {
     }
@@ -61,7 +63,7 @@ public class ArmSubsystem extends Subsystem {
      *        The arm speed
      */
     public void set(double speed) {
-        double armMult = .50;
+        double armMult = .7;
        
         if (!Robot.kClimbingSubsystem.isClimbing()) {
             if (speed != 0) {
@@ -75,7 +77,6 @@ public class ArmSubsystem extends Subsystem {
         }
         else {
             lastArmPos = RobotMap.rightArm.getPosition();
-            armMult = .65;
         }
       
         rightArm1.set(speed * armMult);
@@ -95,7 +96,6 @@ public class ArmSubsystem extends Subsystem {
      *        {@code true} if the preset moves the arm to the back region of the bot
      */
     public void preset(Preset presetState, boolean isBack) {
-        System.out.println("Here");
         double target = 0;
         switch (presetState) {
         case Low:
@@ -124,12 +124,18 @@ public class ArmSubsystem extends Subsystem {
                 armAPID.initialize();
             }
             else {
-                speed = Num.inRange(armAPID.getOutput(rightArm1.getPosition(), target), .75);
+                speed = Num.inRange(armAPID.getOutput(rightArm1.getPosition(), target), .85);
             }
         }
         
         lastPreset = presetState;
+        atPreset = Num.isWithinRange(rightArm1.getPosition(), target - 0.5, target + 0.5);
 
         set(speed);
+    }
+
+    public void reset() {
+        rightArm1.set(0);
+        leftArm1.set(0);
     }
 }

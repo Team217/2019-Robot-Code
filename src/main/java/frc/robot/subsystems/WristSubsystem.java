@@ -21,8 +21,9 @@ public class WristSubsystem extends Subsystem {
 
     public Preset lastPreset = Preset.Manual;
     
-    PID wristGyroPID = RobotMap.wristGyroPID;
     APID wristAPID = RobotMap.wristAPID;
+
+    public boolean atPreset = false;
 
     @Override
     protected void initDefaultCommand() {
@@ -124,7 +125,12 @@ public class WristSubsystem extends Subsystem {
         }
 
         lastPreset = presetState;
+        atPreset = Num.isWithinRange(wrist1.getEncoder(), target - 50, target + 50);
 
         set(speed);
+    }
+
+    public void reset() {
+        wrist1.set(0);
     }
 }

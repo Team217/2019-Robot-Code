@@ -32,6 +32,7 @@ public class AutonArmPreset extends Command {
     @Override
     protected void initialize() {
         Robot.kArmSubsystem.lastPreset = Preset.Manual;
+        Robot.kArmSubsystem.atPreset = false;
     }
 
     @Override
@@ -46,11 +47,11 @@ public class AutonArmPreset extends Command {
 
     @Override
     protected void end() {
-        Robot.kArmSubsystem.set(0);
+        Robot.kArmSubsystem.reset();
     }
 
     @Override
     protected void interrupted() {
-        Robot.kArmSubsystem.set(0);
+        Robot.kArmSubsystem.reset();
     }
 }

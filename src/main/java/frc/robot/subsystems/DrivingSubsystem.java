@@ -23,7 +23,7 @@ public class DrivingSubsystem extends Subsystem {
         RobotMap.rightBackSlave.follow(RobotMap.rightMaster);
     }
 
-    PID driveStraightPID = new PID(0.01, 0, 0);
+    PID driveStraightPID = new PID(0.015, 0, 0);
     PID visionPID = RobotMap.visionPID;
     public double targetAngle = 0.0;
     private boolean useAntiTipAngle = false;
@@ -75,9 +75,10 @@ public class DrivingSubsystem extends Subsystem {
         double turn = 0.0;
 
         if (isDriveStraight) {
-            double correction = 0.5 * driveStraightPID.getOutput(RobotMap.pigeonDrive.getAngle(), targetAngle);
-            turn = correction * speed;
-            speed *= (1 - Math.abs(correction));
+            double correction = driveStraightPID.getOutput(RobotMap.pigeonDrive.getAngle(), targetAngle);
+            correction = Num.inRange(correction, 0.25);
+            turn = correction * Math.abs(speed);
+            speed *= 1 - Math.abs(correction);
         }
 
         set(speed, turn, false);
@@ -166,12 +167,15 @@ public class DrivingSubsystem extends Subsystem {
         double turn = 0;
         double x = isCamFront ? Robot.getX1Vis() : Robot.getX2Vis();
         double area = 4 * (isCamFront ? Robot.getArea1Vis() : Robot.getArea2Vis());
-        double kP = Num.inRange(.0125 / Math.sqrt(area) - .01, 0.01, 0.025); // TODO: Fix so this is good
+        double kP = Num.inRange(.0125 / Math.sqrt(area) - .01, 0.01, 0.025);
 
         visionPID.setP(kP);
 
         if(!Num.isWithinRange(x, 0.5 / area)) {
-            turn = visionPID.getOutput((isCamFront ? -0.25 : -0.55) * Math.sqrt(area), x); // TODO: Fix for left target
+            //turn = visionPID.getOutput((isCamFront ? -0.2 : -0.55) * Math.sqrt(area), x);
+            double kAnticurve = isCamFront ? 1 : 1;
+            double kOffset = isCamFront ? -7 : -10;
+            turn = visionPID.getOutput(kAnticurve * area + kOffset, x);
         }
 
         return turn;
@@ -180,6 +184,11 @@ public class DrivingSubsystem extends Subsystem {
     /** Resets the vision-managed turning's PID. */
     public void resetVisionPID() {
         visionPID.resetErrors();
+    }
+
+    public void reset() {
+        RobotMap.leftMaster.set(0);
+        RobotMap.rightMaster.set(0);
     }
 }
 

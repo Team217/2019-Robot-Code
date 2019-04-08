@@ -32,6 +32,7 @@ public class AutonElevatorPreset extends Command {
     @Override
     protected void initialize() {
         Robot.kElevatorSubsystem.lastPreset = Preset.Manual;
+        Robot.kElevatorSubsystem.atPreset = false;
     }
 
     @Override
@@ -46,11 +47,11 @@ public class AutonElevatorPreset extends Command {
 
     @Override
     protected void end() {
-        Robot.kElevatorSubsystem.set(0);
+        Robot.kElevatorSubsystem.reset();
     }
 
     @Override
     protected void interrupted() {
-        Robot.kElevatorSubsystem.set(0);
+        Robot.kElevatorSubsystem.reset();
     }
 }

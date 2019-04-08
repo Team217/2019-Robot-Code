@@ -16,6 +16,8 @@ public class ElevatorSubsystem extends Subsystem {
     public double lastElevatorPos = 0;
     public Preset lastPreset = Preset.Manual;
 
+    public boolean atPreset = false;
+
     @Override
     protected void initDefaultCommand() {
         leftElevator1.follow(rightElevator1);
@@ -67,14 +69,15 @@ public class ElevatorSubsystem extends Subsystem {
             lastElevatorPos = leftElevator1.getEncoder();
         }
         else {
-            //speed = -RobotMap.elevatorHoldPID.getOutput(RobotMap.leftElevator.getEncoder(), lastElevatorPos);
-            //elevatorMult = 1;
+            if (Math.abs(lastElevatorPos - leftElevator1.getEncoder()) > 250) {
+                lastElevatorPos = leftElevator1.getEncoder();
+            }
+            speed = -RobotMap.elevatorHoldPID.getOutput(RobotMap.leftElevator.getEncoder(), lastElevatorPos);
+            elevatorMult = 1;
         } 
         
         speed = limitCheck(speed);
 
-        System.out.println("elevator pos " + leftElevator1.getEncoder());
-        System.out.println("last elevator pos " + lastElevatorPos);
         rightElevator1.set(speed * elevatorMult);
         leftElevator1.set(speed * elevatorMult);
     }
@@ -121,7 +124,13 @@ public class ElevatorSubsystem extends Subsystem {
         }
         
         lastPreset = presetState;
+        atPreset = Num.isWithinRange(leftElevator1.getEncoder(), target - 50, target + 50);
 
         set(speed);
+    }
+
+    public void reset() {
+        leftElevator1.set(0);
+        rightElevator1.set(0);
     }
 }

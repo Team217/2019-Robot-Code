@@ -30,21 +30,6 @@ public class AutonArm extends Command {
         tar = target;
     }
 
-    /**
-     * Runs the arm in auton control mode using {@code APID}.
-     * 
-     * @param target
-     *        The {@code PID} target
-     * @param pid
-     *        The {@code PID} variable
-     * 
-     * @author ThunderChickens 217
-     */
-    public AutonArm(double target, PID pid) {
-        this(target);
-        apid.setPID(pid.setTimeout(100));
-    }
-
     @Override
     protected void initialize() {
         apid.initialize();
@@ -57,16 +42,16 @@ public class AutonArm extends Command {
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return false;
     }
 
     @Override
     protected void end() {
-        Robot.kArmSubsystem.set(0);
+        Robot.kArmSubsystem.reset();
     }
 
     @Override
     protected void interrupted() {
-        Robot.kArmSubsystem.set(0);
+        Robot.kArmSubsystem.reset();
     }
 }

@@ -51,6 +51,21 @@ public class Robot extends TimedRobot {
     long pigeonValidStart = 0;
     double lastRoll = 0, lastPitch = 0;
 
+    // Auton stuff
+    SendableChooser<String> auton = new SendableChooser<String>();
+    static final String manualHatch = "Manual Hatch";
+    static final String manualCargo = "Manual Cargo";
+    static final String frontRocket = "Front Rocket";
+    static final String backRocket = "Back Rocket";
+    static final String frontCargo = "Front Cargoship";
+    static final String sideCargo = "Side Cargoship";
+
+    SendableChooser<String> position = new SendableChooser<String>();
+    public static final String left = "Left";
+    public static final String right = "Right";
+
+    public static boolean isAuton = true;
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -66,12 +81,14 @@ public class Robot extends TimedRobot {
         RobotMap.telescope.resetEncoder();
 
         RobotMap.telescope.invertEncoder(true); // TODO: true for comp bot, false for practice
+        RobotMap.telescope.setEncoder(24827); // TODO: Get comp bot values
+        Robot.kTelescopeSubsystem.lastTelescopePos = 24827;
 
         RobotMap.rightElevator.resetEncoder();
         RobotMap.leftElevator.resetEncoder();
 
         RobotMap.leftElevator.invertEncoder(true); // TODO: true for comp bot, false for practice
-        RobotMap.leftElevator.setEncoder(3046);
+        RobotMap.leftElevator.setEncoder(3046); // TODO: Get comp bot values
         Robot.kElevatorSubsystem.lastElevatorPos = 3046;
 
         RobotMap.wrist.resetEncoder();
@@ -80,6 +97,8 @@ public class Robot extends TimedRobot {
        // RobotMap.intakeGyro.reset();
 
         kClimbingSubsystem.setDrivePTO();
+
+        putAuton();
     }
 
     /**
@@ -123,20 +142,17 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        autonomousCommand = new TeleopCommands(); // TODO: idk what we're doing yet chief
-        /*
-         * String autoSelected = SmartDashboard.getString("Auto Selector",
-         * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-         * = new MyAutoCommand(); break; case "Default Auto": default:
-         * autonomousCommand = new ExampleCommand(); break; }
-         */
+        if (teleopCommand != null) {
+            teleopCommand.cancel();
+        }
+
+        autonomousCommand = autonSelector();
 
         // schedule the autonomous command (example)
+        kClimbingSubsystem.setDrivePTO();
         if (autonomousCommand != null) {
             autonomousCommand.start();
         }
-
-        kClimbingSubsystem.setDrivePTO();
     }
 
     /**
@@ -148,6 +164,15 @@ public class Robot extends TimedRobot {
             RobotMap.pigeonDrive.resetPitch();
             RobotMap.pigeonDrive.resetRoll();
         }
+
+        if (isAuton && m_oi.touchPadDriver.get()) {
+            autonomousCommand.cancel();
+            autonomousCommand = new TeleopCommands();
+            autonomousCommand.start();
+        }
+
+        smartDashboard();
+        cams();
 
         Scheduler.getInstance().run();
     }
@@ -177,32 +202,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        NetworkTable table1 = NetworkTableInstance.getDefault().getTable("limelight-front"); //first limelight (front)
-        NetworkTableEntry tx1 = table1.getEntry("tx"); //first limelight
-        NetworkTableEntry ty1 = table1.getEntry("ty"); //first limelight
-        NetworkTableEntry ta1 = table1.getEntry("ta"); //first limelight
-
-        x1 = tx1.getDouble(0.0); //first limelight
-        y1 = ty1.getDouble(0.0); //first limelight
-        area1 = ta1.getDouble(0.0); //first limelight
-
-        SmartDashboard.putNumber("LimelightX1", x1); //first limelight
-        SmartDashboard.putNumber("LimelightY1", y1); //first limelight
-        SmartDashboard.putNumber("LimelightA1", area1); //first limelight
-
-        NetworkTable table2 = NetworkTableInstance.getDefault().getTable("limelight-bacc"); //second limelight (back)
-        NetworkTableEntry tx2 = table2.getEntry("tx"); //second limelight
-        NetworkTableEntry ty2 = table2.getEntry("ty"); //second limelight
-        NetworkTableEntry ta2 = table2.getEntry("ta"); //second limelight
-
-        x2 = tx2.getDouble(0.0); //second limelight
-        y2 = ty2.getDouble(0.0); //second limelight
-        area2 = ta2.getDouble(0.0); //second limelight
-
-        SmartDashboard.putNumber("LimelightX2", x2); //second limelight
-        SmartDashboard.putNumber("LimelightX2", y2); //second limelight
-        SmartDashboard.putNumber("LimelightA2", area2); //second limelight
-
+        cams();
         smartDashboard();
 
         if (!isValidPigeon()) {
@@ -280,6 +280,43 @@ public class Robot extends TimedRobot {
         }
         
         Robot.kTelescopeSubsystem.set(telescopeSpeed);
+        
+        if (Robot.m_oi.circleOper.get()) {
+            Robot.kIntakeSubsystem.extend();
+        }
+        else if (Robot.m_oi.triangleOper.get()) {
+            Robot.kIntakeSubsystem.retract();
+        }
+
+        smartDashboard();
+    }
+
+    public void cams() {
+        NetworkTable table1 = NetworkTableInstance.getDefault().getTable("limelight-front"); //first limelight (front)
+        NetworkTableEntry tx1 = table1.getEntry("tx"); //first limelight
+        NetworkTableEntry ty1 = table1.getEntry("ty"); //first limelight
+        NetworkTableEntry ta1 = table1.getEntry("ta"); //first limelight
+
+        x1 = tx1.getDouble(0.0); //first limelight
+        y1 = ty1.getDouble(0.0); //first limelight
+        area1 = ta1.getDouble(0.0); //first limelight
+
+        SmartDashboard.putNumber("LimelightX1", x1); //first limelight
+        SmartDashboard.putNumber("LimelightY1", y1); //first limelight
+        SmartDashboard.putNumber("LimelightA1", area1); //first limelight
+
+        NetworkTable table2 = NetworkTableInstance.getDefault().getTable("limelight-bacc"); //second limelight (back)
+        NetworkTableEntry tx2 = table2.getEntry("tx"); //second limelight
+        NetworkTableEntry ty2 = table2.getEntry("ty"); //second limelight
+        NetworkTableEntry ta2 = table2.getEntry("ta"); //second limelight
+
+        x2 = tx2.getDouble(0.0); //second limelight
+        y2 = ty2.getDouble(0.0); //second limelight
+        area2 = ta2.getDouble(0.0); //second limelight
+
+        SmartDashboard.putNumber("LimelightX2", x2); //second limelight
+        SmartDashboard.putNumber("LimelightX2", y2); //second limelight
+        SmartDashboard.putNumber("LimelightA2", area2); //second limelight
     }
 
     /** Sends data to SmartDashboard. */
@@ -313,6 +350,57 @@ public class Robot extends TimedRobot {
 
         SmartDashboard.putBoolean("Elevator Bottom Limit", RobotMap.elevatorBottomLimit.get());
         SmartDashboard.putBoolean("Elevator Top Limit", RobotMap.elevatorTopLimit.get());
+
+        SmartDashboard.putBoolean("Driver Controlled", !isAuton);
+    }
+
+    public void putAuton() {
+        auton.getSelected();
+        SmartDashboard.putData("Auton Selection", auton);
+        auton.addOption(manualHatch, manualHatch);
+        auton.addOption(manualCargo, manualCargo);
+        auton.addOption(frontRocket, frontRocket);
+        auton.addOption(backRocket, backRocket);
+        auton.addOption(frontCargo, frontCargo);
+        auton.addOption(sideCargo, sideCargo);
+
+        position.getSelected();
+        SmartDashboard.putData("Side Selection", position);
+        position.addOption(right, right);
+        position.addOption(left, left);
+    }
+
+    public Command autonSelector() {
+        String autonSelected = auton.getSelected();
+        String positionSelected = position.getSelected();
+
+        RobotMap.pigeonDrive.reset();
+        kDrivingSubsystem.targetAngle = 0;
+        isAuton = true;
+
+        int mult = positionSelected.equals(right) ? 1 : -1;
+
+        switch (autonSelected) {
+        case frontRocket:
+            RobotMap.pigeonDrive.setYaw(32 * mult);
+            kDrivingSubsystem.targetAngle = 32 * mult;
+
+            return new FrontRocketGroup(positionSelected);
+        case backRocket:
+            RobotMap.pigeonDrive.setYaw(180 * mult);
+            kDrivingSubsystem.targetAngle = 180 * mult;
+
+            return new BackRocketGroup(positionSelected);
+        case frontCargo:
+            return new FrontCargoshipGroup(positionSelected);
+        case sideCargo:
+            return new SideCargoshipGroup(positionSelected);
+        case manualHatch:
+            return new ManualHatchGroup();
+        case manualCargo:
+        default:
+            return new TeleopCommands();
+        }
     }
 
     public boolean isValidPigeon() {

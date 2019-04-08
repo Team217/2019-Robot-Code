@@ -14,14 +14,17 @@ public class AutonHatchPickup extends Command {
     /**
      * Runs the hatch pickup in auton control mode.
      * 
-     * @param extend
+     * @param shouldExtend
      *        {@code true} if the hatch intake should be extended
+     * @param timeout
+     *        The time before automatically ending the command, in seconds
      * 
      * @author ThunderChickens 217
      */
-    public AutonHatchPickup(boolean extend) {
+    public AutonHatchPickup(boolean shouldExtend, double timeout) {
         requires(Robot.kIntakeSubsystem);
-        this.extend = extend;
+        extend = shouldExtend;
+        setTimeout(timeout);
     }
 
     @Override
@@ -40,16 +43,14 @@ public class AutonHatchPickup extends Command {
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     @Override
     protected void end() {
-        Robot.kIntakeSubsystem.retract();
     }
 
     @Override
     protected void interrupted() {
-        Robot.kIntakeSubsystem.retract();
     }
 }

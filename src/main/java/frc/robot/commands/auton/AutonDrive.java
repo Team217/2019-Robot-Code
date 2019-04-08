@@ -42,7 +42,7 @@ public class AutonDrive extends Command {
         
         this.isDriveStraight = isDriveStraight;
         this.target = target;
-        apid = new APID(pid.setTimeout(100), accelTime);
+        apid = new APID(pid.setTimeout(100, false), accelTime);
     }
 
     /**
@@ -156,13 +156,13 @@ public class AutonDrive extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kDrivingSubsystem.set(0);
+        Robot.kDrivingSubsystem.reset();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kDrivingSubsystem.set(0);
+        Robot.kDrivingSubsystem.reset();
     }
 }
