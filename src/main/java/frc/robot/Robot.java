@@ -81,15 +81,15 @@ public class Robot extends TimedRobot {
         RobotMap.telescope.resetEncoder();
 
         RobotMap.telescope.invertEncoder(false); // TODO: true for comp bot, false for practice
-        RobotMap.telescope.setEncoder(24827); //comp is ?
-        Robot.kTelescopeSubsystem.lastTelescopePos = 24827; //comp is ?
+        RobotMap.telescope.setEncoder(24827); // TODO: Get comp bot values
+        Robot.kTelescopeSubsystem.lastTelescopePos = 24827;
 
         RobotMap.rightElevator.resetEncoder();
         RobotMap.leftElevator.resetEncoder();
 
         RobotMap.leftElevator.invertEncoder(false); // TODO: true for comp bot, false for practice
-        RobotMap.leftElevator.setEncoder(8580); //comp is 3500 (will change)
-        Robot.kElevatorSubsystem.lastElevatorPos = 8580; //comp is 3500 (will change)
+        RobotMap.leftElevator.setEncoder(8580); // TODO: Get comp bot values
+        Robot.kElevatorSubsystem.lastElevatorPos = 8580;
 
         RobotMap.wrist.resetEncoder();
 
