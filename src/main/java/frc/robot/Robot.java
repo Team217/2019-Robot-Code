@@ -88,8 +88,8 @@ public class Robot extends TimedRobot {
         RobotMap.leftElevator.resetEncoder();
 
         RobotMap.leftElevator.invertEncoder(true); // TODO: true for comp bot, false for practice
-        RobotMap.leftElevator.setEncoder(3046); // TODO: Get comp bot values
-        Robot.kElevatorSubsystem.lastElevatorPos = 3046;
+        RobotMap.leftElevator.setEncoder(3050); // TODO: Get comp bot values
+        Robot.kElevatorSubsystem.lastElevatorPos = 3050;
 
         RobotMap.wrist.resetEncoder();
 
