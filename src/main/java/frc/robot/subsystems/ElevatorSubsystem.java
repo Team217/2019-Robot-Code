@@ -94,16 +94,19 @@ public class ElevatorSubsystem extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = isBack ? 0 : 6966;
+            target = isBack ? 5096 : 8888;
             break;
         case Mid:
-            target = isBack ? 1893 : 4027; // 1850
+            target = isBack ? 4044 : 4444; // 1850
             break;
         case High:
-            target = isBack ? 12322 : 12800; //11790
+            target = isBack ? 12980 : 13023; //11790
+            break;
+        case HighBall:
+            target = 15378;
             break;
         case Ball:
-            target = isBack ? 0 : 0;
+            target = 1124;
             break;
         case Climb:
             target = 0;
@@ -124,7 +127,7 @@ public class ElevatorSubsystem extends Subsystem {
         }
         
         lastPreset = presetState;
-        atPreset = Num.isWithinRange(leftElevator1.getEncoder(), target - 50, target + 50);
+        atPreset = Num.isWithinRange(leftElevator1.getEncoder(), target - 150, target + 150);
 
         set(speed);
     }

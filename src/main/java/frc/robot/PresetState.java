@@ -14,11 +14,13 @@ public class PresetState {
         Low,
         Mid,
         High,
+        HighBall,
         Ball,
         Climb
     }
 
     private static Preset presetState = Preset.Manual;
+    static Preset lastPreset = Preset.Manual;
 
     /** Returns {@code true} if all controls, excluding `oper.getPOV()`, permit presets. */
     public static boolean getStatus() {
@@ -49,10 +51,10 @@ public class PresetState {
 
     /** Returns {@code true} if `oper.getPOV()` permits presets. */
     public static boolean getPOVStatus() {
-        return (Robot.m_oi.oper.getPOV() != -1 && Robot.m_oi.oper.getButtonCount() != 0) || Robot.m_oi.triangleDriver.get();
+        return (Robot.m_oi.oper.getPOV() != -1 && Robot.m_oi.oper.getButtonCount() != 0) || Robot.m_oi.triangleDriver.get() || Robot.m_oi.psButtonOper.get();
     }
 
-    public static Preset getPresetState() {
+    public static Preset getPreset() {
         if (Robot.m_oi.oper.getPOV() == 180) {
             presetState = Preset.Low;
         }
@@ -65,6 +67,9 @@ public class PresetState {
         else if (Robot.m_oi.oper.getPOV() == 90) {
             presetState = Preset.Ball;
         }
+        else if (Robot.m_oi.psButtonOper.get()) {
+            presetState = Preset.HighBall;
+        }
         else if (Robot.m_oi.triangleDriver.get()) {
             presetState = Preset.Climb;
         }
@@ -73,5 +78,34 @@ public class PresetState {
         }
         
         return presetState;
+    }
+
+    public static Preset getPresetState() {
+        getPreset();
+
+        switch(presetState) {
+        case High:
+            if (!lastPreset.equals(Preset.High) && (!lastPreset.equals(Preset.Mid) || !Robot.kArmSubsystem.atPreset)) {
+                lastPreset = Preset.Mid;
+                return Preset.Mid;
+            }
+            lastPreset = Preset.High;
+            return Preset.High;
+        default:
+            if (lastPreset.equals(Preset.High) || (lastPreset.equals(Preset.Mid) && !Robot.kTelescopeSubsystem.atPreset)) {
+                lastPreset = Preset.Mid;
+                return Preset.Mid;
+            }
+
+            if (!presetState.equals(Preset.Manual)) {
+                if (RobotMap.telescope.getEncoder() >= 7000 && !presetState.equals(Preset.Climb)) {
+                    lastPreset = Preset.High;
+                }
+                else {
+                    lastPreset = presetState;
+                }
+            }
+            return presetState;
+        }
     }
 }
