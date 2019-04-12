@@ -85,21 +85,23 @@ public class PresetState {
 
         switch(presetState) {
         case High:
-            if (!lastPreset.equals(Preset.High) && (!lastPreset.equals(Preset.Mid) || !Robot.kArmSubsystem.atPreset)) {
+        case HighBall:
+            if (!lastPreset.equals(Preset.High) && !lastPreset.equals(Preset.HighBall) && (!lastPreset.equals(Preset.Mid) || !Robot.kArmSubsystem.atPreset)) {
                 lastPreset = Preset.Mid;
                 return Preset.Mid;
             }
-            lastPreset = Preset.High;
-            return Preset.High;
+            lastPreset = presetState;
+            return presetState;
         default:
-            if (lastPreset.equals(Preset.High) || (lastPreset.equals(Preset.Mid) && !Robot.kTelescopeSubsystem.atPreset)) {
+            if (lastPreset.equals(Preset.High) || lastPreset.equals(Preset.HighBall) || (lastPreset.equals(Preset.Mid) && !Robot.kTelescopeSubsystem.atPreset)) {
                 lastPreset = Preset.Mid;
                 return Preset.Mid;
             }
 
             if (!presetState.equals(Preset.Manual)) {
                 if (RobotMap.telescope.getEncoder() >= 7000 && !presetState.equals(Preset.Climb)) {
-                    lastPreset = Preset.High;
+                    lastPreset = Preset.Mid;
+                    return Preset.Mid;
                 }
                 else {
                     lastPreset = presetState;
