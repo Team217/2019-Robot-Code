@@ -83,31 +83,49 @@ public class PresetState {
     public static Preset getPresetState() {
         getPreset();
 
+        if (presetState.equals(Preset.Manual)) {
+            if (RobotMap.rightArm.getPosition() > 45 && RobotMap.telescope.getEncoder() >= 7000) {
+                lastPreset = Preset.High;
+            }
+            else {
+                lastPreset = Preset.Low;
+            }
+            return presetState;
+        }
+
         switch(presetState) {
         case High:
         case HighBall:
-            if (!lastPreset.equals(Preset.High) && !lastPreset.equals(Preset.HighBall) && (!lastPreset.equals(Preset.Mid) || !Robot.kArmSubsystem.atPreset)) {
-                lastPreset = Preset.Mid;
-                return Preset.Mid;
-            }
-            lastPreset = presetState;
-            return presetState;
-        default:
-            if (lastPreset.equals(Preset.High) || lastPreset.equals(Preset.HighBall) || (lastPreset.equals(Preset.Mid) && !Robot.kTelescopeSubsystem.atPreset)) {
+            if (RobotMap.telescope.getEncoder() >= 7000 && !lastPreset.equals(Preset.High) && !lastPreset.equals(Preset.HighBall)) {
                 lastPreset = Preset.Mid;
                 return Preset.Mid;
             }
 
-            if (!presetState.equals(Preset.Manual)) {
-                if (RobotMap.telescope.getEncoder() >= 7000 && !presetState.equals(Preset.Climb)) {
-                    lastPreset = Preset.Mid;
-                    return Preset.Mid;
-                }
-                else {
-                    lastPreset = presetState;
-                }
+            if (!lastPreset.equals(Preset.High) && !lastPreset.equals(Preset.HighBall) && (!lastPreset.equals(Preset.Mid) || !Robot.kArmSubsystem.atPreset)) {
+                lastPreset = Preset.Mid;
+                return Preset.Mid;
             }
-            return presetState;
+            break;
+        case Low:
+            if (lastPreset.equals(Preset.Ball) && RobotMap.leftElevator.getEncoder() < 3000) {
+                return Preset.Mid;
+            }
+        case Climb:
+            break;
+        default:
+            if (RobotMap.telescope.getEncoder() >= 7000 && !lastPreset.equals(Preset.Low)) {
+                lastPreset = Preset.Mid;
+                return Preset.Mid;
+            }
+
+            if (lastPreset.equals(Preset.High) || lastPreset.equals(Preset.HighBall) || (lastPreset.equals(Preset.Mid) && !Robot.kTelescopeSubsystem.atPreset)) {
+                lastPreset = Preset.Mid;
+                return Preset.Mid;
+            }
+            break;
         }
+
+        lastPreset = presetState;
+        return presetState;
     }
 }

@@ -27,7 +27,7 @@ public class FrontRocketGroup extends CommandGroup {
     
             // pick up another hatch panel
             addParallel(new PresetGroup(Preset.Low, true));
-            addSequential(new AutonDriveTimed(-0.7, 1.0, true));
+            addSequential(new AutonDriveTimed(-0.7, 1.15, true));
             addSequential(new AutonDriveTimed(-0.4, 0.5, true));
             addSequential(new AutonDriveVision(-0.25, false, 1.8, 7.0));
             addSequential(new HatchPickupGroup());
@@ -47,7 +47,7 @@ public class FrontRocketGroup extends CommandGroup {
     
             // pick up another hatch panel
             addParallel(new PresetGroup(Preset.Low, true));
-            addSequential(new AutonDriveTimed(-0.7, 1.0, true));
+            addSequential(new AutonDriveTimed(-0.7, 1.15, true));
             addSequential(new AutonDriveTimed(-0.4, 0.5, true));
             addSequential(new AutonDriveVision(-0.25, false, 1.8, 7.0));
             addSequential(new HatchPickupGroup());
