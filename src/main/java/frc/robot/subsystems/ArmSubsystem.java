@@ -105,6 +105,7 @@ public class ArmSubsystem extends Subsystem {
             target = isBack ? 71 : 47;
             break;
         case High:
+        case HighBall:
             target = isBack ? 65.9 : 54.1;
             break;
         case Ball:
