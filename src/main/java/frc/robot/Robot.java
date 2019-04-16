@@ -9,24 +9,15 @@ package frc.robot;
 
 import java.time.Clock;
 
-import org.team217.Num;
+import org.team217.*;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.command.*;
+import edu.wpi.first.wpilibj.smartdashboard.*;
+
 import frc.robot.commandgroups.*;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ClimbingSubsystem;
-import frc.robot.subsystems.DrivingSubsystem;
-import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.TelescopeSubsystem;
-import frc.robot.subsystems.WristSubsystem;
+import frc.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
