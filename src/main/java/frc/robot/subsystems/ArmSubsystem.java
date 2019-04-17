@@ -99,22 +99,22 @@ public class ArmSubsystem extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = isBack ? 109.4  : 11.57;
+            target = isBack ? 102.5 : 8.6;
             break;
         case Mid:
-            target = isBack ? 76.7 : 52.4;
+            target = isBack ? 75.6 : 47;
             break;
         case High:
-            target = isBack ? 69.2 : 59.1;
+            target = isBack ? 65.4 : 54.1;
             break;
         case HighBall:
-            target = 59.4;
+            target = 54.4;
             break;
         case Ball:
-            target = 18.5;
+            target = 16.5;
             break;
         case Climb:
-            target = 85.6;
+            target = 82;
             break;
         default:
             break;
@@ -128,8 +128,8 @@ public class ArmSubsystem extends Subsystem {
             }
             else {
                 speed = Num.inRange(armAPID.getOutput(rightArm1.getPosition(), target), .85);
-                if ((rightArm1.getPosition() >= 62 && speed > 0)
-                     || RobotMap.telescope.getEncoder() >= 7000) {
+                if ((rightArm1.getPosition() >= 60 && speed > 0)
+                     || RobotMap.telescope.getEncoder() >= 14000) {
                     speed = Num.inRange(speed, 0.70);
                 }
             }
