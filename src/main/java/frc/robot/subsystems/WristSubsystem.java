@@ -53,7 +53,7 @@ public class WristSubsystem extends Subsystem {
      *        The wrist speed
      */
     public void set(double speed) {
-        double wristMult = .7;
+        double wristMult = 1;
         speed = limitCheck(speed);
         wrist1.set(speed * wristMult);
     }
@@ -98,14 +98,17 @@ public class WristSubsystem extends Subsystem {
             target = isBack ? -3311 : -93;
             break;
         case Mid:
-            target = isBack ? -834 : -3250; //comp is -886 : -2708
+            target = isBack ? -834 : -3250;
             break;
         case High:
         case HighBall:
             target = isBack ? 0 : -3608;
             break;
+        case HighBall:
+            target = -3510;
+            break;
         case Ball:
-            target = isBack ? -1721 : -2120;
+            target = -2120;
             break;
         case Climb:
             target = -1500;

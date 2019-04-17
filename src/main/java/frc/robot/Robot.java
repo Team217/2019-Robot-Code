@@ -338,27 +338,27 @@ public class Robot extends TimedRobot {
         //SmartDashboard.putNumber("Right Arm Encoder", RobotMap.rightArm.getPosition());
 
         SmartDashboard.putNumber("Right Wrist Encoder", RobotMap.wrist.getEncoder());
-        SmartDashboard.putBoolean("Intake Limit", RobotMap.ballLimit.get());
+        SmartDashboard.putBoolean("BALL IN", RobotMap.ballLimit.get());
 
-        SmartDashboard.putBoolean("Wrist Limit Front", RobotMap.wristFrontLimit.get());
-        SmartDashboard.putBoolean("Wrist Limit Back", RobotMap.wristBackLimit.get());
+        SmartDashboard.putBoolean("WRS TOP", RobotMap.wristFrontLimit.get());
+        SmartDashboard.putBoolean("WRS BOT", RobotMap.wristBackLimit.get());
 
-        SmartDashboard.putBoolean("Telescope Limit Out", RobotMap.telescopeOutLimit.get());
-        SmartDashboard.putBoolean("Telescope Limit In", RobotMap.telescopeInLimit.get());
+        SmartDashboard.putBoolean("TEL OUT", RobotMap.telescopeOutLimit.get());
+        SmartDashboard.putBoolean("TEK IN", RobotMap.telescopeInLimit.get());
         SmartDashboard.putNumber("Telescope Encoder", RobotMap.telescope.getEncoder());
 
         //SmartDashboard.putBoolean("Arm Limit Front", RobotMap.armFrontLimit.get());
         //SmartDashboard.putBoolean("Arm Limit Back", RobotMap.armBackLimit.get());
 
-        SmartDashboard.putBoolean("Elevator Bottom Limit", RobotMap.elevatorBottomLimit.get());
-        SmartDashboard.putBoolean("Elevator Top Limit", RobotMap.elevatorTopLimit.get());
+        SmartDashboard.putBoolean("ELE BOT", RobotMap.elevatorBottomLimit.get());
+        SmartDashboard.putBoolean("ELE TOP", RobotMap.elevatorTopLimit.get());
 
-        SmartDashboard.putBoolean("Driver Controlled", !isAuton);
+        SmartDashboard.putBoolean("TELEOP", !isAuton);
     }
 
     public void putAuton() {
         auton.getSelected();
-        SmartDashboard.putData("Auton Selection", auton);
+        SmartDashboard.putData("Autons", auton);
         auton.addOption(manualHatch, manualHatch);
         auton.addOption(manualCargo, manualCargo);
         auton.addOption(frontRocket, frontRocket);
@@ -367,7 +367,7 @@ public class Robot extends TimedRobot {
         auton.addOption(sideCargo, sideCargo);
 
         position.getSelected();
-        SmartDashboard.putData("Side Selection", position);
+        SmartDashboard.putData("Side", position);
         position.addOption(right, right);
         position.addOption(left, left);
     }

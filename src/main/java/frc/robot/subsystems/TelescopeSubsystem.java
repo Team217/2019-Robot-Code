@@ -80,7 +80,7 @@ public class TelescopeSubsystem extends Subsystem {
             telescopeState = 0;
         }
 
-        atPreset = Num.isWithinRange(telescope1.getEncoder(), 0, 500);
+        atPreset = Num.isWithinRange(telescope1.getEncoder(), 0, 800);
 
         double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 0);
         set(speed);
@@ -93,7 +93,7 @@ public class TelescopeSubsystem extends Subsystem {
             telescopeState = 1;
         }
 
-        atPreset = Num.isWithinRange(telescope1.getEncoder(), 27925, 29925);
+        atPreset = Num.isWithinRange(telescope1.getEncoder(), 28125, 29725);
 
         double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 28925); //TODO: Get correct value //comp is 14300
         set(speed);
@@ -105,7 +105,7 @@ public class TelescopeSubsystem extends Subsystem {
             telescopeState = 2;
         }
 
-        atPreset = Num.isWithinRange(telescope1.getEncoder(), 12500, 13500);
+        atPreset = Num.isWithinRange(telescope1.getEncoder(), 12200, 13800);
 
         double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 13000);
         set(speed);
@@ -131,6 +131,9 @@ public class TelescopeSubsystem extends Subsystem {
             setIn();
             break;
         case High:
+        case HighBall:
+            setOut();
+            break;
         case HighBall:
             setOut();
             break;

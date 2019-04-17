@@ -70,7 +70,7 @@ public class TeleopWristPreset extends Command {
         }
 
         if (isPreset) {
-            presetState = PresetState.getPresetState();
+            presetState = PresetState.getPreset();
             Robot.kWristSubsystem.preset(presetState, isBack);
         }
     }
