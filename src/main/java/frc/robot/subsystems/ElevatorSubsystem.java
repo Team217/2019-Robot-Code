@@ -94,19 +94,19 @@ public class ElevatorSubsystem extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = isBack ? 5096 : 8888;
+            target = isBack ? 2998 : 10169;
             break;
         case Mid:
-            target = isBack ? 4044 : 4444; // 1850
+            target = isBack ? 4939 : 8100;
             break;
         case High:
-            target = isBack ? 12980 : 13023; //11790
+            target = isBack ? 11790 : 15037;
             break;
         case HighBall:
-            target = 15378;
+            target = 17000;
             break;
         case Ball:
-            target = 1124;
+            target = 4116;
             break;
         case Climb:
             target = 0;
