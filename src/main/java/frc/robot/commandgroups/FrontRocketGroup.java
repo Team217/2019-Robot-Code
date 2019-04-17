@@ -17,7 +17,7 @@ public class FrontRocketGroup extends CommandGroup {
         if (side.equals(Robot.right)) {
             // drive to rocket
             addSequential(new AutonDriveTimed(0.5, 2.0));
-            addSequential(new AutonDriveVision(0.25, true, 2.1, 7.0));
+            addSequential(new AutonDriveVision(0.25, true, 1.7, 7.0));
     
             // release and back up
             addSequential(new AutonHatchPickup(true, 0.25));
@@ -37,7 +37,7 @@ public class FrontRocketGroup extends CommandGroup {
         else {
             // drive to rocket
             addSequential(new AutonDriveTimed(0.5, 2.0));
-            addSequential(new AutonDriveVision(0.25, true, 2.1, 7.0));
+            addSequential(new AutonDriveVision(0.25, true, 1.7, 7.0));
     
             // release and back up
             addSequential(new AutonHatchPickup(true, 0.25));
