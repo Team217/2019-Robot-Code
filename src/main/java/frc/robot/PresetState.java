@@ -107,7 +107,7 @@ public class PresetState {
             }
             break;
         case Low:
-            if (lastPreset.equals(Preset.Ball) && RobotMap.leftElevator.getEncoder() < 3000) {
+            if (lastPreset.equals(Preset.Ball) && RobotMap.leftElevator.getEncoder() < 5000) {
                 return Preset.Mid;
             }
         case Climb:

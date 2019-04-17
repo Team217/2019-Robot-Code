@@ -131,6 +131,7 @@ public class TelescopeSubsystem extends Subsystem {
             setIn();
             break;
         case High:
+        case HighBall:
             setOut();
             break;
         case HighBall:

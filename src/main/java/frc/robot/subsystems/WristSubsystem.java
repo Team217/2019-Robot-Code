@@ -95,13 +95,14 @@ public class WristSubsystem extends Subsystem {
         double target = 0;
         switch (presetState) {
         case Low:
-            target = isBack ? -3497 : -93;
+            target = isBack ? -3311 : -93;
             break;
         case Mid:
-            target = isBack ? -886 : -3250;
+            target = isBack ? -834 : -3250;
             break;
         case High:
-            target = isBack ? -264 : -3608;
+        case HighBall:
+            target = isBack ? 0 : -3608;
             break;
         case HighBall:
             target = -3510;
