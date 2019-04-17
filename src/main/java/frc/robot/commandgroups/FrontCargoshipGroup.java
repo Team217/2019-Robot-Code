@@ -27,7 +27,7 @@ public class FrontCargoshipGroup extends CommandGroup {
         if (side.equals(Robot.right)) {
             // places Hatch on cargoship
             addSequential(new AutonDriveTimed(.4, 1.5));
-            addSequential(new AutonDriveVision(.25, true, 2.0, 5));
+            addSequential(new AutonDriveVision(.25, true, 2.1, 5));
             addSequential(new AutonDriveTimed(.25, 0.25));
             addSequential(new AutonHatchPickup(true, .25));
     
@@ -40,7 +40,7 @@ public class FrontCargoshipGroup extends CommandGroup {
         else {
             // places Hatch on cargoship
             addSequential(new AutonDriveTimed(.4, 1.5));
-            addSequential(new AutonDriveVision(.25, true, 2.0, 5));
+            addSequential(new AutonDriveVision(.25, true, 2.1, 5));
             addSequential(new AutonDriveTimed(.25, 0.25));
             addSequential(new AutonHatchPickup(true, .25));
     

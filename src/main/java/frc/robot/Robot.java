@@ -15,6 +15,7 @@ import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.*;
 import edu.wpi.first.wpilibj.smartdashboard.*;
+
 import frc.robot.commandgroups.*;
 import frc.robot.subsystems.*;
 
@@ -81,15 +82,15 @@ public class Robot extends TimedRobot {
         RobotMap.telescope.resetEncoder();
 
         RobotMap.telescope.invertEncoder(true); // TODO: true for comp bot, false for practice
-        RobotMap.telescope.setEncoder(24827); // TODO: Get comp bot values
-        Robot.kTelescopeSubsystem.lastTelescopePos = 24827;
+        RobotMap.telescope.setEncoder(12400); // TODO: Get comp bot values
+        Robot.kTelescopeSubsystem.lastTelescopePos = 12400;
 
         RobotMap.rightElevator.resetEncoder();
         RobotMap.leftElevator.resetEncoder();
 
         RobotMap.leftElevator.invertEncoder(true); // TODO: true for comp bot, false for practice
-        RobotMap.leftElevator.setEncoder(3050); // TODO: Get comp bot values
-        Robot.kElevatorSubsystem.lastElevatorPos = 3050;
+        RobotMap.leftElevator.setEncoder(8371); // TODO: Get comp bot values
+        Robot.kElevatorSubsystem.lastElevatorPos = 8371;
 
         RobotMap.wrist.resetEncoder();
 
@@ -111,6 +112,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
+        PresetState.getPresetState();
     }
 
     /**
@@ -336,27 +338,27 @@ public class Robot extends TimedRobot {
         //SmartDashboard.putNumber("Right Arm Encoder", RobotMap.rightArm.getPosition());
 
         SmartDashboard.putNumber("Right Wrist Encoder", RobotMap.wrist.getEncoder());
-        SmartDashboard.putBoolean("Intake Limit", RobotMap.ballLimit.get());
+        SmartDashboard.putBoolean("BALL IN", RobotMap.ballLimit.get());
 
-        SmartDashboard.putBoolean("Wrist Limit Front", RobotMap.wristFrontLimit.get());
-        SmartDashboard.putBoolean("Wrist Limit Back", RobotMap.wristBackLimit.get());
+        SmartDashboard.putBoolean("WRS TOP", RobotMap.wristFrontLimit.get());
+        SmartDashboard.putBoolean("WRS BOT", RobotMap.wristBackLimit.get());
 
-        SmartDashboard.putBoolean("Telescope Limit Out", RobotMap.telescopeOutLimit.get());
-        SmartDashboard.putBoolean("Telescope Limit In", RobotMap.telescopeInLimit.get());
+        SmartDashboard.putBoolean("TEL OUT", RobotMap.telescopeOutLimit.get());
+        SmartDashboard.putBoolean("TEK IN", RobotMap.telescopeInLimit.get());
         SmartDashboard.putNumber("Telescope Encoder", RobotMap.telescope.getEncoder());
 
         //SmartDashboard.putBoolean("Arm Limit Front", RobotMap.armFrontLimit.get());
         //SmartDashboard.putBoolean("Arm Limit Back", RobotMap.armBackLimit.get());
 
-        SmartDashboard.putBoolean("Elevator Bottom Limit", RobotMap.elevatorBottomLimit.get());
-        SmartDashboard.putBoolean("Elevator Top Limit", RobotMap.elevatorTopLimit.get());
+        SmartDashboard.putBoolean("ELE BOT", RobotMap.elevatorBottomLimit.get());
+        SmartDashboard.putBoolean("ELE TOP", RobotMap.elevatorTopLimit.get());
 
-        SmartDashboard.putBoolean("Driver Controlled", !isAuton);
+        SmartDashboard.putBoolean("TELEOP", !isAuton);
     }
 
     public void putAuton() {
         auton.getSelected();
-        SmartDashboard.putData("Auton Selection", auton);
+        SmartDashboard.putData("Autons", auton);
         auton.addOption(manualHatch, manualHatch);
         auton.addOption(manualCargo, manualCargo);
         auton.addOption(frontRocket, frontRocket);
@@ -365,7 +367,7 @@ public class Robot extends TimedRobot {
         auton.addOption(sideCargo, sideCargo);
 
         position.getSelected();
-        SmartDashboard.putData("Side Selection", position);
+        SmartDashboard.putData("Side", position);
         position.addOption(right, right);
         position.addOption(left, left);
     }
