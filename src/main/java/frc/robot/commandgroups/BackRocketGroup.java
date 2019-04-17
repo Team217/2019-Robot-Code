@@ -24,7 +24,7 @@ public class BackRocketGroup extends CommandGroup {
             addSequential(new AutonDriveTimed(-0.4, 0.75, true));
             addSequential(new AutonTurn(162, new PID(0.015, 0.0001, 0), 1.0, 0.75));
             addSequential(new AutonDriveTimed(-0.2, 1));
-            addSequential(new AutonDriveVision(0.2, true, 2.0, 7.0)); //to pick up the vision target
+            addSequential(new AutonDriveVision(0.2, true, 1.7, 7.0)); //to pick up the vision target
             addSequential(new AutonDriveTimed(0.2, 0.25));
     
             // release and back up
@@ -46,7 +46,7 @@ public class BackRocketGroup extends CommandGroup {
             addSequential(new AutonDriveTimed(-0.4, 0.75, true));
             addSequential(new AutonTurn(-162, new PID(0.015, 0.0001, 0), 1.0, 0.75));
             addSequential(new AutonDriveTimed(-0.2, 1));
-            addSequential(new AutonDriveVision(0.2, true, 2.0, 7.0)); //to pick up the vision target
+            addSequential(new AutonDriveVision(0.2, true, 1.7, 7.0)); //to pick up the vision target
             addSequential(new AutonDriveTimed(0.2, 0.25));
     
             // release and back up
