@@ -101,7 +101,6 @@ public class WristSubsystem extends Subsystem {
             target = isBack ? -834 : -3250;
             break;
         case High:
-        case HighBall:
             target = isBack ? 0 : -3608;
             break;
         case HighBall:
