@@ -106,12 +106,12 @@ public class PresetState {
                 return Preset.Mid;
             }
             break;
+        case Climb:
+            break;
         case Low:
             if (lastPreset.equals(Preset.Ball) && RobotMap.leftElevator.getEncoder() < 3000) {
                 return Preset.Mid;
             }
-        case Climb:
-            break;
         default:
             if (RobotMap.telescope.getEncoder() >= 7000 && !lastPreset.equals(Preset.Low)) {
                 lastPreset = Preset.Mid;
