@@ -414,7 +414,7 @@ public class Robot extends TimedRobot {
         case frontCargo:
             return new FrontCargoshipGroup(positionSelected);
         case sideCargo:
-            return new SideCargoshipGroup(positionSelected);
+            return new SideCargoshipGroup(positionSelected, levelSelected);
         case manualHatch:
             return new ManualHatchGroup();
         case manualCargo:
