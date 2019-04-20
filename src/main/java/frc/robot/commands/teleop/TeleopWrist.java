@@ -41,9 +41,9 @@ public class TeleopWrist extends Command {
     @Override
     protected void execute() {
         if (PresetState.getPOVStatus()) {
-            isPreset = PresetState.getStatus();
+            isPreset = PresetState.getWristStatus();
         }
-        else if (!PresetState.getStatus()) {
+        else if (!PresetState.getWristStatus()) {
             isPreset = false;
         }
 

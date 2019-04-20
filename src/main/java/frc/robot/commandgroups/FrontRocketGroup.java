@@ -32,7 +32,7 @@ public class FrontRocketGroup extends CommandGroup {
             addSequential(new AutonDriveVision(-0.25, false, 1.8, 7.0));
             addSequential(new HatchPickupGroup());
             addSequential(new AutonDriveTimed(0.4, 0.5));
-            addSequential(new TeleopCommands());
+            addSequential(new TeleopGroup());
         }
         else {
             // drive to rocket
@@ -52,7 +52,7 @@ public class FrontRocketGroup extends CommandGroup {
             addSequential(new AutonDriveVision(-0.25, false, 1.8, 7.0));
             addSequential(new HatchPickupGroup());
             addSequential(new AutonDriveTimed(0.4, 0.5));
-            addSequential(new TeleopCommands());
+            addSequential(new TeleopGroup());
         }
     }
 }

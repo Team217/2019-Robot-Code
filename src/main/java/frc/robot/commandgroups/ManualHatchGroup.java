@@ -12,6 +12,6 @@ public class ManualHatchGroup extends CommandGroup {
         addSequential(new AutonElevatorTarget(13000), 1.5);
 
         // run in teleop mode
-        addSequential(new TeleopCommands());
+        addSequential(new TeleopGroup());
     }
 }

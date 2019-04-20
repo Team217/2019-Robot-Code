@@ -53,6 +53,8 @@ public class WristSubsystem extends Subsystem {
      *        The wrist speed
      */
     public void set(double speed) {
+        speed = Num.inRange(speed, 2);
+
         double wristMult = 1;
         speed = limitCheck(speed);
         wrist1.set(speed * wristMult);

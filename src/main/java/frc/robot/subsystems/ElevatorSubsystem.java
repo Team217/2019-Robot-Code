@@ -52,6 +52,8 @@ public class ElevatorSubsystem extends Subsystem {
      *        The elevator speed
      */
     public void set(double speed) {
+        speed = Num.inRange(speed, 1);
+
         double elevatorMult = 0.65;
         
         if (leftElevator1.getEncoder() >= 12500 && speed <= 0) { //encoder values are wrong, check the logic
@@ -97,10 +99,10 @@ public class ElevatorSubsystem extends Subsystem {
             target = isBack ? 5096 : 8888;
             break;
         case Mid:
-            target = isBack ? 4044 : 4444; // 1850
+            target = isBack ?4044 : 4444;
             break;
         case High:
-            target = isBack ? 12980 : 13023; //11790
+            target = isBack ? 12980 : 13023;
             break;
         case HighBall:
             target = 15378;

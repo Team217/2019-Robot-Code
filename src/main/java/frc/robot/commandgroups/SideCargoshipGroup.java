@@ -36,7 +36,7 @@ public class SideCargoshipGroup extends CommandGroup {
             addSequential(new AutonDriveTimed(-0.3, 1.0));
             addParallel(new AutonHatchPickup(false, 0.1));
             addSequential(new AutonTurn(-78, new PID(0.015, 0.0001, 0), 1.0, 0.75));
-            addSequential(new TeleopCommands());
+            addSequential(new TeleopGroup());
         }
         else {
             // To Cargo Ship
@@ -51,7 +51,7 @@ public class SideCargoshipGroup extends CommandGroup {
             addSequential(new AutonDriveTimed(-0.3, 1.0));
             addParallel(new AutonHatchPickup(false, 0.1));
             addSequential(new AutonTurn(78, new PID(0.015, 0.0001, 0), 1.0, 0.75));
-            addSequential(new TeleopCommands());
+            addSequential(new TeleopGroup());
         }
     }
 }

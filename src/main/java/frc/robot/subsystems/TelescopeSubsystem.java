@@ -56,6 +56,8 @@ public class TelescopeSubsystem extends Subsystem {
      *        The telescope speed
      */
     public void set(double speed) {
+        speed = Num.inRange(speed, 1);
+        
         double telescopeMult = 0.8;
 
         if (speed != 0) {
@@ -80,7 +82,7 @@ public class TelescopeSubsystem extends Subsystem {
             telescopeState = 0;
         }
 
-        atPreset = Num.isWithinRange(telescope1.getEncoder(), 0, 800);
+        atPreset = Num.isWithinRange(telescope1.getEncoder(), -800, 800);
 
         double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 0);
         set(speed);
@@ -93,7 +95,7 @@ public class TelescopeSubsystem extends Subsystem {
             telescopeState = 1;
         }
 
-        atPreset = Num.isWithinRange(telescope1.getEncoder(), 13200, 14800);
+        atPreset = Num.isWithinRange(telescope1.getEncoder(),  13200, 14800);
 
         double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 14000); //TODO: Get correct value //comp is 14300
         set(speed);

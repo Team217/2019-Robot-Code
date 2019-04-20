@@ -36,8 +36,8 @@ public class Robot extends TimedRobot {
     public static final ClimbingSubsystem kClimbingSubsystem = new ClimbingSubsystem();
     public static OI m_oi;
 
-    Command teleopCommand;
-    Command autonomousCommand;
+    public static Command teleopCommand;
+    public static Command autonomousCommand;
 
     static double x1 = 0;
     static double y1 = 0;
@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
         RobotMap.rightArm.resetEncoder();
         RobotMap.telescope.resetEncoder();
 
-        RobotMap.telescope.invertEncoder(true); // TODO: true for comp bot, false for practice
+        RobotMap.telescope.invertEncoder(true);
         RobotMap.telescope.setEncoder(12400); // TODO: Get comp bot values
         Robot.kTelescopeSubsystem.lastTelescopePos = 12400;
 
@@ -144,6 +144,9 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        if (autonomousCommand != null) {
+            autonomousCommand.cancel();
+        }
         if (teleopCommand != null) {
             teleopCommand.cancel();
         }
@@ -169,7 +172,7 @@ public class Robot extends TimedRobot {
 
         if (isAuton && m_oi.touchPadDriver.get()) {
             autonomousCommand.cancel();
-            autonomousCommand = new TeleopCommands();
+            autonomousCommand = new TeleopGroup();
             autonomousCommand.start();
         }
 
@@ -186,11 +189,15 @@ public class Robot extends TimedRobot {
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
+        
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
+        if (teleopCommand != null) {
+            teleopCommand.cancel();
+        }
 
-        teleopCommand = new TeleopCommands();
+        teleopCommand = new TeleopGroup();
 
         if (teleopCommand != null) {
             teleopCommand.start();
@@ -401,7 +408,7 @@ public class Robot extends TimedRobot {
             return new ManualHatchGroup();
         case manualCargo:
         default:
-            return new TeleopCommands();
+            return new TeleopGroup();
         }
     }
 

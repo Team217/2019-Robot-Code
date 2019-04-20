@@ -22,9 +22,9 @@ public class PresetState {
     private static Preset presetState = Preset.Manual;
     static Preset lastPreset = Preset.Manual;
 
-    /** Returns {@code true} if all controls, excluding `oper.getPOV()`, permit presets. */
+    /** Returns {@code true} if all controls, excluding `oper.getPOV()` and `getWristStatus()`, permit presets. */
     public static boolean getStatus() {
-        return getArmStatus() && getWristStatus() && getElevStatus() && getTelescopeStatus();
+        return getArmStatus() && getElevStatus() && getTelescopeStatus();
     }
 
     /** Returns {@code true} if the arm controls permit presets. */
@@ -106,12 +106,12 @@ public class PresetState {
                 return Preset.Mid;
             }
             break;
+        case Climb:
+            break;
         case Low:
             if (lastPreset.equals(Preset.Ball) && RobotMap.leftElevator.getEncoder() < 3000) {
                 return Preset.Mid;
             }
-        case Climb:
-            break;
         default:
             if (RobotMap.telescope.getEncoder() >= 7000 && !lastPreset.equals(Preset.Low)) {
                 lastPreset = Preset.Mid;

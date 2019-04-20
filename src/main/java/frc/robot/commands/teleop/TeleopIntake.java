@@ -37,7 +37,7 @@ public class TeleopIntake extends Command {
         double speed = 0;
 
         if (Robot.m_oi.rightBumperOper.get()) { //out
-            speed = Robot.kClimbingSubsystem.isClimbing() ? -.2 : -1.0;
+            speed = Robot.kClimbingSubsystem.isClimbing() ? -.3 : -1.0;
         }
         else if(!RobotMap.ballLimit.get()){ //hold in
             speed = .05;
