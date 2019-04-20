@@ -16,12 +16,16 @@ import frc.robot.commandgroups.subgroups.*;
 import frc.robot.commands.auton.*;
 
 public class SideCargoshipGroup extends CommandGroup {
-    public SideCargoshipGroup(String side) {
+    public SideCargoshipGroup(String side, String level) {
         // pick up the hatch panel
         addParallel(new AutonElevator(13000));
         addParallel(new HatchPickupGroup(0.5));
         addSequential(new AutonElevatorTarget(13000), 1.5);
         addParallel(new OutToPresetGroup(Preset.Low, false));
+
+        if (level.equals(Robot.level2)) {
+            addSequential(new AutonDriveTimed(0.45, 0.5));
+        }
 
         if (side.equals(Robot.right)) {
             // To Cargo Ship
@@ -53,5 +57,13 @@ public class SideCargoshipGroup extends CommandGroup {
             addSequential(new AutonTurn(78, new PID(0.015, 0.0001, 0), 1.0, 0.75));
             addSequential(new TeleopGroup());
         }
+    }
+
+    public SideCargoshipGroup(String side) {
+        this(side, Robot.level1);
+    }
+
+    public SideCargoshipGroup() {
+        this(Robot.right);
     }
 }

@@ -9,12 +9,16 @@ import frc.robot.commandgroups.subgroups.*;
 import frc.robot.commands.auton.*;
 
 public class BackRocketGroup extends CommandGroup {
-    public BackRocketGroup(String side) {
+    public BackRocketGroup(String side, String level) {
         // pick up the hatch panel
         addParallel(new AutonElevator(13000));
         addParallel(new HatchPickupGroup(0.5));
         addSequential(new AutonElevatorTarget(13000), 1.5);
         addParallel(new OutToPresetGroup(Preset.Mid, false));
+
+        if (level.equals(Robot.level2)) {
+            addSequential(new AutonDriveTimed(-0.4, 0.5));
+        }
 
         if (side.equals(Robot.right)) {
             // drive to rocket
@@ -60,5 +64,13 @@ public class BackRocketGroup extends CommandGroup {
             addSequential(new AutonDriveTimed(0.65, 2.25, true));
             addSequential(new TeleopGroup());
         }
+    }
+
+    public BackRocketGroup(String side) {
+        this(side, Robot.level1);
+    }
+
+    public BackRocketGroup() {
+        this(Robot.right);
     }
 }
