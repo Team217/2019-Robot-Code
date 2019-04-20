@@ -43,13 +43,13 @@ public class TeleopClimb extends Command {
         }
         
         if (Robot.m_oi.squareDriver.get() && Robot.kClimbingSubsystem.isClimbing()) {
-            // if (Robot.teleopCommand != null) {
-            //     Robot.teleopCommand.cancel();
-            // }
-            // Robot.teleopCommand = new AutonClimbGroup();
-            // if (Robot.teleopCommand != null) {
-            //     Robot.teleopCommand.start();
-            // }
+            //if (Robot.teleopCommand != null) {
+            //    Robot.teleopCommand.cancel();
+            //}
+            //Robot.teleopCommand = new AutonClimbGroup();
+            //if (Robot.teleopCommand != null) {
+            //    Robot.teleopCommand.start();
+            //}
         }
     }
 
