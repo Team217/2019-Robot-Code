@@ -55,4 +55,8 @@ public class FrontRocketGroup extends CommandGroup {
             addSequential(new TeleopGroup());
         }
     }
+
+    public FrontRocketGroup() {
+        this(Robot.right);
+    }
 }

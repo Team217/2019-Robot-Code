@@ -51,4 +51,8 @@ public class FrontCargoshipGroup extends CommandGroup {
             addSequential(new TeleopGroup());
         }
     }
+
+    public FrontCargoshipGroup() {
+        this(Robot.left);
+    }
 }

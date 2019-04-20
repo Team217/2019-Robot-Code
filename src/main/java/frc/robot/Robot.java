@@ -65,6 +65,10 @@ public class Robot extends TimedRobot {
     public static final String left = "Left";
     public static final String right = "Right";
 
+    SendableChooser<String> level = new SendableChooser<String>();
+    public static final String level1 = "Level 1";
+    public static final String level2 = "Level 2";
+
     public static boolean isAuton = true;
 
     /**
@@ -377,11 +381,18 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Side", position);
         position.addOption(right, right);
         position.addOption(left, left);
+
+        level.getSelected();
+        SmartDashboard.putData("Level", level);
+        level.addOption(level1, level1);
+        level.addOption(level2, level2);
+        
     }
 
     public Command autonSelector() {
         String autonSelected = auton.getSelected();
         String positionSelected = position.getSelected();
+        String levelSelected = level.getSelected();
 
         RobotMap.pigeonDrive.reset();
         kDrivingSubsystem.targetAngle = 0;
@@ -399,11 +410,11 @@ public class Robot extends TimedRobot {
             RobotMap.pigeonDrive.setYaw(180 * mult);
             kDrivingSubsystem.targetAngle = 180 * mult;
 
-            return new BackRocketGroup(positionSelected);
+            return new BackRocketGroup(positionSelected, levelSelected);
         case frontCargo:
             return new FrontCargoshipGroup(positionSelected);
         case sideCargo:
-            return new SideCargoshipGroup(positionSelected);
+            return new SideCargoshipGroup(positionSelected, levelSelected);
         case manualHatch:
             return new ManualHatchGroup();
         case manualCargo:
