@@ -9,23 +9,14 @@ package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
+import frc.robot.commandgroups.*;
 
 /**
- * Runs the intake in teleop control mode.
+ * Manages the cancellation of the autonomous climb.
  * 
  * @author ThunderChickens 217
  */
-public class TeleopIntake extends Command {
-    /**
-     * Runs the intake in teleop control mode.
-     * 
-     * @author ThunderChickens 217
-     */
-    public TeleopIntake() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    }
-
+public class TeleopClimbCancel extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
@@ -34,19 +25,15 @@ public class TeleopIntake extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double speed = 0;
-
-        if (Robot.m_oi.rightBumperOper.get()) { //out
-            speed = Robot.kClimbingSubsystem.isClimbing() ? -.3 : -1.0;
+        if (Robot.m_oi.psButtonDriver.get() && Robot.kClimbingSubsystem.isClimbing()) {
+            if (Robot.teleopCommand != null) {
+                Robot.teleopCommand.cancel();
+            }
+            Robot.teleopCommand = new TeleopGroup();
+            if (Robot.teleopCommand != null) {
+                Robot.teleopCommand.start();
+            }
         }
-        else if(!RobotMap.ballLimit.get()){ //hold in
-            speed = .05;
-        }
-        else if (Robot.m_oi.leftBumperOper.get()) { //in
-            speed = .75;
-        }
-        
-        Robot.kIntakeSubsystem.set(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -58,13 +45,12 @@ public class TeleopIntake extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.kIntakeSubsystem.reset();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.kIntakeSubsystem.reset();
     }
+
 }

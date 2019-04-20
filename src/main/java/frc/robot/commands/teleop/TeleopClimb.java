@@ -9,6 +9,7 @@ package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.*;
+import frc.robot.commandgroups.*;
 
 /**
  * Runs the climber in teleop control mode.
@@ -39,6 +40,16 @@ public class TeleopClimb extends Command {
         }
         else if (Robot.m_oi.circleDriver.get()) {
             Robot.kClimbingSubsystem.setClimbPTO();
+        }
+        
+        if (Robot.m_oi.squareDriver.get() && Robot.kClimbingSubsystem.isClimbing()) {
+            // if (Robot.teleopCommand != null) {
+            //     Robot.teleopCommand.cancel();
+            // }
+            // Robot.teleopCommand = new AutonClimbGroup();
+            // if (Robot.teleopCommand != null) {
+            //     Robot.teleopCommand.start();
+            // }
         }
     }
 
