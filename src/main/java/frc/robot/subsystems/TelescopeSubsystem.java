@@ -56,6 +56,8 @@ public class TelescopeSubsystem extends Subsystem {
      *        The telescope speed
      */
     public void set(double speed) {
+        speed = Num.inRange(speed, 1);
+        
         double telescopeMult = 0.8;
 
         if (speed != 0) {

@@ -52,6 +52,8 @@ public class ElevatorSubsystem extends Subsystem {
      *        The elevator speed
      */
     public void set(double speed) {
+        speed = Num.inRange(speed, 1);
+
         double elevatorMult = 0.65;
         
         if (leftElevator1.getEncoder() >= 12500 && speed <= 0) { //encoder values are wrong, check the logic

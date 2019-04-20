@@ -35,7 +35,7 @@ public class FrontCargoshipGroup extends CommandGroup {
             addSequential(new AutonDriveTimed(-.35, 1.5));
             addParallel(new AutonHatchPickup(false, 0.1));
             addSequential(new AutonTurn(-12, new PID(0.015, 0.0001, 0), 1.0, 0.75));
-            addSequential(new TeleopCommands());
+            addSequential(new TeleopGroup());
         }
         else {
             // places Hatch on cargoship
@@ -48,7 +48,7 @@ public class FrontCargoshipGroup extends CommandGroup {
             addSequential(new AutonDriveTimed(-.35, 1.5));
             addParallel(new AutonHatchPickup(false, 0.1));
             addSequential(new AutonTurn(12, new PID(0.015, 0.0001, 0), 1.0, 0.75));
-            addSequential(new TeleopCommands());
+            addSequential(new TeleopGroup());
         }
     }
 }

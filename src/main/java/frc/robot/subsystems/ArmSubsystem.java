@@ -63,6 +63,8 @@ public class ArmSubsystem extends Subsystem {
      *        The arm speed
      */
     public void set(double speed) {
+        speed = Num.inRange(speed, 1);
+
         double armMult = .7;
        
         if (!Robot.kClimbingSubsystem.isClimbing()) {
