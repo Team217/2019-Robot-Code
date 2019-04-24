@@ -30,7 +30,7 @@ public class FrontRocketGroup extends CommandGroup {
             addSequential(new AutonDriveTimed(-0.7, 1.15, true));
             addSequential(new AutonDriveTimed(-0.4, 0.5, true));
             addSequential(new AutonDriveVision(-0.25, false, 1.8, 7.0));
-            addSequential(new HatchPickupGroup());
+            addSequential(new AutonHatchPickup(false, 0.25));
             addSequential(new AutonDriveTimed(0.4, 0.5));
             addSequential(new TeleopGroup());
         }
@@ -50,7 +50,7 @@ public class FrontRocketGroup extends CommandGroup {
             addSequential(new AutonDriveTimed(-0.7, 1.15, true));
             addSequential(new AutonDriveTimed(-0.4, 0.5, true));
             addSequential(new AutonDriveVision(-0.25, false, 1.8, 7.0));
-            addSequential(new HatchPickupGroup());
+            addSequential(new AutonHatchPickup(false, 0.25));
             addSequential(new AutonDriveTimed(0.4, 0.5));
             addSequential(new TeleopGroup());
         }
