@@ -34,7 +34,7 @@ public class SideCargoshipGroup extends CommandGroup {
             addSequential(new AutonDriveTimed(0.4, 0.25, true));
             addSequential(new AutonTurn(-95, new PID(0.01, 0.0001, 0).setMinMax(0.1), 2, 0.65, 1.25));
             addSequential(new AutonDriveVision(0.25, true, 2, 4.0));
-            addSequential(new AutonDriveTimed(.25, 0.5));
+            addSequential(new AutonDriveTimed(.25, 0.3));
             addSequential(new AutonHatchPickup(true, 0.25));
     
             // Move to next Cargo Location
@@ -51,7 +51,7 @@ public class SideCargoshipGroup extends CommandGroup {
             addSequential(new AutonDriveTimed(0.4, 0.25, true));
             addSequential(new AutonTurn(95, new PID(0.01, 0.0001, 0).setMinMax(0.1), 2, 0.65, 1.25));
             addSequential(new AutonDriveVision(0.25, true, 2, 4.0));
-            addSequential(new AutonDriveTimed(.25, 0.5));
+            addSequential(new AutonDriveTimed(.25, 0.3));
             addSequential(new AutonHatchPickup(true, 0.25));
     
             // Move to next Cargo Location
