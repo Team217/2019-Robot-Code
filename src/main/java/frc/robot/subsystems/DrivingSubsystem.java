@@ -167,7 +167,7 @@ public class DrivingSubsystem extends Subsystem {
         double turn = 0;
         double x = isCamFront ? Robot.getX1Vis() : Robot.getX2Vis();
         double area = 4 * (isCamFront ? Robot.getArea1Vis() : Robot.getArea2Vis());
-        double kP = Num.inRange(.0125 / Math.sqrt(area) - .01, 0.01, 0.025);
+        double kP = Num.inRange(.0125 / Math.sqrt(area) - .01, 0.008, 0.025);
 
         visionPID.setP(kP);
 
@@ -178,7 +178,7 @@ public class DrivingSubsystem extends Subsystem {
             turn = visionPID.getOutput(kAnticurve * area + kOffset, x);
         }
 
-        return turn;
+        return Num.inRange(turn, 0.15);
     }
 
     /** Resets the vision-managed turning's PID. */

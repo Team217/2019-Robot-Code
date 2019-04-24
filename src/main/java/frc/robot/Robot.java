@@ -60,6 +60,7 @@ public class Robot extends TimedRobot {
     static final String backRocket = "Back Rocket";
     static final String frontCargo = "Front Cargoship";
     static final String sideCargo = "Side Cargoship";
+    static final String doubleSideCargo = "Double Side Cargoship";
 
     SendableChooser<String> position = new SendableChooser<String>();
     public static final String left = "Left";
@@ -376,6 +377,7 @@ public class Robot extends TimedRobot {
         auton.addOption(backRocket, backRocket);
         auton.addOption(frontCargo, frontCargo);
         auton.addOption(sideCargo, sideCargo);
+        auton.addOption(doubleSideCargo, doubleSideCargo);
 
         position.getSelected();
         SmartDashboard.putData("Side", position);
@@ -415,6 +417,8 @@ public class Robot extends TimedRobot {
             return new FrontCargoshipGroup(positionSelected);
         case sideCargo:
             return new SideCargoshipGroup(positionSelected, levelSelected);
+        case doubleSideCargo:
+            return new DoubleSideCargoshipGroup(positionSelected, levelSelected);
         case manualHatch:
             return new ManualHatchGroup();
         case manualCargo:

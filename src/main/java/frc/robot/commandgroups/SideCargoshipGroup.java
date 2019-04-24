@@ -19,9 +19,8 @@ public class SideCargoshipGroup extends CommandGroup {
     public SideCargoshipGroup(String side, String level) {
         // pick up the hatch panel
         addParallel(new AutonElevator(13000));
-        addParallel(new HatchPickupGroup(0.5));
-        addSequential(new AutonElevatorTarget(13000), 1.5);
-        addParallel(new OutToPresetGroup(Preset.Low, false));
+        addSequential(new HatchPickupGroup(0.5));
+        addParallel(new ParallelHatch());
 
         if (level.equals(Robot.level2)) {
             addSequential(new AutonDriveTimed(0.45, 0.5));
@@ -29,9 +28,11 @@ public class SideCargoshipGroup extends CommandGroup {
 
         if (side.equals(Robot.right)) {
             // To Cargo Ship
-            addParallel(new AutonAngle(10, 1));
-            addSequential(new AutonDriveTimed(0.45, 4.25, true));
-            addSequential(new AutonTurn(-95, new PID(0.01, 0.0001, 0), 2, 0.75, 1.25));
+            addParallel(new AutonAngle(10, 0.75));
+            addSequential(new AutonDriveTimed(0.45, 0.75, true));
+            addSequential(new AutonDriveTimed(0.8, 1.75, true));
+            addSequential(new AutonDriveTimed(0.4, 0.25, true));
+            addSequential(new AutonTurn(-95, new PID(0.01, 0.0001, 0).setMinMax(0.1), 2, 0.65, 1.25));
             addSequential(new AutonDriveVision(0.25, true, 2, 4.0));
             addSequential(new AutonDriveTimed(.25, 0.5));
             addSequential(new AutonHatchPickup(true, 0.25));
@@ -44,9 +45,11 @@ public class SideCargoshipGroup extends CommandGroup {
         }
         else {
             // To Cargo Ship
-            addParallel(new AutonAngle(-10, 1));
-            addSequential(new AutonDriveTimed(0.45, 4.25, true));
-            addSequential(new AutonTurn(95, new PID(0.01, 0.0001, 0), 2, 0.75, 1.25));
+            addParallel(new AutonAngle(-10, 0.75));
+            addSequential(new AutonDriveTimed(0.45, 0.75, true));
+            addSequential(new AutonDriveTimed(0.8, 1.75, true));
+            addSequential(new AutonDriveTimed(0.4, 0.25, true));
+            addSequential(new AutonTurn(95, new PID(0.01, 0.0001, 0).setMinMax(0.1), 2, 0.65, 1.25));
             addSequential(new AutonDriveVision(0.25, true, 2, 4.0));
             addSequential(new AutonDriveTimed(.25, 0.5));
             addSequential(new AutonHatchPickup(true, 0.25));
@@ -65,5 +68,13 @@ public class SideCargoshipGroup extends CommandGroup {
 
     public SideCargoshipGroup() {
         this(Robot.right);
+    }
+}
+
+class ParallelHatch extends CommandGroup {
+    public ParallelHatch() {
+        addParallel(new AutonElevator(13000, false));
+        addSequential(new AutonElevatorTarget(13000), 1.5);
+        addSequential(new OutToPresetGroup(Preset.Low, false));
     }
 }
