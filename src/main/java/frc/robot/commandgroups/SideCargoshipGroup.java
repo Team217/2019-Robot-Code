@@ -20,7 +20,7 @@ public class SideCargoshipGroup extends CommandGroup {
         // pick up the hatch panel
         addParallel(new AutonElevator(13000));
         addSequential(new HatchPickupGroup(0.5));
-        addParallel(new ParallelHatch());
+        addParallel(new ElevatorToPresetGroup(Preset.Low, false));
 
         if (level.equals(Robot.level2)) {
             addSequential(new AutonDriveTimed(0.45, 0.5));
@@ -68,13 +68,5 @@ public class SideCargoshipGroup extends CommandGroup {
 
     public SideCargoshipGroup() {
         this(Robot.right);
-    }
-}
-
-class ParallelHatch extends CommandGroup {
-    public ParallelHatch() {
-        addParallel(new AutonElevator(13000, false));
-        addSequential(new AutonElevatorTarget(13000), 1.5);
-        addSequential(new OutToPresetGroup(Preset.Low, false));
     }
 }
