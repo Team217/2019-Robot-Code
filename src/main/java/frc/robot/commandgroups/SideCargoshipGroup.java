@@ -22,15 +22,18 @@ public class SideCargoshipGroup extends CommandGroup {
         addSequential(new HatchPickupGroup(0.5));
         addParallel(new ElevatorToPresetGroup(Preset.Low, false));
 
-        if (level.equals(Robot.level2)) {
-            addSequential(new AutonDriveTimed(0.45, 0.5));
+        try {
+            if (level.equals(Robot.level2)) {
+                addSequential(new AutonDriveTimed(0.45, 0.5));
+            }
         }
+        catch (Exception e) {}
 
         if (side.equals(Robot.right)) {
             // To Cargo Ship
             addParallel(new AutonAngle(10, 0.75));
             addSequential(new AutonDriveTimed(0.45, 0.75, true));
-            addSequential(new AutonDriveTimed(0.8, 1.75, true));
+            addSequential(new AutonDriveTimed(0.85, 1.75, true));
             addSequential(new AutonDriveTimed(0.4, 0.25, true));
             addSequential(new AutonTurn(-95, new PID(0.01, 0.0001, 0).setMinMax(0.1), 2, 0.65, 1.25));
             addSequential(new AutonDriveVision(0.25, true, 2.1, 4.0));
@@ -47,7 +50,7 @@ public class SideCargoshipGroup extends CommandGroup {
             // To Cargo Ship
             addParallel(new AutonAngle(-10, 0.75));
             addSequential(new AutonDriveTimed(0.45, 0.75, true));
-            addSequential(new AutonDriveTimed(0.8, 1.75, true));
+            addSequential(new AutonDriveTimed(0.85, 1.75, true));
             addSequential(new AutonDriveTimed(0.4, 0.25, true));
             addSequential(new AutonTurn(95, new PID(0.01, 0.0001, 0).setMinMax(0.1), 2, 0.65, 1.25));
             addSequential(new AutonDriveVision(0.25, true, 2.1, 4.0));

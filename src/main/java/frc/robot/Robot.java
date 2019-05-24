@@ -149,11 +149,16 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        Robot.kClimbingSubsystem.setDrivePTO();
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
         if (teleopCommand != null) {
             teleopCommand.cancel();
+        }
+
+        if (!Num.isWithinRange(RobotMap.rightArm.getPosition(), -0.75, 0.5)) {
+            RobotMap.rightArm.resetEncoder();
         }
 
         autonomousCommand = autonSelector();
@@ -371,8 +376,8 @@ public class Robot extends TimedRobot {
     public void putAuton() {
         auton.getSelected();
         SmartDashboard.putData("Autons", auton);
+        auton.setDefaultOption(manualCargo, manualCargo);
         auton.addOption(manualHatch, manualHatch);
-        auton.addOption(manualCargo, manualCargo);
         auton.addOption(frontRocket, frontRocket);
         auton.addOption(backRocket, backRocket);
         auton.addOption(frontCargo, frontCargo);
@@ -381,12 +386,12 @@ public class Robot extends TimedRobot {
 
         position.getSelected();
         SmartDashboard.putData("Side", position);
-        position.addOption(right, right);
+        position.setDefaultOption(right, right);
         position.addOption(left, left);
 
         level.getSelected();
         SmartDashboard.putData("Level", level);
-        level.addOption(level1, level1);
+        level.setDefaultOption(level1, level1);
         level.addOption(level2, level2);
         
     }

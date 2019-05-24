@@ -118,6 +118,9 @@ public class ArmSubsystem extends Subsystem {
         case Climb:
             target = 85.6;
             break;
+        case Start:
+            target = 2.5;
+            break;
         default:
             break;
         }

@@ -16,9 +16,12 @@ public class BackRocketGroup extends CommandGroup {
         addSequential(new AutonElevatorTarget(13000), 1.5);
         addParallel(new OutToPresetGroup(Preset.Mid, false));
 
-        if (level.equals(Robot.level2)) {
-            addSequential(new AutonDriveTimed(-0.4, 0.5));
+        try {
+            if (level.equals(Robot.level2)) {
+                addSequential(new AutonDriveTimed(-0.4, 0.5));
+            }
         }
+        catch (Exception e) {}
 
         if (side.equals(Robot.right)) {
             // drive to rocket

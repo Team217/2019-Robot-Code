@@ -22,38 +22,41 @@ public class DoubleSideCargoshipGroup extends CommandGroup {
         addSequential(new HatchPickupGroup(0.5));
         addParallel(new ElevatorToPresetGroup(Preset.Low, false));
 
-        if (level.equals(Robot.level2)) {
-            addSequential(new AutonDriveTimed(0.45, 0.5));
+        try {
+            if (level.equals(Robot.level2)) {
+                addSequential(new AutonDriveTimed(0.45, 0.5));
+            }
         }
+        catch (Exception e) {}
 
         if (side.equals(Robot.right)) {
             // To Cargo Ship
-            addParallel(new AutonAngle(10, 1));
-            addSequential(new AutonDriveTimed(0.45, 0.75, true));
-            addSequential(new AutonDriveTimed(0.8, 1.75, true));
+            addParallel(new AutonAngle(12, .75));
+            addSequential(new AutonDriveTimed(0.45, 0.5, true));
+            addSequential(new AutonDriveTimed(1.0, 1.725, true));
             addSequential(new AutonDriveTimed(0.4, 0.25, true));
-            addSequential(new AutonTurn(-95, new PID(0.01, 0.0001, 0).setMinMax(0.1), 2, 0.65, 1.25));
-            addSequential(new AutonDriveVision(0.25, true, 2.1, 4.0));
+            addSequential(new AutonTurn(-92, new PID(0.012, 0.0001, 0).setMinMax(0.1), 2, 1.00, 1.2));
+            addSequential(new AutonDriveVision(0.22, true, 1.95, 4.0));
             addSequential(new AutonDriveTimed(.25, 0.3));
             addSequential(new AutonHatchPickup(true, 0.25));
     
             // To Human Player
-            addSequential(new AutonDriveTimed(-0.3, 0.75));
-            addSequential(new AutonTurn(-196, new PID(0.01, 0.0001, 0).setMinMax(0.1), 1.5, 0.75, 1.25));
-            addParallel(new AutonAngle(-180, 2.2));
-            addSequential(new AutonDriveTimed(0.9, 2.3, true));
-            addSequential(new AutonDriveTimed(0.4, 0.4, true));
-            addSequential(new AutonDriveVision(0.25, true, 2.1, 5.0));
+            addSequential(new AutonDriveTimed(-0.45, 0.5));
+            addSequential(new AutonTurn(-194, new PID(0.008, 0.0001, 0).setMinMax(0.1), 1.2, 1.00, 1));
+            addParallel(new AutonAngle(-180, 2));
+            addSequential(new AutonDriveTimed(1.0, 2.1, true));
+            addSequential(new AutonDriveTimed(0.45, 0.25, true));
+            addSequential(new AutonDriveVision(0.25, true, 2, 5.0));
             addSequential(new AutonDriveTimed(.25, 0.3));
             addSequential(new AutonHatchPickup(false, 0.25));
 
             // To Cargoship
             addSequential(new AutonAngle());
-            addParallel(new AutonAngle(-191, 0.5));
+            addParallel(new AutonAngle(-192, 0.5));
             addSequential(new AutonDriveTimed(-0.35, 0.5, true));
-            addSequential(new AutonDriveTimed(-0.9, 2.4, true));
-            addSequential(new AutonDriveTimed(-0.4, 0.5, true));
-            addSequential(new AutonTurn(-92, new PID(0.01, 0.0001, 0).setMinMax(0.1), 1.5, 0.75, 1.25));
+            addSequential(new AutonDriveTimed(-1.0, 2.4, true));
+            addSequential(new AutonDriveTimed(-0.4, 0.25, true));
+            addSequential(new AutonTurn(-90, new PID(0.01, 0.0001, 0).setMinMax(0.1), 1.25, 1.00, 1.15));
             addSequential(new AutonDriveVision(0.25, true, 2.1, 4.0));
             addSequential(new AutonDriveTimed(.25, 0.3));
 
@@ -61,32 +64,32 @@ public class DoubleSideCargoshipGroup extends CommandGroup {
         }
         else {
             // To Cargo Ship
-            addParallel(new AutonAngle(-10, 1));
-            addSequential(new AutonDriveTimed(0.45, 0.75, true));
-            addSequential(new AutonDriveTimed(0.8, 1.75, true));
+            addParallel(new AutonAngle(-12, 0.75));
+            addSequential(new AutonDriveTimed(0.45, 0.5, true));
+            addSequential(new AutonDriveTimed(1.0, 1.6, true));
             addSequential(new AutonDriveTimed(0.4, 0.25, true));
-            addSequential(new AutonTurn(95, new PID(0.01, 0.0001, 0).setMinMax(0.1), 2, 0.65, 1.25));
-            addSequential(new AutonDriveVision(0.25, true, 2.1, 4.0));
+            addSequential(new AutonTurn(92, new PID(0.008, 0.0001, 0).setMinMax(0.1), 2, 1.00, 1));
+            addSequential(new AutonDriveVision(0.25, true, 2, 4.0));
             addSequential(new AutonDriveTimed(.25, 0.3));
             addSequential(new AutonHatchPickup(true, 0.25));
     
             // To Human Player
-            addSequential(new AutonDriveTimed(-0.3, 0.75));
-            addSequential(new AutonTurn(196, new PID(0.01, 0.0001, 0).setMinMax(0.1), 1.5, 0.75, 1.25));
-            addParallel(new AutonAngle(180, 2.2));
-            addSequential(new AutonDriveTimed(0.9, 2.3, true));
-            addSequential(new AutonDriveTimed(0.4, 0.4, true));
-            addSequential(new AutonDriveVision(0.25, true, 2.1, 5.0));
+            addSequential(new AutonDriveTimed(-0.45, 0.5));
+            addSequential(new AutonTurn(196, new PID(0.008, 0.0001, 0).setMinMax(0.1), 1.5, 1.00, 1));
+            addParallel(new AutonAngle(180, 2));
+            addSequential(new AutonDriveTimed(1.0, 2, true));
+            addSequential(new AutonDriveTimed(0.45, 0.25, true));
+            addSequential(new AutonDriveVision(0.25, true, 2, 5.0));
             addSequential(new AutonDriveTimed(.25, 0.3));
             addSequential(new AutonHatchPickup(false, 0.25));
 
             // To Cargoship
             addSequential(new AutonAngle());
-            addParallel(new AutonAngle(191, 0.5));
+            addParallel(new AutonAngle(192, 0.5));
             addSequential(new AutonDriveTimed(-0.35, 0.5, true));
-            addSequential(new AutonDriveTimed(-0.9, 2.4, true));
-            addSequential(new AutonDriveTimed(-0.4, 0.5, true));
-            addSequential(new AutonTurn(92, new PID(0.01, 0.0001, 0).setMinMax(0.1), 1.5, 0.75, 1.25));
+            addSequential(new AutonDriveTimed(-1.0, 2.4, true));
+            addSequential(new AutonDriveTimed(-0.4, 0.25, true));
+            addSequential(new AutonTurn(92, new PID(0.008, 0.0001, 0).setMinMax(0.1), 1.5, 1.0, 1.15));
             addSequential(new AutonDriveVision(0.25, true, 2.1, 4.0));
             addSequential(new AutonDriveTimed(.25, 0.3));
 

@@ -113,6 +113,18 @@ public class TelescopeSubsystem extends Subsystem {
         set(speed);
     }
 
+    public void setStart() {
+        if (telescopeState != 3) {
+            telescopeAPID.initialize();
+            telescopeState = 3;
+        }
+
+        atPreset = Num.isWithinRange(telescope1.getEncoder(), 8700, 10300);
+
+        double speed = telescopeAPID.getOutput(telescope1.getEncoder(), 9500);
+        set(speed);
+    }
+
     /** Returns {@code 1} if the telescope is out, {@code 0} if in, {@code 2} if climbing position. */
     public int getTelescopeState() {
         return telescopeState;
@@ -143,6 +155,9 @@ public class TelescopeSubsystem extends Subsystem {
             break;
         case Climb:
             setClimb();
+            break;
+        case Start:
+            setStart();
             break;
         default:
             break;

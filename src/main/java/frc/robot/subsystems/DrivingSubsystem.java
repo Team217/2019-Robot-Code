@@ -167,14 +167,14 @@ public class DrivingSubsystem extends Subsystem {
         double turn = 0;
         double x = isCamFront ? Robot.getX1Vis() : Robot.getX2Vis();
         double area = 4 * (isCamFront ? Robot.getArea1Vis() : Robot.getArea2Vis());
-        double kP = Num.inRange(.0125 / Math.sqrt(area) - .01, 0.008, 0.025);
+        double kP = Num.inRange(.011 / Math.sqrt(area) - .01, 0.007, 0.022);
 
         visionPID.setP(kP);
 
         if(!Num.isWithinRange(x, 0.5 / area)) {
             //turn = visionPID.getOutput((isCamFront ? -0.2 : -0.55) * Math.sqrt(area), x);
             double kAnticurve = isCamFront ? 1 : 1;
-            double kOffset = isCamFront ? -7 : -8;
+            double kOffset = isCamFront ? -5.5 : -8;
             turn = visionPID.getOutput(kAnticurve * area + kOffset, x);
         }
 

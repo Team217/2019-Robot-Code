@@ -99,7 +99,7 @@ public class ElevatorSubsystem extends Subsystem {
             target = isBack ? 5096 : 8888;
             break;
         case Mid:
-            target = isBack ?4044 : 4444;
+            target = isBack ? 4044 : 4444;
             break;
         case High:
             target = isBack ? 12980 : 13023;
@@ -112,6 +112,9 @@ public class ElevatorSubsystem extends Subsystem {
             break;
         case Climb:
             target = 0;
+            break;
+        case Start:
+            target = 8400;
             break;
         default:
             break;

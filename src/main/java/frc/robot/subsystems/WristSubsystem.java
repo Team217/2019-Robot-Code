@@ -114,6 +114,9 @@ public class WristSubsystem extends Subsystem {
         case Climb:
             target = -1854;
             break;
+        case Start:
+            target = 100;
+            break;
         default:
             break;
         }
